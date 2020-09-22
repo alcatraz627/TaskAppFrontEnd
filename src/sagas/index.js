@@ -1,10 +1,11 @@
 import { fork, all, put } from 'redux-saga/effects'
-// Fetch->Axios module
-// import 
 
-// export default function* rootSaga() {
-//     yield
-// }
+import user from './user'
+
+export default function* rootSaga() {
+    console.log("Loaded root saga!");
+    yield fork(user);
+}
 
 // export function* boot() {
 //     console.log("Saga loaded!");

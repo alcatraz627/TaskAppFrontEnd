@@ -1,0 +1,90 @@
+@import "mixins";
+@import "general";
+@import "utils";
+@import "const";
+
+nav.navbar {
+	flex: 0 1 auto;
+	// width: 100%;
+	padding: 5px 40px;
+	background-color: $primary;
+	color: white;
+
+	.toolbar {
+		display: flex;
+		align-items: center;
+		h5 {
+			// @include fontSecondary;
+			// font-size: 1.4em;
+			padding: 15px 5px;
+			margin: 0;
+		}
+
+		.nav-link {
+			@extend .button;
+			// padding: 16px;
+			// font-size: 0.9em;
+			// text-transform: uppercase;
+			// letter-spacing: 0.2em;
+			// cursor: pointer;
+			&:hover {
+				border-width: 0 0 2px 0;
+				border-style: solid;
+				border-color: $secondary;
+				padding-bottom: 10px;
+				// box-sizing: content-box;
+			}
+		}
+	}
+}
+
+.container {
+	margin: 0;
+	padding: 60px;
+	flex: 1 1 auto;
+}
+
+.loginBg {
+	background-color: #fbda61;
+	background-image: linear-gradient(45deg, #fbda61 0%, #ff5acd 100%);
+	flex-grow: 1;
+}
+
+.loginForm {
+	max-width: 400px;
+	background-color: white;
+	margin: auto;
+	// border: 3px solid #ececec;
+	border-radius: 20px;
+	padding: 20px 12px 32px;
+	text-align: center;
+
+	.formgroup {
+		display: flex;
+		flex-direction: column;
+		margin: 16px auto;
+		width: 80%;
+		label {
+			@extend .body2;
+			margin: 4px 0 4px;
+			text-align: left;
+			display: block;
+		}
+		input {
+			margin: 4px 0 4px;
+		}
+	}
+}
+
+.primaryButton {
+	padding: 16px 48px;
+	color: white;
+	@extend .button;
+	border: none;
+	background-color: $primary;
+	border-radius: 12px;
+	// background-image: linear-gradient(to right, #dc2424 0%, #4a569d 51%, #dc2424 100%);
+	// &:hover {
+	// 	background-position: right center;
+	// }
+}

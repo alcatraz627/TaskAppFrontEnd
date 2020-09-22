@@ -1,0 +1,18 @@
+@use 'const';
+
+// .center {
+//     text-align: center;
+// }
+
+
+[hidden] {
+    display: none;
+}
+
+.grow {
+    flex-grow: 1;
+}
+
+.max-width {
+    max-width: 1000px;
+}

@@ -1,0 +1,13 @@
+@use 'const';
+
+@mixin fontPrimary {
+	font-family: 'Open Sans', sans-serif;
+}
+
+@mixin fontSecondary {
+	font-family: 'Montserrat', sans-serif;
+}
+
+@mixin colorBlack {
+	color: #333;
+}

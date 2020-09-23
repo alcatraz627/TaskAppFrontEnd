@@ -11,9 +11,6 @@ import history from '../utils/history'
 import ROUTES from '../constants/routes'
 
 import Navbar from './Navbar'
-import Home from './Home'
-// import Login from './Pages/Login'
-// import Logout from './Pages/Logout'
 
 function App() {
     return (
@@ -23,12 +20,11 @@ function App() {
                 <Switch>
                     {Object.values(ROUTES).filter(f => f.hasOwnProperty('Component'))
                         .map(({ url, Component, auth = false, guestOnly = false, redirect = ROUTES.LOGIN.url }) =>
-                            // <Route key={url} path={url} component={Component} />
                             <ProtectedRoute key={url} path={url} component={Component} auth={auth} guestOnly={guestOnly} redirect={redirect} />
                         )}
-                    <Route>
-                        <div>Not found</div>
-                    </Route>
+                    {/* <Route>
+                        <div className="h4">Not found</div>
+                    </Route> */}
                 </Switch>
             </Router>
         </Provider>

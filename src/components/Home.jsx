@@ -1,9 +1,24 @@
 import React from 'react'
 
-function Home(props) {
+import { connect } from 'react-redux'
+import { createAction, ACTION_TYPES } from '../constants/actions'
+
+function Home({ notif, push_notif }) {
     return (
-        <div className="container">Main body</div>
+        <div className="container">
+            <h3>Home Page</h3>
+            <button className="primary outlined" onClick={() => push_notif("Test Message " + notif.length)}>Push Notif</button>
+            {JSON.stringify(notif)}
+        </div>
     )
 }
 
-export default Home;
+const mapStateToProps = (state, ownProps) => ({
+    notif: state.notif
+})
+
+const mapDispatchToProps = (dispatch, ownProps) => ({
+    push_notif: (message) => dispatch(createAction(ACTION_TYPES.PUSH_NOTIF, { message }))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

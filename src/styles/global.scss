@@ -77,15 +77,23 @@ nav.navbar {
 	}
 }
 
-.primaryButton {
+button.primary {
 	padding: 16px 48px;
-	color: white;
 	@extend .button;
 	border: none;
-	background-color: $primary;
 	border-radius: 12px;
-	// background-image: linear-gradient(to right, #dc2424 0%, #4a569d 51%, #dc2424 100%);
-	// &:hover {
-	// 	background-position: right center;
-	// }
+	&.contained {
+		color: white;
+		background-color: $primary;
+		border: 3px solid $primary;
+	}
+	&.outlined {
+		color: $primary;
+		background-color: transparent;
+		border: 3px solid #{$primary + "aa"};
+		font-weight: 700;
+	}
+	&.outlined:hover {
+		border-color: #{$primary + "ff"};
+	}
 }

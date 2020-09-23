@@ -26,7 +26,7 @@ function Login({ attempt_login }) {
                     <label className="body2">Password</label>
                     <input type="password" placeholder="Enter password" value={password} onChange={e => setPassword(e.target.value)} />
                 </div>
-                <button type="submit" className="primaryButton">Log in</button>
+                <button type="submit" className="primary contained">Log in</button>
             </form>
         </div>)
 }

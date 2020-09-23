@@ -2,7 +2,6 @@ import initialState from '../constants/initialState'
 import { ACTION_TYPES } from '../constants/actions'
 
 export default function userReducer(state = initialState.user, { type, payload={} }) {
-    console.log('In reducer', type, payload)
     switch (type) {
         case ACTION_TYPES.ATTEMPT_LOGIN:
             return state
@@ -20,7 +19,7 @@ export default function userReducer(state = initialState.user, { type, payload={
             return { ...initialState.user }
 
         default:
-            return state;
+            return state
     }
     return (state)
 }

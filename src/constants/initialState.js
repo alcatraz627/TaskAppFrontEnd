@@ -7,4 +7,6 @@ export default {
         email: null,
         role: null,
     },
+
+    notif: []
 }

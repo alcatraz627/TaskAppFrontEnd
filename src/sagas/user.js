@@ -1,5 +1,4 @@
 import { put, takeEvery, call } from 'redux-saga/effects'
-// import history from '../utils/history'
 
 import apiCall from '../services/api'
 import { getToken, setToken, deleteToken } from '../services/localstorage'
@@ -7,8 +6,6 @@ import { getToken, setToken, deleteToken } from '../services/localstorage'
 import { HTTP_METHODS } from '../constants'
 import ROUTES from '../constants/routes'
 import API_ROUTES from '../constants/apiRoutes'
-
-
 import { ACTION_TYPES, createAction } from '../constants/actions'
 
 export function* attempt_login({ type, payload }) {
@@ -40,8 +37,8 @@ export function* logout_success() {
 export function* fetch_auth_user() {
     let { status, data, error } = yield call(apiCall, ({ url: API_ROUTES.USER_ME }))
     if (status == 200) {
-        yield put(createAction(ACTION_TYPES.LOGIN_SUCCESS, { ...data, 'token': getToken() }))
         console.log(data)
+        yield put(createAction(ACTION_TYPES.LOGIN_SUCCESS, { user: data, token: getToken() }))
     } else {
         yield call(deleteToken)
     }

@@ -10,7 +10,11 @@ export const ACTION_TYPES = {
     ATTEMPT_LOGOUT: 'ATTEMPT_LOGOUT', 
     LOGOUT_SUCCESS: 'LOGOUT_SUCCESS',
 
-    FETCH_AUTH_USER: 'FETCH_AUTH_USER',    
+    FETCH_AUTH_USER: 'FETCH_AUTH_USER',
+
+    PUSH_NOTIF: 'PUSH_NOTIF',
+    CLEAR_NOTIF: 'CLEAR_NOTIF',
+    CLEAR_NOTIF_QUEUE: 'CLEAR_NOTIF_QUEUE',
 }
 
 export function createAction(action_type, payload=null) {

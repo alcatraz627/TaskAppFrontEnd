@@ -9,10 +9,10 @@ import ROUTES from '../constants/routes'
 function ProtectedRoute(props) {
     const { Component, path, redir = ROUTES.LOGIN, guestOnly = false, auth = false, isLoggedIn, redirect, ...rest } = props;
 
-    useEffect(() => {
-        console.log("Protected Component", props)
-        console.log(guestOnly, auth, isLoggedIn, guestOnly ? !isLoggedIn : (auth ? isLoggedIn : true))
-    })
+    // useEffect(() => {
+    //     // console.log("Protected Component", props)
+    //     // console.log(guestOnly, auth, isLoggedIn, guestOnly ? !isLoggedIn : (auth ? isLoggedIn : true))
+    // })
 
 
     const allow = guestOnly ? !isLoggedIn : (auth ? isLoggedIn : true)

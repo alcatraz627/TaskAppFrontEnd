@@ -11,7 +11,7 @@ export default function userReducer(state = initialState.user, { type, payload={
             return state
 
         case ACTION_TYPES.LOGIN_SUCCESS:
-            return ({ ...payload.user, 'token': payload.token, 'token_type': payload.token_type })
+            return ({ ...payload.user, 'token': payload.token })
 
         case ACTION_TYPES.ATTEMPT_LOGOUT:
             return state

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 
 import { connect } from 'react-redux'
-import { action, ACTION_TYPES } from '../../constants/actions'
+import { createAction, ACTION_TYPES } from '../../constants/actions'
 
 function Login({ attempt_login }) {
 
@@ -36,7 +36,7 @@ const mapStateToProps = (state, ownProps) => ({
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-    attempt_login: (email, password) => dispatch(action(ACTION_TYPES.ATTEMPT_LOGIN, { email, password }))
+    attempt_login: (email, password) => dispatch(createAction(ACTION_TYPES.ATTEMPT_LOGIN, { email, password }))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

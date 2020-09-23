@@ -1,21 +1,33 @@
 import Home from '../components/Home'
-import Login from '../components/Pages/Login'
-import Logout from '../components/Pages/Logout'
-import Profile from '../components/Pages/Profile'
+import Login from '../components/Auth/Login'
+import Logout from '../components/Auth/Logout'
+import Profile from '../components/User/Profile'
+
+/**
+ * Convention:
+ * - url: relative route of the component in-app with a slash in the beginning.
+ * - auth: whether the user must be logged in to access.
+ * - guestOnly: whether to prevent logged in users from accessing the route(eg: login). Overrides the auth condition.
+ * - Component: The React Component to render. The 'C' must be capitalized as per react component naming convention.
+ */
 
 const routes = {
     LOGIN: {
         url: '/login',
         auth: false,
+        guestOnly: true,
         Component: Login,
+        redirect: '/',
     },
     LOGOUT: {
         url: '/logout',
         auth: true,
         Component: Logout,
+        redirect: '/',
     },
     REGISTER: {
         url: '/register',
+        guestOnly: true,
         auth: false,
     },
     USER_LIST: {
@@ -24,7 +36,7 @@ const routes = {
     },
     PROFILE: {
         url: '/user/me',
-        auth: false,
+        auth: true,
         Component: Profile,
     },
     DASHBOARD: {
@@ -34,15 +46,15 @@ const routes = {
     },
     FORGOTPASS_REQUEST: {
         url: '/forgotpass/request',
-        guest: true,
+        guestOnly: true,
     },
     FORGOTPASS_VERIFY: {
         url: '/forgotpass/verify',
-        guest: true,
+        guestOnly: true,
     },
     FORGOTPASS_SUCCESS: {
         url: '/forgotpass/success',
-        guest: true,
+        guestOnly: true,
     },
 
     // Placed at the last otherwise it will override all other routes because of

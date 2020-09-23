@@ -21,7 +21,7 @@ export default async function apiCall({ url, method = HTTP_METHODS.GET, payload 
         baseURL,
         url,
         method,
-        headers: { 'Authorization': `${token_type} ${token}` },
+        headers: { 'Authorization': `Bearer ${token}` },
         data: payload,
         validateStatus: status => status < 500,
     }).then(resp => {

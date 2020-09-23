@@ -11,18 +11,19 @@ function Navbar({ isLoggedIn, user }) {
         <nav className="navbar">
             <div className="toolbar">
                 <Link to="/"><h5>TaskApp</h5></Link>
+                {/* {JSON.stringify(isLoggedIn ? 'Ye':'Nay')} */}
                 <div className="grow" />
-                {isLoggedIn ?
+                {/* {isLoggedIn ? */}
                     <div className="nav-links">
                         <Link to={ROUTES.PROFILE.url} className="nav-link">Profile</Link>
                         <Link to={ROUTES.LOGOUT.url} className="nav-link">Log out</Link>
-                    </div>
+                    {/* </div>
                     :
-                    <div className="nav-links">
+                    <div className="nav-links"> */}
                         <Link to={ROUTES.LOGIN.url} className="nav-link">Login</Link>
                         <Link to={ROUTES.REGISTER.url} className="nav-link">Register</Link>
                     </div>
-                }
+                {/* } */}
             </div>
         </nav>
     )

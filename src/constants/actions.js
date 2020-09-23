@@ -13,7 +13,7 @@ export const ACTION_TYPES = {
     
 }
 
-export function action(action_type, payload=null) {
+export function createAction(action_type, payload=null) {
     try {
         return ({
             type: ACTION_TYPES[action_type],

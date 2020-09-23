@@ -11,6 +11,7 @@ import history from '../utils/history'
 import ROUTES from '../constants/routes'
 
 import Navbar from './Navbar'
+import Notif from './Notif'
 
 function App() {
     return (
@@ -27,6 +28,7 @@ function App() {
                     </Route> */}
                 </Switch>
             </Router>
+            <Notif />
         </Provider>
     )
 }

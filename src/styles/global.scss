@@ -97,3 +97,70 @@ button.primary {
 		border-color: #{$primary + "ff"};
 	}
 }
+
+.notifContainer {
+	border: 1px dotted red;
+	position: absolute;
+	bottom: 4vh;
+	right: 20px;
+	@extend .body2;
+	.notifBar {
+		padding: 12px 32px;
+		background: #111a;
+		color: white;
+		border-radius: 2px;
+		margin: 8px;
+		// opacity: 0;
+		// bottom: -30px;
+		// visibility: hidden; /* Hidden by default. Visible on click */
+		// &.visible {
+		// 	visibility: visible;
+		// 	-webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+		// 	animation: fadein 0.5s, fadeout 0.5s 2.5s;
+		// }
+	}
+}
+
+@-webkit-keyframes toast-fadein {
+	from {
+		bottom: -30px;
+		opacity: 0;
+	}
+	to {
+		bottom: 0;
+		opacity: 1;
+	}
+}
+
+@keyframes toast-fadein {
+	from {
+		bottom: -30px;
+		opacity: 0;
+	}
+	to {
+		bottom: 0;
+		opacity: 1;
+	}
+}
+
+@-webkit-keyframes toast-fadeout {
+	from {
+		bottom: 30px;
+		opacity: 1;
+	}
+	to {
+		bottom: 0;
+		opacity: 0;
+	}
+}
+
+@keyframes toast-fadeout {
+	from {
+		bottom: 30px;
+		opacity: 1;
+	}
+	to {
+		bottom: 0;
+		opacity: 0;
+	}
+}

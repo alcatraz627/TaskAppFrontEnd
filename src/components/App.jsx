@@ -1,26 +1,31 @@
 import React, { useState } from 'react'
 
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import { Router, Switch, Route } from 'react-router-dom'
 
 import { Provider } from 'react-redux'
-import store from '../store'
+import store from '../utils/store'
+import history from '../utils/history'
+
+import ROUTES from '../constants/routes'
 
 import Navbar from './Navbar'
-import Main from './Main'
-import Login from './Pages/Login'
+import Home from './Home'
+// import Login from './Pages/Login'
+// import Logout from './Pages/Logout'
 
 const App = () => {
 
     return (
         <Provider store={store}>
-            <Router>
+            <Router history={history}>
                 <Navbar />
                 <Switch>
-                    <Route path="/login">
-                        <Login />
-                    </Route>
+                    {Object.values(ROUTES).filter(f => f.hasOwnProperty('Component'))
+                        .map(({ url, Component }) =>
+                            <Route key={url} path={url} component={Component} />
+                        )}
                     <Route>
-                        <Main />
+                        <Home />
                     </Route>
                 </Switch>
             </Router>

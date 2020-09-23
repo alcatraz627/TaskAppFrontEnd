@@ -1,31 +1,35 @@
+import Home from '../components/Home'
+import Login from '../components/Pages/Login'
+import Logout from '../components/Pages/Logout'
+import Profile from '../components/Pages/Profile'
+
 const routes = {
-    ROOT: {
-        url: '/',
-        protected: false,
-    },
     LOGIN: {
         url: '/login',
-        protected: false,
+        auth: false,
+        Component: Login,
     },
     LOGOUT: {
         url: '/logout',
-        protected: true,
+        auth: true,
+        Component: Logout,
     },
     REGISTER: {
         url: '/register',
-        protected: false,
+        auth: false,
     },
     USER_LIST: {
         url: '/user',
-        protected: true,
+        auth: true,
     },
     PROFILE: {
         url: '/user/me',
-        protected: false,
+        auth: false,
+        Component: Profile,
     },
     DASHBOARD: {
         url: '/dashboard',
-        protected: true,
+        auth: true,
         role: 'admin',
     },
     FORGOTPASS_REQUEST: {
@@ -40,6 +44,15 @@ const routes = {
         url: '/forgotpass/success',
         guest: true,
     },
+
+    // Placed at the last otherwise it will override all other routes because of
+    // the `/` in front of every route
+    ROOT: {
+        url: '/',
+        auth: false,
+        Component: Home
+    },
+
 }
 
 export default routes;

@@ -5,10 +5,15 @@
 export const ACTION_TYPES = {
     ATTEMPT_LOGIN: 'ATTEMPT_LOGIN', 
     LOGIN_FAIL: 'LOGIN_FAIL', 
-    LOGIN_SUCCESS: 'LOGIN_SUCCESS'
+    LOGIN_SUCCESS: 'LOGIN_SUCCESS',
+
+    ATTEMPT_LOGOUT: 'ATTEMPT_LOGOUT', 
+    LOGOUT_SUCCESS: 'LOGOUT_SUCCESS',
+
+    
 }
 
-export function action(action_type, payload) {
+export function action(action_type, payload=null) {
     try {
         return ({
             type: ACTION_TYPES[action_type],

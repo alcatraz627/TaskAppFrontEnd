@@ -1,9 +1,9 @@
 import React from 'react'
 
-function Main(props) {
+function Home(props) {
     return (
         <div className="container">Main body</div>
     )
 }
 
-export default Main;
+export default Home;

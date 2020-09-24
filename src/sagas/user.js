@@ -24,13 +24,10 @@ export function* attempt_logout() {
 }
 
 export function* login_success({ type, payload }) {
-    // console.log(type, payload.token)
-    // yield call([history, history.push], ROUTES.ROOT)
     yield call(setToken, payload.token)
 }
 
 export function* logout_success() {
-    // yield call([history, history.push], ROUTES.ROOT)
     yield call(deleteToken)
 }
 

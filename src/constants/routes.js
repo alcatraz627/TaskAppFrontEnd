@@ -3,6 +3,8 @@ import Login from '../components/Auth/Login'
 import Logout from '../components/Auth/Logout'
 import Profile from '../components/User/Profile'
 
+import Message from '../components/Utils/Message'
+
 /**
  * Convention:
  * - url: relative route of the component in-app with a slash in the beginning.
@@ -57,12 +59,18 @@ const routes = {
         guestOnly: true,
     },
 
+    MESSAGE: {
+        url: '/message',
+        Component: Message,
+        redirect: "/x"
+    },
+
     // Placed at the last otherwise it will override all other routes because of
     // the `/` in front of every route
     ROOT: {
         url: '/',
-        auth: false,
-        Component: Home
+        Component: Home,
+        exact: true,
     },
 
 }

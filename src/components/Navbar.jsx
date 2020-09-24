@@ -6,16 +6,15 @@ import { connect } from 'react-redux'
 
 import ROUTES from '../constants/routes'
 
-function Navbar({ isLoggedIn, user }) {
+function Navbar({ isLoggedIn, user}) {
     return (
         <nav className="navbar">
             <div className="toolbar">
                 <Link to="/"><h5>TaskApp</h5></Link>
-                {/* {JSON.stringify(isLoggedIn ? 'Ye':'Nay')} */}
                 <div className="grow" />
                 {isLoggedIn ?
                     <div className="nav-links">
-                        <Link to={ROUTES.PROFILE.url} className="nav-link">Profile</Link>
+                        <Link to={ROUTES.PROFILE.url} className="nav-link">{user.name} | Profile</Link>
                         <Link to={ROUTES.LOGOUT.url} className="nav-link">Log out</Link>
                     </div>
                     :
@@ -32,6 +31,7 @@ function Navbar({ isLoggedIn, user }) {
 const mapStateToProps = (state, ownProps) => ({
     isLoggedIn: !!state.user.token,
     user: state.user,
+    state: state
 })
 
 export default connect(mapStateToProps)(Navbar)

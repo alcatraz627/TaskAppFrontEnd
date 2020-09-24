@@ -1,13 +1,13 @@
-import React, {useEffect} from 'react'
+import React, { useEffect } from 'react'
 
 import { Route, Redirect } from 'react-router-dom'
 
 import { connect } from 'react-redux'
 
-import ROUTES from '../constants/routes'
+import ROUTES from '../../constants/routes'
 
 function ProtectedRoute(props) {
-    const { Component, path, redir = ROUTES.LOGIN, guestOnly = false, auth = false, isLoggedIn, redirect, ...rest } = props;
+    const { Component, path, redir = ROUTES.LOGIN, guestOnly = false, auth = false, isLoggedIn, redirect, exact=false, ...rest } = props;
 
     // useEffect(() => {
     //     // console.log("Protected Component", props)
@@ -17,7 +17,7 @@ function ProtectedRoute(props) {
 
     const allow = guestOnly ? !isLoggedIn : (auth ? isLoggedIn : true)
 
-    return allow ? <Route path={path} component={Component} {...rest} /> : <Redirect to={redirect} />
+    return allow ? <Route path={path} render={() => <Component />} exact {...rest} /> : <Redirect to={redirect} />
 }
 
 const mapStateToProps = (state, ownProps) => ({

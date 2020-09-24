@@ -1,33 +1,33 @@
 import React, { useState } from 'react'
 
-import { Router, Switch, Route } from 'react-router-dom'
+import { Switch } from 'react-router-dom'
 
-import ProtectedRoute from '../components/ProtectedRoute'
+import { ConnectedRouter } from 'connected-react-router'
 
 import { Provider } from 'react-redux'
-import store from '../utils/store'
-import history from '../utils/history'
+import store, { history } from '../store/'
 
 import ROUTES from '../constants/routes'
 
 import Navbar from './Navbar'
-import Notif from './Notif'
+import Notif from './Utils/Notif'
+import ProtectedRoute from './Utils/ProtectedRoute'
 
 function App() {
     return (
         <Provider store={store}>
-            <Router history={history}>
+            <ConnectedRouter history={history}>
                 <Navbar />
                 <Switch>
                     {Object.values(ROUTES).filter(f => f.hasOwnProperty('Component'))
-                        .map(({ url, Component, auth = false, guestOnly = false, redirect = ROUTES.LOGIN.url }) =>
-                            <ProtectedRoute key={url} path={url} component={Component} auth={auth} guestOnly={guestOnly} redirect={redirect} />
+                        .map(({ url, Component, auth = false, guestOnly = false, redirect = ROUTES.LOGIN.url, exact }) =>
+                            <ProtectedRoute key={url} path={url} component={Component} auth={auth} guestOnly={guestOnly} redirect={redirect} exact={exact} />
                         )}
                     {/* <Route>
                         <div className="h4">Not found</div>
                     </Route> */}
                 </Switch>
-            </Router>
+            </ConnectedRouter>
             <Notif />
         </Provider>
     )

@@ -8,5 +8,11 @@ export default {
         role: null,
     },
 
-    notif: []
+    utils : {
+        notifList: [],
+        message: {
+            title: "Default Message",
+            body: "Default Title",
+        }
+    }
 }

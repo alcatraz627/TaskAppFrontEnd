@@ -1,14 +1,14 @@
 import { fork, all, put } from 'redux-saga/effects'
 
 import user from './user'
-import notif from './notif'
+import utils from './utils'
 
 import { ACTION_TYPES, createAction } from '../constants/actions'
 
 export default function* rootSaga() {
     console.log("Loaded root saga!");
     yield fork(user)
-    yield fork(notif)
+    yield fork(utils)
 
     // yield put(createAction(ACTION_TYPES.FETCH_AUTH_USER))
 }

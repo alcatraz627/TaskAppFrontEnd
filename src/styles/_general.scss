@@ -124,3 +124,47 @@ input[type="text"], input[type="password"], input[type="email"]{
 		// border-color: #28C76F;
 	}
 }
+
+button {
+	@extend .button;
+	border: none;
+	border-radius: 4px;
+
+	margin: 8px;
+	&.sm {
+		padding: 4px 12px;
+		font-size: 0.75em;
+	}
+	padding: 8px 24px;
+	&.lg {
+		padding: 16px 48px;
+		font-size: 0.95em;
+	}
+
+}
+
+button.primary {
+	&.contained {
+		color: white;
+		background-color: $primary;
+		border: 3px solid $primary;
+	}
+	&.contained:hover {
+		background-color: #{$primary + "dd"};
+		border-color: #{$primary + "00"};
+	}
+
+	&.outlined {
+		color: $primary;
+		background-color: transparent;
+		// border-color: #{$primary + "ff"};
+		border: 3px solid #{$primary + "ff"};
+		font-weight: 700;
+	}
+	&.outlined:hover {
+		// border-color: #{$primary + "ff"};
+		background-color: #{$primary + "22"};
+	}
+
+
+}

@@ -2,6 +2,7 @@ import Home from '../components/Home'
 import Login from '../components/Auth/Login'
 import Logout from '../components/Auth/Logout'
 import Profile from '../components/User/Profile'
+import Register from '../components/Auth/Register'
 
 import Message from '../components/Utils/Message'
 
@@ -31,6 +32,7 @@ const routes = {
         url: '/register',
         guestOnly: true,
         auth: false,
+        Component: Register,
     },
     USER_LIST: {
         url: '/user',

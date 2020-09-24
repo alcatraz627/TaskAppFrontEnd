@@ -1,10 +1,9 @@
-import { put, takeEvery, call } from 'redux-saga/effects'
+import { put, takeEvery, call, all } from 'redux-saga/effects'
 
 import apiCall from '../services/api'
 import { getToken, setToken, deleteToken } from '../services/localstorage'
 
-import { HTTP_METHODS } from '../constants'
-import ROUTES from '../constants/routes'
+import { HTTP_METHODS, MESSAGES } from '../constants'
 import API_ROUTES from '../constants/apiRoutes'
 import { ACTION_TYPES, createAction } from '../constants/actions'
 
@@ -41,6 +40,25 @@ export function* fetch_auth_user() {
     }
 }
 
+export function* attempt_register({ payload }) {
+    let { status, data, error } = yield call(apiCall, ({ url: API_ROUTES.REGISTER, method: HTTP_METHODS.POST, payload }))
+    if (status == 201) {
+        console.log(data)
+        yield put(createAction(ACTION_TYPES.REGISTER_SUCCESS, data))
+    } else if (status == 422) {
+        console.log("Error", data)
+        yield all(Object.values(data).map(message => put(createAction(ACTION_TYPES.PUSH_NOTIF, { message }))))
+    } else {
+        console.log("Error", data, error)
+    }
+
+
+}
+
+export function* register_success() {
+    yield put(createAction(ACTION_TYPES.SET_MESSAGE, MESSAGES.REGISTRATION_SUCCESS))
+}
+
 export default function* userSaga() {
     yield takeEvery(ACTION_TYPES.ATTEMPT_LOGIN, attempt_login)
     yield takeEvery(ACTION_TYPES.ATTEMPT_LOGOUT, attempt_logout)
@@ -49,4 +67,9 @@ export default function* userSaga() {
     yield takeEvery(ACTION_TYPES.LOGOUT_SUCCESS, logout_success)
 
     yield takeEvery(ACTION_TYPES.FETCH_AUTH_USER, fetch_auth_user)
+
+    yield takeEvery(ACTION_TYPES.ATTEMPT_REGISTER, attempt_register)
+    yield takeEvery(ACTION_TYPES.REGISTER_SUCCESS, register_success)
+
+
 }

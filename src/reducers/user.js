@@ -18,6 +18,15 @@ export default function userReducer(state = initialState.user, { type, payload={
         case ACTION_TYPES.LOGOUT_SUCCESS:
             return { ...initialState.user }
 
+        case ACTION_TYPES.ATTEMPT_REGISTER:
+            return state
+        
+        case ACTION_TYPES.REGISTER_FAIL:
+            return state
+
+        case ACTION_TYPES.REGISTER_SUCCESS:
+            return state
+
         default:
             return state
     }

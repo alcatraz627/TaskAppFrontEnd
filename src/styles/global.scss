@@ -44,6 +44,22 @@ nav.navbar {
 	flex: 1 1 auto;
 }
 
+.formgroup {
+	display: flex;
+	flex-direction: column;
+	margin: 16px auto;
+	width: 80%;
+	label {
+		@extend .body2;
+		margin: 4px 0 4px;
+		text-align: left;
+		display: block;
+	}
+	input {
+		margin: 4px 0 4px;
+	}
+}
+
 .loginBg {
 	background-color: #fbda61;
 	background-image: linear-gradient(45deg, #fbda61 0%, #ff5acd 100%);
@@ -59,66 +75,39 @@ nav.navbar {
 	border-radius: 20px;
 	padding: 20px 12px 32px;
 	text-align: center;
+}
 
-	.formgroup {
-		display: flex;
-		flex-direction: column;
-		margin: 16px auto;
-		width: 80%;
-		label {
-			@extend .body2;
-			margin: 4px 0 4px;
-			text-align: left;
-			display: block;
-		}
-		input {
-			margin: 4px 0 4px;
-		}
+.registerBg {
+	padding: 0;
+	display: flex;
+	// flex: 1 1 auto;
+	background-image: radial-gradient( circle farthest-corner at 10% 20%,  rgba(153,103,186,0.6) 41.2%, rgba(0,113,227,0.6) 90% );;
+	&::before {
+		z-index: -10;
+		content: "";
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background: url("https://images.pexels.com/photos/7376/startup-photos.jpg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940");
+		background-position: right center;
+		background-repeat: no-repeat;
+		background-size: cover;
+		filter: blur(4px);
 	}
 }
 
-button {
-	@extend .button;
-	border: none;
-	border-radius: 4px;
-
-	margin: 8px;
-	&.sm {
-		padding: 4px 12px;
-		font-size: 0.75em;
-	}
-	padding: 8px 24px;
-	&.lg {
-		padding: 16px 48px;
-		font-size: 0.95em;
-	}
-
-}
-
-button.primary {
-	&.contained {
-		color: white;
-		background-color: $primary;
-		border: 3px solid $primary;
-	}
-	&.contained:hover {
-		background-color: #{$primary + "dd"};
-		border-color: #{$primary + "00"};
-	}
-
-	&.outlined {
-		color: $primary;
-		background-color: transparent;
-		// border-color: #{$primary + "ff"};
-		border: 3px solid #{$primary + "ff"};
-		font-weight: 700;
-	}
-	&.outlined:hover {
-		// border-color: #{$primary + "ff"};
-		background-color: #{$primary + "22"};
-	}
-
-
+.registerForm {
+	max-width: 40%;
+	margin-left: auto;
+	background-color: #fffc;
+	// border-radius: 20px;
+	padding: 40px 12px;
+	text-align: center;
+	// height: 100%;
+	// display: flex;
+	flex: 1 1 auto;
 }
 
 .notifContainer {
@@ -129,7 +118,7 @@ button.primary {
 	@extend .body2;
 	.notifBar {
 		padding: 12px 32px;
-		background: #111a;
+		background: #111e;
 		color: white;
 		border-radius: 2px;
 		margin: 8px;
@@ -144,6 +133,7 @@ button.primary {
 	}
 }
 
+// For notif toast || NOT WORKING CURRENTLY
 @-webkit-keyframes toast-fadein {
 	from {
 		bottom: -30px;

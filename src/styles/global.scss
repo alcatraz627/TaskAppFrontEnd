@@ -20,6 +20,58 @@ nav.navbar {
 			margin: 0;
 		}
 
+		.navNotifButton {
+			display: inline-block;
+			.nav-icon {
+				margin: 4px 4px;
+				margin-right: 24px;
+				border-radius: 100%;
+				color: #fffa;
+				cursor: pointer;
+				&:hover {
+					color: #fff;
+				}
+			}
+
+			.navNotifContainer {
+				// border: 1px dotted red;
+				display: none;
+				position: absolute;
+				margin-top: 0px;
+				background-color: #ddda;
+				min-width: 160px;
+				box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+				z-index: 1;
+				&.showNotifContainer {
+					display: block!important;
+				}
+				// &:hover .navNotifContainer {
+				// 	display: block;
+				// }
+				.navNotifHeader {
+					background-color: #333;
+					margin-bottom: 8px;
+					color: white;
+					padding: 12px 16px;
+					text-decoration: none;
+					display: block;
+					text-align: left;
+				}
+				.navNotifItem {
+					background-color: #fff;
+					margin: 8px 0 0;
+					color: black;
+					padding: 12px 16px;
+					text-decoration: none;
+					display: block;
+					text-align: left;
+				}
+			}
+			// &:hover .navNotifContainer {
+			// 	display: block;
+			// }
+		}
+
 		.nav-link {
 			@extend .button;
 			// padding: 16px;
@@ -81,7 +133,11 @@ nav.navbar {
 	padding: 0;
 	display: flex;
 	// flex: 1 1 auto;
-	background-image: radial-gradient( circle farthest-corner at 10% 20%,  rgba(153,103,186,0.6) 41.2%, rgba(0,113,227,0.6) 90% );;
+	background-image: radial-gradient(
+		circle farthest-corner at 10% 20%,
+		rgba(153, 103, 186, 0.6) 41.2%,
+		rgba(0, 113, 227, 0.6) 90%
+	);
 	&::before {
 		z-index: -10;
 		content: "";
@@ -99,7 +155,8 @@ nav.navbar {
 }
 
 .registerForm {
-	max-width: 40%;
+	min-width: 400px;
+	max-width: 500px;
 	margin-left: auto;
 	background-color: #fffc;
 	// border-radius: 20px;
@@ -111,12 +168,13 @@ nav.navbar {
 }
 
 .notifContainer {
-	border: 1px dotted red;
+	// border: 1px dotted red;
 	position: absolute;
 	bottom: 4vh;
 	right: 20px;
 	@extend .body2;
 	.notifBar {
+		box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
 		padding: 12px 32px;
 		background: #111e;
 		color: white;

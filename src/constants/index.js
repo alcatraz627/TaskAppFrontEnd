@@ -14,4 +14,12 @@ export const MESSAGES = {
         title: "Email Confirmation",
         body: "A link has been mailed to your email address. Please click the link to continue."
     },
+    EMAIL_VERIF_SUCCESS: {
+        title: "Email Verified!",
+        body: "You can now proceed to login",
+    },
+    EMAIL_VERIF_FAILED: {
+        title: "Invalid token",
+        body: "Invalid or expired token, no associated email was found.",
+    },
 }

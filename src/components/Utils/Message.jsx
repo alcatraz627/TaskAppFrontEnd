@@ -3,9 +3,16 @@ import { connect } from 'react-redux'
 
 import { ACTION_TYPES, createAction } from '../../constants/actions'
 
-function Message({ message: { title, body }, clearNotif }) {
+import { push } from 'connected-react-router'
+import ROUTES from '../../constants/routes'
+
+function Message({ message: { title, body }, clearNotif, navAway }) {
 
     useEffect(() => {
+        if (!(title || body)) {
+            console.log(title, body ,!(title || body))
+            navAway()
+        }
         return clearNotif
     }, [])
 
@@ -20,7 +27,8 @@ const mapStateToProps = (state, ownProps) => ({
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-    clearNotif: () => dispatch(createAction(ACTION_TYPES.CLEAR_MESSAGE))
+    clearNotif: () => dispatch(createAction(ACTION_TYPES.CLEAR_MESSAGE)),
+    navAway: () => dispatch(push(ROUTES.ROOT.url)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Message)

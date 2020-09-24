@@ -1,14 +1,25 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import { connect } from 'react-redux'
 import { createAction, ACTION_TYPES } from '../../constants/actions'
 
-function Register({ attempt_register }) {
+import ROUTES from '../../constants/routes'
+
+function Register(props) {
+
+    const { attempt_register, verif_email_token } = props
 
     const [name, setName] = useState("User With a Name");
     const [email, setEmail] = useState("user_email@gmail.com");
     const [password, setPassword] = useState("12017");
     const [password_confirmation, setPasswordConfirmation] = useState("12017");
+
+    useEffect(() => {
+        if (props.match.path == ROUTES.EMAIL_VERIF.url) {
+            // TODO: Loading=true
+            verif_email_token(props.match.params.token)
+        }
+    }, [])
 
     const login = (e) => {
         // TODO: Validate
@@ -18,6 +29,7 @@ function Register({ attempt_register }) {
 
     return (
         <div className="container registerBg">
+            {JSON.stringify(props.match)}
             <form className="registerForm" onSubmit={login}>
                 <h3>Create an Account</h3>
                 <div className="body1">It's free, and takes no time</div>
@@ -43,11 +55,12 @@ function Register({ attempt_register }) {
 }
 
 const mapStateToProps = (state, ownProps) => ({
-
+    // ...ownProps
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-    attempt_register: (name, email, password, password_confirmation) => dispatch(createAction(ACTION_TYPES.ATTEMPT_REGISTER, { name, email, password, password_confirmation }))
+    attempt_register: (name, email, password, password_confirmation) => dispatch(createAction(ACTION_TYPES.ATTEMPT_REGISTER, { name, email, password, password_confirmation })),
+    verif_email_token: token => dispatch(createAction(ACTION_TYPES.ATTEMPT_EMAIL_VERIF, { token })),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Register);

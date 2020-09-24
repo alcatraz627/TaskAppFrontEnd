@@ -12,8 +12,11 @@ export function* attempt_login({ type, payload }) {
     let { status, data, error } = yield call(apiCall, ({ url: API_ROUTES.LOGIN, method: HTTP_METHODS.POST, payload }))
     if (status == 200) {
         yield put(createAction(ACTION_TYPES.LOGIN_SUCCESS, data))
+    } else if (status == 401) {
+        yield put(createAction(ACTION_TYPES.PUSH_NOTIF, data))
     } else {
-        console.log("Error", error)
+        yield put(createAction(ACTION_TYPES.PUSH_NOTIF, error))
+        console.log("Error", error, data)
     }
 }
 
@@ -44,21 +47,29 @@ export function* attempt_register({ payload }) {
     let { status, data, error } = yield call(apiCall, ({ url: API_ROUTES.REGISTER, method: HTTP_METHODS.POST, payload }))
     if (status == 201) {
         console.log(data)
-        yield put(createAction(ACTION_TYPES.REGISTER_SUCCESS, data))
+        yield put(createAction(ACTION_TYPES.SET_MESSAGE, MESSAGES.REGISTRATION_SUCCESS))
+        // yield put(createAction(ACTION_TYPES.REGISTER_SUCCESS, data))
     } else if (status == 422) {
         console.log("Error", data)
         yield all(Object.values(data).map(message => put(createAction(ACTION_TYPES.PUSH_NOTIF, { message }))))
     } else {
         console.log("Error", data, error)
     }
-
-
 }
 
-export function* register_success() {
-    yield put(createAction(ACTION_TYPES.SET_MESSAGE, MESSAGES.REGISTRATION_SUCCESS))
+export function* attempt_email_verif({ payload }) {
+    let { status, data, error } = yield call(apiCall, ({ url: API_ROUTES.VERIFY_EMAIL_TOKEN(payload.token), method: HTTP_METHODS.POST }))
+    if (status == 201) {
+        // console.log(data)
+        yield put(createAction(ACTION_TYPES.SET_MESSAGE, MESSAGES.EMAIL_VERIF_SUCCESS))
+    } else if (status == 400) {
+        // console.log("Error", data)
+        yield put(createAction(ACTION_TYPES.SET_MESSAGE, MESSAGES.EMAIL_VERIF_FAILED))
+        // yield all(Object.values(data).map(message => put(createAction(ACTION_TYPES.PUSH_NOTIF, { message }))))
+    } else {
+        console.log("Error", data, error)
+    }
 }
-
 export default function* userSaga() {
     yield takeEvery(ACTION_TYPES.ATTEMPT_LOGIN, attempt_login)
     yield takeEvery(ACTION_TYPES.ATTEMPT_LOGOUT, attempt_logout)
@@ -69,7 +80,8 @@ export default function* userSaga() {
     yield takeEvery(ACTION_TYPES.FETCH_AUTH_USER, fetch_auth_user)
 
     yield takeEvery(ACTION_TYPES.ATTEMPT_REGISTER, attempt_register)
-    yield takeEvery(ACTION_TYPES.REGISTER_SUCCESS, register_success)
+    // yield takeEvery(ACTION_TYPES.REGISTER_SUCCESS, register_success)
 
+    yield takeEvery(ACTION_TYPES.ATTEMPT_EMAIL_VERIF, attempt_email_verif)
 
 }

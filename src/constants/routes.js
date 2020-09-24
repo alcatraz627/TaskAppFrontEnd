@@ -12,6 +12,8 @@ import Message from '../components/Utils/Message'
  * - auth: whether the user must be logged in to access.
  * - guestOnly: whether to prevent logged in users from accessing the route(eg: login). Overrides the auth condition.
  * - Component: The React Component to render. The 'C' must be capitalized as per react component naming convention.
+//  * - extraProps: Any extra props to be passed to the component.
+ * - exact: Is the route match exact.
  */
 
 const routes = {
@@ -28,15 +30,28 @@ const routes = {
         Component: Logout,
         redirect: '/',
     },
+    EMAIL_VERIF: {
+        url: '/register/verif/:token',
+        guestOnly: true,
+        Component: Register,
+
+        // extraProps: {
+        //     verifRoute: true
+        // }
+    },
     REGISTER: {
         url: '/register',
         guestOnly: true,
-        auth: false,
         Component: Register,
     },
     USER_LIST: {
         url: '/user',
         auth: true,
+    },
+    USER_PROFILE: {
+        url: '/user/:id',
+        auth: true,
+        // Component: Profile,
     },
     PROFILE: {
         url: '/user/me',

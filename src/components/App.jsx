@@ -20,8 +20,8 @@ function App() {
                 <Navbar />
                 <Switch>
                     {Object.values(ROUTES).filter(f => f.hasOwnProperty('Component'))
-                        .map(({ url, Component, auth = false, guestOnly = false, redirect = ROUTES.LOGIN.url, exact }) =>
-                            <ProtectedRoute key={url} path={url} component={Component} auth={auth} guestOnly={guestOnly} redirect={redirect} exact={exact} />
+                        .map(({ url, Component, auth = false, guestOnly = false, redirect = ROUTES.LOGIN.url, exact, extraProps=null }) =>
+                            <ProtectedRoute key={url} path={url} component={Component} auth={auth} guestOnly={guestOnly} redirect={redirect} exact={exact} extraProps={extraProps}  />
                         )}
                     {/* <Route>
                         <div className="h4">Not found</div>

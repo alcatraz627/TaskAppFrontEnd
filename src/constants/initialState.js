@@ -11,8 +11,8 @@ export default {
     utils : {
         notifList: [],
         message: {
-            title: "Default Message",
-            body: "Default Title",
+            title: null,
+            body: null,
         }
     }
 }

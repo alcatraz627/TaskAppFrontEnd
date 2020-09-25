@@ -10,6 +10,7 @@ export default {
 
     utils : {
         notifList: [],
+        notifHistory: [],
         message: {
             title: null,
             body: null,

@@ -1,12 +1,19 @@
 import React, { useState } from 'react'
 
+import ReCAPTCHA from 'react-google-recaptcha'
+
 import { connect } from 'react-redux'
 import { createAction, ACTION_TYPES } from '../../constants/actions'
 
+import { Link } from 'react-router-dom'
+import ROUTES from '../../constants/routes'
+
 function Login({ attempt_login }) {
 
-    const [email, setEmail] = useState("aakarsh.chopra@vmock.com");
-    const [password, setPassword] = useState("12017");
+    const [email, setEmail] = useState("aakarsh.chopra@vmock.com")
+    const [password, setPassword] = useState("12017")
+
+    const [capVerified, setCapVerified] = useState(false)
 
     const login = (e) => {
         // TODO: Validate
@@ -26,7 +33,13 @@ function Login({ attempt_login }) {
                     <label className="body2">Password</label>
                     <input type="password" placeholder="Enter password" value={password} onChange={e => setPassword(e.target.value)} />
                 </div>
-                <button type="submit" className="primary contained lg">Log in</button>
+                <div className="formgroup">
+                    {/* ReCAPTCHA keys for testing on localhost: 
+                    https://stackoverflow.com/questions/46421887/how-to-use-recaptcha-v2-on-localhost?rq=1 */}
+                    <ReCAPTCHA sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI" theme="dark" onChange={() => setCapVerified(true)} />
+                </div>
+                <button type="submit" className="primary contained lg" disabled={!capVerified}>Log in</button>
+                <div className="body1">Don't have an account? <Link className="link" to={ROUTES.REGISTER.url}>Sign up</Link> here</div>
             </form>
         </div>)
 }

@@ -5,24 +5,21 @@ import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 
 import ROUTES from '../constants/routes'
-import { FALSE } from 'node-sass'
 
-function Navbar({ isLoggedIn, user }) {
+function Navbar({ isLoggedIn, user, notifHistory }) {
 
     const [notifOpen, setNotifOpen] = useState(false)
 
-    // const catchEscapeKey = e => {
-    //     console.log(e)
-    //     if (e.code == 27) { // ESCAPE
-    //         setNotifOpen(false)
-    //     }
-    // }
+    const catchEscapeKey = e => {
+        if (e.code == "Escape") {
+            setNotifOpen(false)
+        }
+    }
 
-    // useEffect(() => {
-    //     document.addEventListener("keydown", catchEscapeKey, false)
-    //     return () => document.removeEventListener("keydown", catchEscapeKey, false)
-
-    // }, [])
+    useEffect(() => {
+        document.addEventListener("keydown", catchEscapeKey, false)
+        return () => document.removeEventListener("keydown", catchEscapeKey, false)
+    }, [])
 
     const toggleNotifOpen = () => { setNotifOpen(!notifOpen) }
 
@@ -30,19 +27,20 @@ function Navbar({ isLoggedIn, user }) {
         <nav className="navbar">
             <div className="toolbar">
                 <Link to="/"><h5>TaskApp</h5></Link>
+
                 <div className="grow" />
+                <div className="navNotifButton"><i className="nav-icon fa fa-bell" onClick={toggleNotifOpen} />
+                    <div className={`navNotifContainer${notifOpen ? " showNotifContainer" : ""}`}>
+                        <div className="navNotifHeader">Notifications</div>
+                        <div className="notifScroll">
+                            {notifHistory.slice().reverse().map(({ message }, i) => <div key={i} className="navNotifItem">{message}</div>)}
+                        </div>
+                    </div>
+                </div>
+
                 {isLoggedIn ?
                     <div className="nav-links">
                         <Link to={ROUTES.PROFILE.url} className="nav-link">{user.name} | Profile</Link>
-
-                        <div className="navNotifButton"><i className="nav-icon fa fa-bell" onClick={toggleNotifOpen} />
-                            <div className={`navNotifContainer${notifOpen ? " showNotifContainer" : ""}`}>
-                                <div className="navNotifHeader">Notifications</div>
-                                <div className="navNotifItem">Test Notif 1</div>
-                                <div className="navNotifItem">Test Notif 2</div>
-                            </div>
-                        </div>
-
                         <Link to={ROUTES.LOGOUT.url} className="nav-link">Log out</Link>
                     </div>
                     :
@@ -59,7 +57,7 @@ function Navbar({ isLoggedIn, user }) {
 const mapStateToProps = (state, ownProps) => ({
     isLoggedIn: !!state.user.token,
     user: state.user,
-    state: state
+    notifHistory: state.utils.notifHistory
 })
 
 export default connect(mapStateToProps)(Navbar)

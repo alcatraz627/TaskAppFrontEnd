@@ -145,15 +145,20 @@ button {
 }
 
 button.primary {
-	&.contained {
+	&.contained:not(disabled) {
 		color: white;
 		background-color: $primary;
 		border: 3px solid $primary;
 	}
-	&.contained:hover {
+	&.contained:hover:not(disabled) {
 		background-color: #{$primary + "dd"};
 		border-color: #{$primary + "00"};
 	}
+	&.contained[disabled], &.contained[disabled]:hover {
+		background-color: gray;
+		border-color: gray;
+	}
+
 
 	&.outlined {
 		color: $primary;

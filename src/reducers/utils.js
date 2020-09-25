@@ -7,9 +7,17 @@ export default function utilsReducer(state = initialState.utils, { type, payload
         case ACTION_TYPES.PUSH_NOTIF:
             return { ...state, notifList: [...state.notifList, payload] }
         case ACTION_TYPES.CLEAR_NOTIF:
-            return { ...state, notifList: state.notifList.splice(1) }
+            return {
+                ...state,
+                notifHistory: [...state.notifHistory, Object.assign({}, state.notifList[0])],
+                notifList: state.notifList.splice(1)
+            }
         case ACTION_TYPES.CLEAR_NOTIF_QUEUE:
-            return { ...state, notifList: [] }
+            return {
+                ...state,
+                notifHistory: [...notifList],
+                notifList: []
+            }
 
         case ACTION_TYPES.SET_MESSAGE:
             return { ...state, message: { ...payload } }

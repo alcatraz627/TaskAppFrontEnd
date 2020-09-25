@@ -3,16 +3,17 @@ import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { createAction, ACTION_TYPES } from '../../constants/actions'
 
+import { Link } from 'react-router-dom'
 import ROUTES from '../../constants/routes'
 
 function Register(props) {
 
     const { attempt_register, verif_email_token } = props
 
-    const [name, setName] = useState("User With a Name");
-    const [email, setEmail] = useState("user_email@gmail.com");
-    const [password, setPassword] = useState("12017");
-    const [password_confirmation, setPasswordConfirmation] = useState("12017");
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [password_confirmation, setPasswordConfirmation] = useState("");
 
     useEffect(() => {
         if (props.match.path == ROUTES.EMAIL_VERIF.url) {
@@ -29,7 +30,6 @@ function Register(props) {
 
     return (
         <div className="container registerBg">
-            {JSON.stringify(props.match)}
             <form className="registerForm" onSubmit={login}>
                 <h3>Create an Account</h3>
                 <div className="body1">It's free, and takes no time</div>
@@ -50,6 +50,7 @@ function Register(props) {
                     <input type="password" placeholder="Enter password confirmation" value={password_confirmation} onChange={e => setPasswordConfirmation(e.target.value)} />
                 </div>
                 <button type="submit" className="primary contained lg">Create my account</button>
+                <div className="body1">Have an account? <Link className="link" to={ROUTES.LOGIN.url}>Log in</Link> instead</div>
             </form>
         </div>)
 }

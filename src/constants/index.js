@@ -23,3 +23,8 @@ export const MESSAGES = {
         body: "Invalid or expired token, no associated email was found.",
     },
 }
+
+export const ROLES = {
+    ADMIN: 'admin',
+    USER: 'user',
+}

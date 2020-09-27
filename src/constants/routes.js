@@ -1,8 +1,10 @@
 import Home from '../components/Home'
 import Login from '../components/Auth/Login'
 import Logout from '../components/Auth/Logout'
-import Profile from '../components/User/Profile'
 import Register from '../components/Auth/Register'
+
+import Profile from '../components/User/Profile'
+import UserList from '../components/User/UserList'
 
 import Message from '../components/Utils/Message'
 
@@ -32,6 +34,7 @@ const routes = {
     },
     EMAIL_VERIF: {
         url: '/register/verif/:token',
+        getUrl: token => `/register/verif/${token}`,
         guestOnly: true,
         Component: Register,
 
@@ -44,19 +47,22 @@ const routes = {
         guestOnly: true,
         Component: Register,
     },
-    USER_LIST: {
-        url: '/user',
-        auth: true,
-    },
+    // PROFILE: {
+    //     url: "/user/:id",
+    //     // getUrl: id => `/user/${id}`,
+    //     auth: true,
+    //     Component: Profile,
+    // },
     USER_PROFILE: {
-        url: '/user/:id',
-        auth: true,
-        // Component: Profile,
-    },
-    PROFILE: {
-        url: '/user/me',
+        url: "/user/:id",
+        getUrl: id => `/user/${id}`,
         auth: true,
         Component: Profile,
+    },
+    USER_LIST: {
+        url: '/user',
+        Component: UserList,
+        auth: true,
     },
     DASHBOARD: {
         url: '/dashboard',

@@ -194,6 +194,7 @@ nav.navbar {
 		color: white;
 		border-radius: 2px;
 		margin: 8px;
+		max-width: 300px;
 		// opacity: 0;
 		// bottom: -30px;
 		// visibility: hidden; /* Hidden by default. Visible on click */
@@ -205,47 +206,127 @@ nav.navbar {
 	}
 }
 
-// For notif toast || NOT WORKING CURRENTLY
-@-webkit-keyframes toast-fadein {
-	from {
-		bottom: -30px;
-		opacity: 0;
-	}
-	to {
-		bottom: 0;
-		opacity: 1;
+.detailedList {
+	// border: 1px dotted red;
+	.detailedListItemContainer {
+		// border: 1px dotted blue;
+		margin: 12px 0;
+		&:not(:first-child) {
+			border: 1px solid lightgray;
+			border-width: 1px 0 0 0;
+		}
+
+		padding: 20px;
+
+		.textPrimary {
+			@extend h5;
+			margin: 8px 0px!important;
+		}
+		.textSecondary {
+			@extend .body2;
+		}
 	}
 }
 
-@keyframes toast-fadein {
-	from {
-		bottom: -30px;
-		opacity: 0;
+.userProfileContainer {
+	flex-grow: 1;
+	display: flex;
+	background: #eeee;
+
+	.userProfileSidebar {
+		padding-top: 32px;
+		width: 280px;
+		text-align: center;
+		background-color: #333;
+		background-image: linear-gradient(30deg, #111 0%, #888 120%);
+		color: white;
+
+		.profilePic {
+			padding: 120px;
+			background-color: #4158d0;
+			background-image: linear-gradient(43deg, #4158d0 0%, #c850c0 46%, #ffcc70 100%);
+
+			border-radius: 4px;
+		}
+
+		.userName {
+			margin: 6px 0;
+		}
+		.userEmail {
+			@extend .body2;
+			margin-bottom: 8px;
+		}
+
+		.userRole {
+			text-transform: uppercase;
+			font-size: 0.75em;
+			padding: 4px 8px;
+			background-color: #0093e9;
+			color: white;
+			display: inline;
+			border-radius: 4px;
+		}
 	}
-	to {
-		bottom: 0;
-		opacity: 1;
+
+	.userProfileDashboard {
+		.taskPanel {
+			// border: 1px solid #ccc;
+			background: #fff;
+			border-radius: 8px;
+			padding: 8px 12px;
+			h5 {
+				margin: 8px;
+			}
+		}
+	}
+
+	.userProfileDashboard {
+		flex-grow: 1;
+		padding: 20px;
 	}
 }
 
-@-webkit-keyframes toast-fadeout {
-	from {
-		bottom: 30px;
-		opacity: 1;
-	}
-	to {
-		bottom: 0;
-		opacity: 0;
-	}
-}
+// // For notif toast || NOT WORKING CURRENTLY
+// @-webkit-keyframes toast-fadein {
+// 	from {
+// 		bottom: -30px;
+// 		opacity: 0;
+// 	}
+// 	to {
+// 		bottom: 0;
+// 		opacity: 1;
+// 	}
+// }
 
-@keyframes toast-fadeout {
-	from {
-		bottom: 30px;
-		opacity: 1;
-	}
-	to {
-		bottom: 0;
-		opacity: 0;
-	}
-}
+// @keyframes toast-fadein {
+// 	from {
+// 		bottom: -30px;
+// 		opacity: 0;
+// 	}
+// 	to {
+// 		bottom: 0;
+// 		opacity: 1;
+// 	}
+// }
+
+// @-webkit-keyframes toast-fadeout {
+// 	from {
+// 		bottom: 30px;
+// 		opacity: 1;
+// 	}
+// 	to {
+// 		bottom: 0;
+// 		opacity: 0;
+// 	}
+// }
+
+// @keyframes toast-fadeout {
+// 	from {
+// 		bottom: 30px;
+// 		opacity: 1;
+// 	}
+// 	to {
+// 		bottom: 0;
+// 		opacity: 0;
+// 	}
+// }

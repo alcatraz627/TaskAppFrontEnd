@@ -10,16 +10,6 @@ import { ACTION_TYPES, createAction } from '../../constants/actions'
 import ResxRender from '../Utils/ResxRender'
 
 const UserList = ({ fetchUserList, userList, fetchStatus }) => {
-    // useEffect(() => {
-    //     if (fetchStatus == FETCH_STATUS.NOT_FETCHED) fetchUserList()
-    // }, []);
-
-    // switch (fetchStatus) {
-    //     case FETCH_STATUS.NOT_FETCHED:
-    //     // return <div>Not Fetched</div>
-    //     case FETCH_STATUS.FETCHING:
-    //         <div className="loader" />
-    //     case FETCH_STATUS.FETCHED:
     function render() {
 
         return (
@@ -37,11 +27,6 @@ const UserList = ({ fetchUserList, userList, fetchStatus }) => {
     }
 
     return <ResxRender render={render} fetchStatus={fetchStatus} fetchMethod={fetchUserList} />
-
-    //     case FETCH_STATUS.FETCH_ERROR:
-    //     default:
-    //         return <div>An error has occured. Please try later.</div>
-    // }
 
 }
 

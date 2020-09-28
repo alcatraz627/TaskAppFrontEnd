@@ -210,13 +210,13 @@ nav.navbar {
 	// border: 1px dotted red;
 	.detailedListItemContainer {
 		// border: 1px dotted blue;
-		margin: 12px 0;
+		margin: 0px 0;
 		&:not(:first-child) {
 			border: 1px solid lightgray;
 			border-width: 1px 0 0 0;
 		}
 
-		padding: 20px;
+		padding: 12px;
 
 		.textPrimary {
 			@extend h5;
@@ -257,15 +257,15 @@ nav.navbar {
 			margin-bottom: 8px;
 		}
 
-		.userRole {
-			text-transform: uppercase;
-			font-size: 0.75em;
-			padding: 4px 8px;
-			background-color: #0093e9;
-			color: white;
-			display: inline;
-			border-radius: 4px;
-		}
+		// .userRole {
+		// text-transform: uppercase;
+		// font-size: 0.75em;
+		// padding: 4px 8px;
+		// display: inline;
+		// background-color: #0093e9;
+		// color: white;
+		// border-radius: 4px;
+		// }
 	}
 
 	.userProfileDashboard {
@@ -273,7 +273,7 @@ nav.navbar {
 			// border: 1px solid #ccc;
 			background: #fff;
 			border-radius: 8px;
-			padding: 8px 12px;
+			padding: 12px;
 			h5 {
 				margin: 8px;
 			}
@@ -284,6 +284,64 @@ nav.navbar {
 		flex-grow: 1;
 		padding: 20px;
 	}
+}
+
+.taskMeta {
+	// font-size: 0.9em;
+	color: #999;
+	margin: 8px 0;
+	font-size: 0.75em;
+
+	display: flex;
+	align-items: baseline;
+
+	.createdBy,
+	.assignedTo {
+		color: #333;
+		display: inline;
+		text-transform: none;
+		border-style: solid;
+		border-width: 0 0 3px 0;
+		padding: 4px 4px 0 4px;
+		cursor: pointer;
+		&:hover {
+			border-radius: 6px;
+		}
+	}
+	.createdBy {
+		border-color: #b721ff;
+		&:hover {
+			background-color: #b721ff;
+			color: white;
+		}
+	}
+
+	.assignedTo {
+		border-color: #2b86c5;
+		&:hover {
+			background-color: #2b86c5;
+			color: white;
+		}
+	}
+
+	.taskStatus {
+		@extend .label;
+		font-size: 1em;
+		&.pending {
+			background-color: #ed7d3a;
+		}
+		&.in_progress {
+			background-color: #2e86ab;
+		}
+		&.complete {
+			background-color: #35a738;
+		}
+	}
+}
+.taskDesc {
+	@extend .body2;
+	white-space: break-spaces;
+	text-align: justify;
 }
 
 // // For notif toast || NOT WORKING CURRENTLY

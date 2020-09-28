@@ -11,7 +11,6 @@ export default {
         role: null,
 
         userList: {},
-        isFetchingUsers: false,
     },
 
     task: {

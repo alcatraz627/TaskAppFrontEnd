@@ -21,6 +21,7 @@ function Home({ notifList, push_notif, set_message }) {
             <button className="primary contained lg">Large</button>
             <hr />
             <Link className="button primary" to={ROUTES.USER_LIST.url}>User List</Link>
+            <Link className="button primary" to={ROUTES.TASK_LIST.url}>Task List</Link>
         </div>
     )
 }

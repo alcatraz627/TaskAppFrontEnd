@@ -181,3 +181,62 @@ hr {
 	background-color: #ccc;
 	border: none;
 }
+
+.noPadding {
+	padding: 0 !important;
+}
+
+.noMargin {
+	margin: 0 !important;
+}
+
+.noSpacing {
+	@extend .noMargin;
+	@extend .noPadding;
+}
+
+.label {
+	text-transform: uppercase;
+	font-size: 0.75em;
+	padding: 4px 8px;
+	background-color: #0093e9;
+
+	color: white;
+	display: inline;
+	border-radius: 4px;
+}
+
+.tabPanel {
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
+	.tab {
+		&:first-child {
+			margin-right: 4px;
+		}
+		&:last-child {
+			margin-left: 4px;
+		}
+		// margin: 0 10px;
+		// width: 50%;
+		flex-grow: 1;
+		text-align: center;
+		// background-color: $primary;
+		// border: 1px dotted red;
+		padding: 8px;
+		font-size: 0.9em;
+		background-color: #eee;
+		border-radius: 4px;
+
+		&:not(.tab-active) {
+			cursor: pointer;
+			&:hover {
+				background-color: #ddd;
+			}
+		}
+		&.tab-active {
+			background-color: $primary;
+			color: white;
+		}
+	}
+}

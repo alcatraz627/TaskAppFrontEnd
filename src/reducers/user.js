@@ -24,12 +24,9 @@ export default function userReducer(state = initialState.user, { type, payload =
                 role: null
             }
 
-        case ACTION_TYPES.FETCH_USER_LIST:
-            return { ...state, isFetchingUsers: true };
-
         case ACTION_TYPES.UPDATE_USER_LIST:
             const userList = payload.map((u) => ({ [u.id]: u }))
-            return { ...state, isFetchingUsers: false, userList: Object.assign({}, ...userList) };
+            return { ...state, userList: Object.assign({}, ...userList) };
 
         case ACTION_TYPES.LOGIN_ATTEMPTED:
             return { ...state, isLoginAttempted: true }

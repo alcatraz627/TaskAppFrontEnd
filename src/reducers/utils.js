@@ -24,6 +24,9 @@ export default function utilsReducer(state = initialState.utils, { type, payload
         case ACTION_TYPES.CLEAR_MESSAGE:
             return { ...state, message: { title: null, body: null } }
 
+        case ACTION_TYPES.SET_FETCH_STATUS:
+            return { ...state, fetchStatus: { ...state.fetchStatus, ...payload } }
+
         default:
             return state
     }

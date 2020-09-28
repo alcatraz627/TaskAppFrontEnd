@@ -3,7 +3,7 @@ import { put, takeEvery, call, all } from 'redux-saga/effects'
 import apiCall from '../services/api'
 import { getToken, setToken, deleteToken } from '../services/localstorage'
 
-import { HTTP_METHODS, MESSAGES } from '../constants'
+import { HTTP_METHODS, MESSAGES, FETCH_STATUS, FETCH_RESOURCES } from '../constants'
 import API_ROUTES from '../constants/apiRoutes'
 import { ACTION_TYPES, createAction } from '../constants/actions'
 
@@ -71,14 +71,30 @@ export function* attempt_email_verif({ payload }) {
 }
 
 export function* fetch_user_list(action) {
+    yield put(createAction(ACTION_TYPES.SET_FETCH_STATUS, { [FETCH_RESOURCES.USER_LIST]: FETCH_STATUS.FETCHING }))
     let { status, data, error } = yield call(apiCall, ({ url: API_ROUTES.USER_LIST }))
     if (status == 200) {
         console.log(data)
+        yield put(createAction(ACTION_TYPES.SET_FETCH_STATUS, { [FETCH_RESOURCES.USER_LIST]: FETCH_STATUS.FETCHED }))
         yield put(createAction(ACTION_TYPES.UPDATE_USER_LIST, data))
     } else {
+        yield put(createAction(ACTION_TYPES.SET_FETCH_STATUS, { [FETCH_RESOURCES.USER_LIST]: FETCH_STATUS.FETCH_ERROR }))
         console.log("Error", data, error)
     }
 }
+
+// export function* fetch_user_item(action) {
+//     yield put(createAction(ACTION_TYPES.SET_FETCH_STATUS, { [FETCH_RESOURCES.USER_ITEM]: FETCH_STATUS.FETCHING }))
+//     let { status, data, error } = yield call(apiCall, ({ url: API_ROUTES.USER_ID(1) }))
+//     if (status == 200) {
+//         console.log(data)
+//         yield put(createAction(ACTION_TYPES.SET_FETCH_STATUS, { [FETCH_RESOURCES.USER_LIST]: FETCH_STATUS.FETCHED }))
+//         yield put(createAction(ACTION_TYPES.UPDATE_USER_LIST, data))
+//     } else {
+//         yield put(createAction(ACTION_TYPES.SET_FETCH_STATUS, { [FETCH_RESOURCES.USER_LIST]: FETCH_STATUS.FETCH_ERROR }))
+//         console.log("Error", data, error)
+//     }
+// }
 
 
 export default function* userSaga() {

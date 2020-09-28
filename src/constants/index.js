@@ -28,3 +28,17 @@ export const ROLES = {
     ADMIN: 'admin',
     USER: 'user',
 }
+
+export const FETCH_RESOURCES = {
+    USER_LIST: 'USER_LIST',
+    USER_ITEM: 'USER_ITEM',
+    TASK_LIST: 'TASK_LIST',
+    TASK_ITEM: 'TASK_ITEM',
+}
+
+export const FETCH_STATUS = {
+    NOT_FETCHED: 'NOT_FETCHED',
+    FETCHING: 'FETCHING',
+    FETCHED: 'FETCHED',
+    FETCH_ERROR: 'FETCH_ERROR',
+}

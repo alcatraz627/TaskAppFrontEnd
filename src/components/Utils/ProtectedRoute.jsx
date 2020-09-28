@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 
 import { Route, Redirect } from 'react-router-dom'
 
@@ -8,12 +8,6 @@ import ROUTES from '../../constants/routes'
 
 function ProtectedRoute(props) {
     const { Component, path, redir = ROUTES.LOGIN.url, guestOnly = false, auth = false, isLoggedIn, redirect, exact=false, ...rest } = props;
-
-    // useEffect(() => {
-    //     // console.log("Protected Component", props)
-    //     // console.log(guestOnly, auth, isLoggedIn, guestOnly ? !isLoggedIn : (auth ? isLoggedIn : true))
-    // })
-
 
     const allow = guestOnly ? !isLoggedIn : (auth ? isLoggedIn : true)
 

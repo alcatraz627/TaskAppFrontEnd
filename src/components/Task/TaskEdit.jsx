@@ -7,6 +7,8 @@ import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import { ACTION_TYPES, createAction } from '../../constants/actions'
 import ROUTES from '../../constants/routes'
 
+import {getDate} from '../../services/helpers'
+
 function TaskEdit({ task, userList, updateTaskItem, closeModal }) {
 
     const [formData, setFormData] = useState(null)
@@ -55,7 +57,7 @@ function TaskEdit({ task, userList, updateTaskItem, closeModal }) {
                     <input type="text" name="title" value={formData.title} onChange={updateForm} className="modalTextField heading" />
                     {/* {JSON.stringify(Object.keys(task))} */}
                     <div className="taskMeta">
-                        Created on {task.created_at}
+                        Created on {getDate(task.created_at)}
                         <div className="grow" />
                         <div className={`taskStatus ${task.status.toLowerCase()}`}>{task.status}</div>
                     </div>

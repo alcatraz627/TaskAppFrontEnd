@@ -43,3 +43,9 @@ export const FETCH_STATUS = {
     NOT_FOUND: 'NOT_FOUND',
     FETCH_ERROR: 'FETCH_ERROR',
 }
+
+export const TASK_STATUS = {
+    PENDING: "PENDING",
+    IN_PROGRESS: "IN_PROGRESS",
+    COMPLETE: "COMPLETE"
+}

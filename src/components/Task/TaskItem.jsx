@@ -1,13 +1,36 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 
 import { connect } from 'react-redux'
 
-import { ROLES } from '../../constants'
 import { Link } from 'react-router-dom'
 import { push } from 'connected-react-router'
-import ROUTES from '../../constants/routes'
 
-function TaskItem({ task, userList, openEditModal, userId }) {
+import { TASK_STATUS } from '../../constants'
+import ROUTES from '../../constants/routes'
+import { ACTION_TYPES, createAction } from '../../constants/actions'
+
+import { getDate } from '../../services/helpers'
+
+function TaskItem({ task, userList, openEditModal, userId, updateStatus }) {
+    const [isUpdatingStatus, setUpdateStatus] = useState(false)
+    const [taskStatus, setTaskStatus] = useState("")
+
+    useEffect(() => {
+        if (task) {
+            // If it has turned to false, then save the value
+            if (!isUpdatingStatus && taskStatus != task.status) {
+                updateStatus(taskStatus.toUpperCase())
+            }
+        }
+    }, [isUpdatingStatus])
+
+    useEffect(() => {
+        if (task && taskStatus == "")
+            setTaskStatus(task.status.toUpperCase())
+    }, [task])
+
+    const updateTaskStatus = ({ target: { value } }) => { setTaskStatus(value.toUpperCase()) }
+
     if (!task) {
         // 404 not found
         return <div>Not found</div>
@@ -19,27 +42,44 @@ function TaskItem({ task, userList, openEditModal, userId }) {
                 <i className="fa fa-pencil fa fa-2x"></i>
             </div>
         }
-        <h4 className="noSpacing">{task.title}</h4>
+
+        <div className="taskItemTitle">
+            <h4 className="noSpacing">
+                {task.title}
+            </h4>
+            <div className="grow" />
+        </div>
+
         <div className="taskMeta">
             <Link to={ROUTES.USER_PROFILE.getUrl(task.created_by)} className="createdBy">{userList[task.created_by].name}</Link>
             assigned this to
             {task.assigned_to ? <Link to={ROUTES.USER_PROFILE.getUrl(task.assigned_to)} className="assignedTo">{userList[task.assigned_to].name}</Link> : " no one currently"}
             <div className="grow" />
-            <div className={`taskStatus ${task.status.toLowerCase()}`}>{task.status}</div>
-            {/* <div className={`taskStatus in_progress`}>{task.status}</div>
-            <div className={`taskStatus complete`}>{task.status}</div> */}
+            {((userId == task.assigned_to) && isUpdatingStatus) ?
+                <select value={taskStatus} onChange={updateTaskStatus}>
+                    {Object.values(TASK_STATUS).map(status => <option key={status} value={status}>{(status[0] + status.slice(1).toLowerCase()).replace("_", " ")}</option>)}
+                </select> :
+                <div className={`taskStatus ${taskStatus.toLowerCase()}`}>{taskStatus}</div>
+            }
+            {userId == task.assigned_to &&
+                <div className="changeStatusButton" onClick={() => setUpdateStatus(s => !s)}>{isUpdatingStatus ? <i className="fa fa-floppy-o" /> : <i className="fa fa-pencil" />}</div>
+            }
+
+            <div className="setTaskStatus">
+            </div>
+
         </div>
+
         <div className="taskMeta">
-            {task.due_date ? `Due by ${task.due_date}` : "No due date assigned"} <div className="grow" /> Created on {task.created_at}
+            <div className="grow" />
+        </div>
+
+        <div className="taskMeta">
+            {task.due_date ? `Due by ${getDate(task.due_date)}` : "No due date assigned"} <div className="grow" /> Created on {getDate(task.created_at)}
         </div>
         <div className="taskDesc">
             {task.description}
         </div>
-        <hr />
-        {/* <hr />
-        {JSON.stringify(userList)}  {JSON.stringify(userList)[task.created_by]}
-        <hr />
-        {JSON.stringify(task)} */}
     </div>
 }
 
@@ -50,7 +90,8 @@ const mapStateToProps = (state, ownProps) => ({
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-    openEditModal: () => dispatch(push(ROUTES.TASK_EDIT.getUrl(ownProps.match.params.id)))
+    openEditModal: () => dispatch(push(ROUTES.TASK_EDIT.getUrl(ownProps.match.params.id))),
+    updateStatus: (status) => dispatch(createAction(ACTION_TYPES.TASK_EDIT, { formData: { status }, id: ownProps.match.params.id })),
 });
 
 

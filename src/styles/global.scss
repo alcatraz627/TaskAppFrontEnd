@@ -298,6 +298,29 @@ nav.navbar {
 	padding: 40px 48px;
 	border-radius: 12px;
 	width: 80%;
+	.taskItemTitle {
+		display: flex;
+		align-items: flex-end;
+	}
+	.changeStatusButton {
+		$color: #999;
+		// text-transform: uppercase;
+		font-size: 1.5em;
+		color: $color;
+		padding: 4px 8px;
+		width: 20px;
+		text-align: center;
+		border-radius: 20px;
+		cursor: pointer;
+		margin-left: 8px;
+		font-weight: 700;
+		border: 1px solid $color;
+		&:hover {
+			// $color: #0B3954;
+			color: #333;
+			border-color: #333;
+		}
+	}
 }
 
 .taskMeta {
@@ -368,7 +391,6 @@ textarea.taskDesc {
 	// margin: -20px;
 	// padding: 12px 0;
 	// width: calc(100% - 40px);
-
 }
 
 .editButton {
@@ -382,7 +404,6 @@ textarea.taskDesc {
 		color: #444;
 	}
 }
-
 
 // // For notif toast || NOT WORKING CURRENTLY
 // @-webkit-keyframes toast-fadein {
@@ -515,7 +536,7 @@ textarea.taskDesc {
 		justify-content: space-between;
 		.modalFormData {
 			flex: 1;
-		}	
+		}
 	}
 
 	.modalTextField {
@@ -525,7 +546,7 @@ textarea.taskDesc {
 			font-size: 1.6em;
 			border-width: 0 0 2px 0;
 			width: 80%;
-		}	
+		}
 	}
 
 	.modalActions {
@@ -546,5 +567,5 @@ textarea.taskDesc {
 		font-weight: 600;
 		text-transform: uppercase;
 		padding: 16px 0 6px;
-	}	
+	}
 }

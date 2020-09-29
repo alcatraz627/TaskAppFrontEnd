@@ -8,6 +8,9 @@ export default function taskReducer(state = initialState.user, { type, payload =
             const taskList = payload.map(t => ({ [t.id]: t }))
             return { ...state, ...Object.assign({}, ...taskList) };
 
+        case ACTION_TYPES.UPDATE_TASK_ITEM:
+            return { ...state, [payload.id]: { ...payload } };
+
         default:
             return state;
     }

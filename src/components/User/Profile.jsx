@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom'
 import { ROLES } from '../../constants'
 import ROUTES from '../../constants/routes'
 
-function Profile({ userList, id, userId, resolveSelf, taskList }) {
+function Profile({ userList, id, userId, resolveSelf, taskList, openEditModal }) {
 
     useEffect(() => {
         if (id == 'me') {
@@ -28,7 +28,7 @@ function Profile({ userList, id, userId, resolveSelf, taskList }) {
         user = userList[idToGet]
     }
 
-    const getUserName = (id, className="") =>
+    const getUserName = (id, className = "") =>
         (userList.hasOwnProperty(id)) ? <Link className={className} to={ROUTES.USER_PROFILE.getUrl(id)}>{userList[id].name}</Link> : "no one"
 
 
@@ -52,13 +52,19 @@ function Profile({ userList, id, userId, resolveSelf, taskList }) {
                             .filter(t => activeTab == 1 ? t.created_by == id : t.assigned_to == id)
                             .map(task =>
                                 <div className="detailedListItemContainer" key={task.id}>
+                                    {userId == task.created_by &&
+                                        <div className="editButton" onClick={() => openEditModal(task.id)}>
+                                            <i className="fa fa-pencil fa fa-2x"></i>
+                                        </div>
+                                    }
+
                                     <Link to={ROUTES.TASK_ITEM.getUrl(task.id)} className="textPrimary">{task.title}</Link>
                                     <div className="taskMeta">{
                                         activeTab == 1 ?
                                             // userList[task.assigned_to].name :
                                             // userList[task.created_by].name
                                             <>Assigned to&nbsp;{getUserName(task.assigned_to, "assignedTo")}</> :
-                                            <>Created by&nbsp;{getUserName(task.created_by, "createdBy")}</> 
+                                            <>Created by&nbsp;{getUserName(task.created_by, "createdBy")}</>
                                     }</div>
                                 </div>
                             )}
@@ -78,7 +84,8 @@ const mapStateToProps = (state, ownProps) => ({
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-    resolveSelf: (userId) => dispatch(push(ROUTES.USER_PROFILE.getUrl(userId)))
+    openEditModal: (taskId) => dispatch(push(ROUTES.TASK_EDIT.getUrl(taskId))),
+    resolveSelf: (userId) => dispatch(push(ROUTES.USER_PROFILE.getUrl(userId))),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Profile);

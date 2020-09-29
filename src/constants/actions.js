@@ -39,6 +39,7 @@ export const ACTION_TYPES = {
 
     TASK_CREATE: 'TASK_CREATE',
     TASK_EDIT: 'TASK_EDIT',
+    UPDATE_TASK_ITEM: 'UPDATE_TASK_ITEM',
     TASK_DELETE: 'TASK_DELETE',
 
     // Message screen

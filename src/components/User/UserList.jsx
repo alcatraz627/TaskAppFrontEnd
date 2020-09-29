@@ -18,8 +18,8 @@ const UserList = ({ fetchUserList, userList, fetchStatus }) => {
                 <div className="detailedList">
                     {Object.values(userList).map(user =>
                         <div key={user.id} className="detailedListItemContainer">
-                            <Link to={ROUTES.USER_PROFILE.getUrl(user.id)} className="textPrimary">{user.name}</Link>
-                            <div className="textSecondary">{user.email}</div>
+                            <Link to={ROUTES.USER_PROFILE.getUrl(user.id)} className="textPrimary highlight">{user.name}</Link>
+                            <div className="textSecondary"><i className="fa fa-envelope" /> {user.email}</div>
                         </div>)}
                 </div>
             </div>

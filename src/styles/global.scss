@@ -217,6 +217,10 @@ nav.navbar {
 			border-width: 1px 0 0 0;
 		}
 
+		&:hover {
+			background-color: #f9f9f9;
+		}
+
 		padding: 12px;
 
 		.textPrimary {
@@ -365,6 +369,18 @@ textarea.taskDesc {
 	// padding: 12px 0;
 	// width: calc(100% - 40px);
 
+}
+
+.editButton {
+	color: #aaa;
+	cursor: pointer;
+	// border: 1px dotted red;
+	display: block;
+	float: right;
+
+	&:hover {
+		color: #444;
+	}
 }
 
 

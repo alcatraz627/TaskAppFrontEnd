@@ -149,7 +149,6 @@ button {
 		padding: 16px 48px;
 		font-size: 0.95em;
 	}
-
 }
 
 button.primary,
@@ -197,10 +196,9 @@ select {
 	option {
 		background-color: white;
 		padding: 8px;
-		border-color: #ccc;	
+		border-color: #ccc;
 	}
 }
-
 
 hr {
 	height: 1px;
@@ -269,5 +267,12 @@ hr {
 
 .mw-800 {
 	max-width: 800px;
-	margin: auto!important;
+	margin: auto !important;
+}
+
+.highlight:hover {
+	// color:  $primary;
+	border-style: solid;
+	border-width: 0 0 3px 0;
+	border-color: #3F84E5;
 }

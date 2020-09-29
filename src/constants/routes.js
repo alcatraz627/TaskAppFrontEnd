@@ -8,6 +8,7 @@ import UserList from '../components/User/UserList'
 
 import TaskList from '../components/Task/TaskList'
 import TaskItem from '../components/Task/TaskItem'
+import TaskEdit from '../components/Task/TaskEdit'
 
 import Message from '../components/Utils/Message'
 
@@ -17,7 +18,7 @@ import Message from '../components/Utils/Message'
  * - auth: whether the user must be logged in to access.
  * - guestOnly: whether to prevent logged in users from accessing the route(eg: login). Overrides the auth condition.
  * - Component: The React Component to render. The 'C' must be capitalized as per react component naming convention.
- * - extraProps: Any extra props to be passed to the component.
+//  * - extraProps: Any extra props to be passed to the component.
  * - exact: Is the route match exact.
  */
 
@@ -40,10 +41,6 @@ const routes = {
         getUrl: token => `/register/verif/${token}`,
         guestOnly: true,
         Component: Register,
-
-        // extraProps: {
-        //     verifRoute: true
-        // }
     },
     REGISTER: {
         url: '/register',
@@ -84,6 +81,16 @@ const routes = {
         url: '/forgotpass/success',
         guestOnly: true,
     },
+
+    TASK_EDIT: {
+        url: '/task/:id/edit',
+        getUrl: id => `/task/${id}/edit`,
+        Component: TaskEdit,
+        auth: true,
+        isModal: true,
+    },
+
+
     TASK_ITEM: {
         url: '/task/:id',
         getUrl: id => `/task/${id}`,

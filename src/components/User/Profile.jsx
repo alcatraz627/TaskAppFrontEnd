@@ -28,10 +28,8 @@ function Profile({ userList, id, userId, resolveSelf, taskList }) {
         user = userList[idToGet]
     }
 
-    const getUser = id =>
-        (userList.hasOwnProperty(id)) ? userList[id] : ({
-            name: "DELETED"
-        })
+    const getUserName = (id, className="") =>
+        (userList.hasOwnProperty(id)) ? <Link className={className} to={ROUTES.USER_PROFILE.getUrl(id)}>{userList[id].name}</Link> : "no one"
 
 
     return (
@@ -55,7 +53,13 @@ function Profile({ userList, id, userId, resolveSelf, taskList }) {
                             .map(task =>
                                 <div className="detailedListItemContainer" key={task.id}>
                                     <Link to={ROUTES.TASK_ITEM.getUrl(task.id)} className="textPrimary">{task.title}</Link>
-                                    <div className="textSecondary">{JSON.stringify(user[task.created_by])}</div>
+                                    <div className="taskMeta">{
+                                        activeTab == 1 ?
+                                            // userList[task.assigned_to].name :
+                                            // userList[task.created_by].name
+                                            <>Assigned to&nbsp;{getUserName(task.assigned_to, "assignedTo")}</> :
+                                            <>Created by&nbsp;{getUserName(task.created_by, "createdBy")}</> 
+                                    }</div>
                                 </div>
                             )}
                     </div>

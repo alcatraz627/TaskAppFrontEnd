@@ -84,13 +84,14 @@ nav.navbar {
 
 		.nav-link {
 			@extend .button;
-			// padding: 16px;
+			padding: 0 8px;
 			// font-size: 0.9em;
 			// text-transform: uppercase;
 			// letter-spacing: 0.2em;
 			// cursor: pointer;
 			&:hover {
 				border-width: 0 0 2px 0;
+				border-radius: 0;
 				border-style: solid;
 				border-color: $secondary;
 				padding-bottom: 10px;
@@ -286,6 +287,15 @@ nav.navbar {
 	}
 }
 
+.taskContainer {
+	max-width: 800px;
+	margin: 60px auto;
+	border: 1px solid #ccc;
+	padding: 40px 48px;
+	border-radius: 12px;
+	width: 80%;
+}
+
 .taskMeta {
 	// font-size: 0.9em;
 	color: #999;
@@ -338,11 +348,25 @@ nav.navbar {
 		}
 	}
 }
+
 .taskDesc {
 	@extend .body2;
 	white-space: break-spaces;
 	text-align: justify;
+	width: 100%;
 }
+
+textarea.taskDesc {
+	border: 1px solid #ccc;
+	border-width: 1px 0 1px 0;
+	flex-grow: 1;
+	// background-color: #eee;
+	// margin: -20px;
+	// padding: 12px 0;
+	// width: calc(100% - 40px);
+
+}
+
 
 // // For notif toast || NOT WORKING CURRENTLY
 // @-webkit-keyframes toast-fadein {
@@ -449,4 +473,62 @@ nav.navbar {
 		box-shadow: 0 -2em;
 		height: 5em;
 	}
+}
+
+.modal {
+	position: absolute;
+	overflow-y: auto;
+	width: 100%;
+	height: 100%;
+	// padding: 130px 0;
+	// margin:auto;
+	background: #000a;
+	display: flex;
+
+	.taskContainer {
+		background-color: #fff;
+		// top: 120px;
+		margin: 100px auto 40px;
+		padding: 8px 32px;
+		display: flex;
+		flex-direction: column;
+	}
+
+	.modalForm {
+		display: flex;
+		justify-content: space-between;
+		.modalFormData {
+			flex: 1;
+		}	
+	}
+
+	.modalTextField {
+		&.heading {
+			border-radius: 0;
+			padding: 4px 0;
+			font-size: 1.6em;
+			border-width: 0 0 2px 0;
+			width: 80%;
+		}	
+	}
+
+	.modalActions {
+		text-align: right;
+		button:first-child {
+			margin-left: 0;
+		}
+		button:last-child {
+			margin-right: 0;
+		}
+	}
+
+	.modalLabel {
+		@include fontPrimary;
+		color: $primary;
+		// @include fontSecondary;
+		font-size: 0.875em;
+		font-weight: 600;
+		text-transform: uppercase;
+		padding: 16px 0 6px;
+	}	
 }

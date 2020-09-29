@@ -40,6 +40,8 @@ function Navbar({ isLoggedIn, user, notifHistory }) {
 
                 {isLoggedIn ?
                     <div className="nav-links">
+                        <Link to={ROUTES.USER_LIST.url} className="nav-link">User List</Link>
+                        <Link to={ROUTES.TASK_LIST.url} className="nav-link">Task List</Link>
                         <Link to={ROUTES.USER_PROFILE.getUrl("me")} className="nav-link">{user.name} | Profile</Link>
                         <Link to={ROUTES.LOGOUT.url} className="nav-link">Log out</Link>
                     </div>

@@ -11,7 +11,8 @@ function TaskItem({ task, userList }) {
         // 404 not found
         return <div>Not found</div>
     }
-    return <div className="container">
+    
+    return <div className="taskContainer">
         <h4 className="noSpacing">{task.title}</h4>
         <div className="taskMeta">
             <Link to={ROUTES.USER_PROFILE.getUrl(task.created_by)} className="createdBy">{userList[task.created_by].name}</Link>

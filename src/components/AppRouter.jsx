@@ -7,7 +7,6 @@ import ROUTES from '../constants/routes'
 
 export const AppRouter = ({ shouldRender }) => {
 
-
     if (!shouldRender) {
         // So that no redirects based on auth happen until the user's login has been attempted and auth status finalized
         // TODO: Fancy spinner instead of this
@@ -29,7 +28,7 @@ export const AppRouter = ({ shouldRender }) => {
 }
 
 const mapStateToProps = (state) => ({
-    shouldRender: state.utils.shouldRender
+    shouldRender: state.utils.shouldRender == 0
 })
 
 export default connect(mapStateToProps)(AppRouter)

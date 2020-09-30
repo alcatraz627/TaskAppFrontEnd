@@ -9,25 +9,19 @@ import { ROLES } from '../../constants'
 import ROUTES from '../../constants/routes'
 import { ACTION_TYPES, createAction } from '../../constants/actions'
 
-function Profile({ userList, id, userId, resolveSelf, taskList, openEditModal, deleteTask }) {
-
+function Profile({ userList, id, userId, resolveSelf, taskList, openEditModal, deleteTask, notFound }) {
     useEffect(() => {
         if (id == 'me') {
             resolveSelf(userId);
+        }
+        if (!Object.keys(userList).includes(id.toString())) {
+            notFound()
         }
     })
 
     const [activeTab, setActiveTab] = useState(0)
 
-    let user;
-    const idToGet = parseInt((id == 'me') ? userId : id)
-    if (!Object.keys(userList).includes(idToGet.toString())) {
-        // TODO: Make a request to try to fetch the user & show Loading...
-        // TODO: Redirect -> 404
-        return <div>Not found</div>
-    } else {
-        user = userList[idToGet]
-    }
+    const user = userList[id]
 
     const getUserName = (id, className = "") =>
         (userList.hasOwnProperty(id)) ? <Link className={className} to={ROUTES.USER_PROFILE.getUrl(id)}>{userList[id].name}</Link> : "no one"
@@ -35,6 +29,9 @@ function Profile({ userList, id, userId, resolveSelf, taskList, openEditModal, d
     const getTasks = (getAssigned = true) => Object.values(taskList)
         .filter(t => getAssigned ? t.assigned_to == id : t.created_by == id)
 
+    if (!user) {
+        return <div className="loader" />
+    }
     return (
         <div className="userProfileContainer">
             <div className="userProfileSidebar">
@@ -51,35 +48,32 @@ function Profile({ userList, id, userId, resolveSelf, taskList, openEditModal, d
                     </div>
                     <hr />
                     <div className="detailedList">
-                        {Object.values(taskList)
-                            .filter(t => activeTab == 1 ? t.created_by == id : t.assigned_to == id)
-                            .map(task =>
-                                <div className="detailedListItemContainer" key={task.id}>
-                                    <div className="flex">
-                                        <Link to={ROUTES.TASK_ITEM.getUrl(task.id)} className="textPrimary">{task.title}</Link>
-                                        <div className="grow" />
-                                        {userId == task.created_by &&
-                                            <>
-                                                <div className="listActionButton edit" onClick={() => openEditModal(task.id)}>
-                                                    <i className="fa fa-pencil fa fa-2x"></i>
-                                                </div>
-                                                <div className="listActionButton delete" onClick={() => deleteTask(task.id)}>
-                                                    <i className="fa fa-trash fa fa-2x" />
-                                                </div>
-                                            </>
-                                        }
-
-                                    </div>
-
-                                    <div className="taskMeta">{
-                                        activeTab == 1 ?
-                                            // userList[task.assigned_to].name :
-                                            // userList[task.created_by].name
-                                            <>Assigned to&nbsp;{getUserName(task.assigned_to, "assignedTo")}</> :
-                                            <>Created by&nbsp;{getUserName(task.created_by, "createdBy")}</>
-                                    }</div>
+                        {getTasks(!activeTab).map(task =>
+                            <div className="detailedListItemContainer" key={task.id}>
+                                <div className="flex">
+                                    <Link to={ROUTES.TASK_ITEM.getUrl(task.id)} className="textPrimary">{task.title}</Link>
+                                    <div className="grow" />
+                                    {userId == task.created_by &&
+                                        <>
+                                            <div className="listActionButton edit" onClick={() => openEditModal(task.id)}>
+                                                <i className="fa fa-pencil fa fa-2x"></i>
+                                            </div>
+                                            <div className="listActionButton delete" onClick={() => deleteTask(task.id)}>
+                                                <i className="fa fa-trash fa fa-2x" />
+                                            </div>
+                                        </>
+                                    }
                                 </div>
-                            )}
+
+                                <div className="taskMeta">{
+                                    activeTab == 1 ?
+                                        // userList[task.assigned_to].name :
+                                        // userList[task.created_by].name
+                                        <>Assigned to&nbsp;{getUserName(task.assigned_to, "assignedTo")}</> :
+                                        <>Created by&nbsp;{getUserName(task.created_by, "createdBy")}</>
+                                }</div>
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
@@ -99,6 +93,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
     openEditModal: (taskId) => dispatch(push(ROUTES.TASK_EDIT.getUrl(taskId))),
     deleteTask: (id) => dispatch(createAction(ACTION_TYPES.ATTEMPT_TASK_DELETE, { id })),
     resolveSelf: (userId) => dispatch(push(ROUTES.USER_PROFILE.getUrl(userId))),
+    notFound: () => dispatch(push(ROUTES.NOT_FOUND.url)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Profile);

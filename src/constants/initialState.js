@@ -17,7 +17,7 @@ export default {
     },
 
     utils: {
-        shouldRender: false, // If the login attempt has been made
+        shouldRender: 1, // Count of pending tasks, will render only when >0
 
         notifList: [],
         notifHistory: [],

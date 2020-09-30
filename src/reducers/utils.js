@@ -28,10 +28,10 @@ export default function utilsReducer(state = initialState.utils, { type, payload
             return { ...state, fetchStatus: { ...state.fetchStatus, ...payload } }
 
         case ACTION_TYPES.PAUSE_RENDER:
-            return { ...state, shouldRender: false }
+            return { ...state, shouldRender: state.shouldRender + 1 }
 
         case ACTION_TYPES.SHOULD_RENDER:
-            return { ...state, shouldRender: true }
+            return { ...state, shouldRender: state.shouldRender - 1 }
 
         default:
             return state

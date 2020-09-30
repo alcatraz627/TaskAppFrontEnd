@@ -115,7 +115,7 @@ function TaskEdit(props) {
 
 const mapStateToProps = (state, ownProps) => ({
     task: state.task[ownProps.match.params.id],
-    fetchStatus: state.utils.fetchStatus[FETCH_RESOURCES.TASK_LIST],
+    // fetchStatus: state.utils.fetchStatus[FETCH_RESOURCES.TASK_LIST],
 
     userList: state.user.userList,
     userId: state.user.id,

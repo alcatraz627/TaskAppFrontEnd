@@ -1,4 +1,4 @@
-import { put, takeEvery, call, all } from 'redux-saga/effects'
+import { put, takeEvery, call, all, delay } from 'redux-saga/effects'
 
 import apiCall from '../services/api'
 import { getToken, setToken, deleteToken } from '../services/localstorage'
@@ -45,7 +45,7 @@ export function* fetch_auth_user() {
 
     // yield put(createAction(ACTION_TYPES.FETCH_USER_LIST))
     // yield put(createAction(ACTION_TYPES.FETCH_TASK_LIST))
-
+    yield delay(1000)
     yield put(createAction(ACTION_TYPES.SHOULD_RENDER))
 }
 

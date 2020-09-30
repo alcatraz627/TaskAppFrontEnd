@@ -1,6 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
 
+import { Route } from 'react-router-dom'
+
 import { Switch } from 'react-router-dom'
 import ProtectedRoute from './Utils/ProtectedRoute'
 import ROUTES from '../constants/routes'
@@ -19,7 +21,7 @@ export const AppRouter = ({ shouldRender }) => {
                         <ProtectedRoute key={url} path={url} component={Component} auth={auth}
                             guestOnly={guestOnly} redirect={redirect} exact={exact} />
                     )}
-                {/* <Route><div className="h4">Not found</div></Route> */}
+                <Route component={ROUTES.NOT_FOUND.url} />
             </Switch>
             <ProtectedRoute path={ROUTES.TASK_EDIT.url} component={ROUTES.TASK_EDIT.Component}
                 guestOnly={ROUTES.TASK_EDIT.guestOnly} redirect={ROUTES.LOGIN.url} auth={ROUTES.TASK_EDIT.auth} />

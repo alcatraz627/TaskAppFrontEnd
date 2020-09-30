@@ -66,10 +66,6 @@ function TaskEdit(props) {
         isCreateModal ? createTaskItem(formData) : updateTaskItem(formData)
     }
 
-    const deleteAction = (id) => {
-        deleteTask(id)
-        redirAfterDelete()
-    }
 
     return (
         <div className="modal" id="editTaskModal">
@@ -124,12 +120,12 @@ const mapStateToProps = (state, ownProps) => ({
 const mapDispatchToProps = (dispatch, ownProps) => ({
     createTaskItem: (formData) => dispatch(createAction(ACTION_TYPES.ATTEMPT_TASK_CREATE, { formData })),
     updateTaskItem: (formData) => dispatch(createAction(ACTION_TYPES.ATTEMPT_TASK_EDIT, { formData, id: ownProps.match.params.id })),
-    deleteTask: (id) => dispatch(createAction(ACTION_TYPES.ATTEMPT_TASK_DELETE, { id })),
+    deleteAction: (id) => dispatch(createAction(ACTION_TYPES.ATTEMPT_TASK_DELETE, { id })),
     closeModal: () => dispatch(push(ownProps.match.params.id ? ROUTES.TASK_ITEM.getUrl(ownProps.match.params.id) : ROUTES.TASK_LIST.url)),
 
     unauthorized: (message) => dispatch(createAction(ACTION_TYPES.SET_MESSAGE, MESSAGES.UNAUTHORIZED)),
     notFound: () => dispatch(push(ROUTES.NOT_FOUND.url)),
-    redirAfterDelete: () => dispatch(push(ROUTES.TASK_LIST)),
+    // redirAfterDelete: () => dispatch(push(ROUTES.TASK_LIST)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(TaskEdit)

@@ -11,7 +11,7 @@ import { ACTION_TYPES, createAction } from '../../constants/actions'
 
 import { getDate } from '../../services/helpers'
 
-function TaskItem({ task, userList, openEditModal, userId, updateStatus, notFound }) {
+function TaskItem({ task, userList, openEditModal, userId, updateStatus, notFound, deleteTask }) {
     const [isUpdatingStatus, setUpdateStatus] = useState(false)
     const [taskStatus, setTaskStatus] = useState("")
 
@@ -46,9 +46,15 @@ function TaskItem({ task, userList, openEditModal, userId, updateStatus, notFoun
             <h4 className="noSpacing">{task.title}</h4>
             <div className="grow" />
             {userId == task.created_by &&
-                <div className="listActionButton edits" onClick={openEditModal}>
-                    <i className="fa fa-pencil fa fa-2x"></i>
-                </div>}
+                <>
+                    <div className="listActionButton delete" onClick={() => deleteTask(task.id)}>
+                        <i className="fa fa-trash fa fa-2x" />
+                    </div>
+                    <div className="listActionButton edits" onClick={openEditModal}>
+                        <i className="fa fa-pencil fa fa-2x"></i>
+                    </div>
+                </>
+            }
         </div>
 
         <div className="taskMeta">
@@ -86,6 +92,7 @@ const mapStateToProps = (state, ownProps) => ({
 const mapDispatchToProps = (dispatch, ownProps) => ({
     openEditModal: () => dispatch(push(ROUTES.TASK_EDIT.getUrl(ownProps.match.params.id))),
     updateStatus: (status) => dispatch(createAction(ACTION_TYPES.ATTEMPT_TASK_EDIT, { formData: { status }, id: ownProps.match.params.id })),
+    deleteTask: (id) => dispatch(createAction(ACTION_TYPES.ATTEMPT_TASK_DELETE, { id })),
     notFound: () => dispatch(push(ROUTES.NOT_FOUND.url)),
 });
 

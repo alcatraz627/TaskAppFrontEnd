@@ -31,7 +31,7 @@ export function* create_task({ payload: { formData } }) {
         yield put(createAction(ACTION_TYPES.UPDATE_TASK_ITEM, data.task))
         // ?TODO: Task item re-render
         yield put(push(ROUTES.TASK_ITEM.getUrl(data.task.id)))
-    } else if(status == 422) {
+    } else if (status == 422) {
         yield all(Object.values(data).map(message => put(createAction(ACTION_TYPES.PUSH_NOTIF, { message }))))
     } else {
         yield put(createAction(ACTION_TYPES.PUSH_NOTIF, { message: "An error occured." }))
@@ -52,7 +52,7 @@ export function* edit_task({ payload: { formData, id } }) {
     }
 }
 
-export function* delete_task({ payload: { id } }) {
+export function* delete_task({ payload: { id, toRedir = true } }) {
     if (confirm("Are you sure you want to delete this task?")) {
         let { status, data, error } = yield call(apiCall, ({ url: API_ROUTES.TASK_ID(id), method: HTTP_METHODS.DELETE }))
         if (status == 200) {
@@ -61,6 +61,9 @@ export function* delete_task({ payload: { id } }) {
         } else {
             yield put(createAction(ACTION_TYPES.PUSH_NOTIF, data))
             console.log("Error", data, error)
+        }
+        if (toRedir) {
+            yield put(push(ROUTES.TASK_LIST.url))
         }
     }
 }

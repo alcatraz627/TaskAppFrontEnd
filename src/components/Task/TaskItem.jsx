@@ -68,15 +68,8 @@ function TaskItem({ task, userList, openEditModal, userId, updateStatus }) {
                 <div className="changeStatusButton" onClick={() => setUpdateStatus(s => !s)}>{isUpdatingStatus ? <i className="fa fa-floppy-o" /> : <i className="fa fa-pencil" />}</div>
             }
 
-            <div className="setTaskStatus">
-            </div>
-
         </div>
-
-        <div className="taskMeta">
-            <div className="grow" />
-        </div>
-
+    
         <div className="taskMeta">
             {task.due_date ? `Due by ${getDate(task.due_date)}` : "No due date assigned"} <div className="grow" /> Created on {getDate(task.created_at)}
         </div>

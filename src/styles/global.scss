@@ -231,7 +231,7 @@ nav.navbar {
 			background-color: #f9f9f9;
 		}
 
-		padding: 12px;
+		padding: 16px;
 
 		.textPrimary {
 			@extend h5;
@@ -240,6 +240,20 @@ nav.navbar {
 		.textSecondary {
 			@extend .body2;
 		}
+	}
+}
+
+.taskListControlPanel {
+	padding: 0 16px;
+	.descTitle {
+		@extend h5;
+		margin: 0
+		// color: #333;
+	}
+	.descText {
+		margin: 4px 0 8px;
+		@extend .body2;
+		color: #999;
 	}
 }
 
@@ -336,11 +350,16 @@ nav.navbar {
 .taskMeta {
 	// font-size: 0.9em;
 	color: #999;
-	margin: 8px 0;
+	margin: 4px 0 0;
 	font-size: 0.75em;
 
 	display: flex;
 	align-items: baseline;
+
+	.bigText {
+		font-size: 1em;
+		// color: #777;
+	}
 
 	.createdBy,
 	.assignedTo {
@@ -375,13 +394,14 @@ nav.navbar {
 		@extend .label;
 		font-size: 1em;
 		&.pending {
-			background-color: #ed7d3a;
+			background-color: $orange;
 		}
 		&.in_progress {
-			background-color: #2e86ab;
+			background-color: $purple;
+
 		}
 		&.complete {
-			background-color: #35a738;
+			background-color: $green;
 		}
 	}
 }
@@ -391,6 +411,7 @@ nav.navbar {
 	white-space: break-spaces;
 	text-align: justify;
 	width: 100%;
+	margin-top: 24px;
 }
 
 textarea.taskDesc {

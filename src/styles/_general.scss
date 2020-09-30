@@ -224,10 +224,25 @@ hr {
 	font-size: 0.75em;
 	padding: 4px 8px;
 	background-color: #0093e9;
+	// background-color: #2e86ab;
 
 	color: white;
 	display: inline;
 	border-radius: 4px;
+
+	&.sm {
+		padding: 2px 6px;
+	}
+
+	&.green {
+		background-color: $green;
+	}
+	&.purple {
+		background-color: $purple;
+	}
+	&.orange {
+		background-color: $orange;
+	}
 }
 
 .tabPanel {
@@ -235,27 +250,32 @@ hr {
 	justify-content: space-between;
 	width: 100%;
 	.tab {
+		display: flex;
+		justify-content: space-between;
+
+		&:not(:first-child), &:not(:last-child) {
+			margin: 0 4px;
+		}
 		&:first-child {
+			margin-left: 0px;
 			margin-right: 4px;
 		}
 		&:last-child {
 			margin-left: 4px;
+			margin-right: 0px;
 		}
-		// margin: 0 10px;
-		// width: 50%;
 		flex-grow: 1;
 		text-align: center;
-		// background-color: $primary;
-		// border: 1px dotted red;
 		padding: 8px;
 		font-size: 0.9em;
-		background-color: #eee;
 		border-radius: 4px;
+		border: 1px solid transparent;
 
 		&:not(.tab-active) {
 			cursor: pointer;
+			border: 1px solid #ccc;
 			&:hover {
-				background-color: #ddd;
+				background-color: #eee;
 			}
 		}
 		&.tab-active {
@@ -270,11 +290,15 @@ hr {
 	margin: auto !important;
 }
 
-.highlight:hover {
-	// color:  $primary;
+.highlight {
 	border-style: solid;
 	border-width: 0 0 3px 0;
-	border-color: #3F84E5;
+	border-color: transparent;
+	&:hover {
+		// color:  $primary;
+		// border-color: #3F84E5;
+		border-color: $primary;
+	}
 }
 
 .flex {

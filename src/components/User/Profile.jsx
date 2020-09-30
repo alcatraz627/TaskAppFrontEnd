@@ -31,6 +31,8 @@ function Profile({ userList, id, userId, resolveSelf, taskList, openEditModal })
     const getUserName = (id, className = "") =>
         (userList.hasOwnProperty(id)) ? <Link className={className} to={ROUTES.USER_PROFILE.getUrl(id)}>{userList[id].name}</Link> : "no one"
 
+    const getTasks = (getAssigned = true) => Object.values(taskList)
+        .filter(t => getAssigned ? t.assigned_to == id : t.created_by == id)
 
     return (
         <div className="userProfileContainer">
@@ -43,8 +45,8 @@ function Profile({ userList, id, userId, resolveSelf, taskList, openEditModal })
             <div className="userProfileDashboard">
                 <div className="taskPanel">
                     <div className="tabPanel">
-                        <div className={`tab ${activeTab == 0 && 'tab-active'}`} onClick={() => setActiveTab(0)}>Assigned Task</div>
-                        <div className={`tab ${activeTab == 1 && 'tab-active'}`} onClick={() => setActiveTab(1)}>Created Task</div>
+                        <div className={`tab ${activeTab == 0 && 'tab-active'}`} onClick={() => setActiveTab(0)}>Assigned Tasks <div className="label sm">{getTasks().length}</div></div>
+                        <div className={`tab ${activeTab == 1 && 'tab-active'}`} onClick={() => setActiveTab(1)}>Created Tasks <div className="label purple sm">{getTasks(false).length}</div></div>
                     </div>
                     <hr />
                     <div className="detailedList">

@@ -134,6 +134,7 @@ nav.navbar {
 	}
 	input {
 		margin: 4px 0 4px;
+		border-radius: 8px;
 	}
 }
 
@@ -245,6 +246,8 @@ nav.navbar {
 
 .taskListControlPanel {
 	padding: 0 16px;
+	display: flex;
+	flex-direction: column;
 	.descTitle {
 		@extend h5;
 		margin: 0
@@ -398,7 +401,6 @@ nav.navbar {
 		}
 		&.in_progress {
 			background-color: $purple;
-
 		}
 		&.complete {
 			background-color: $green;
@@ -599,4 +601,22 @@ textarea.taskDesc {
 		text-transform: uppercase;
 		padding: 16px 0 6px;
 	}
+}
+
+.searchBar {
+	border-radius: 0;
+	margin: 8px 0;
+	// width: 100%;
+	flex-grow: 1;
+	// border-width: 0 0 2px 0!important;
+	border-width: 2px 0 2px 2px!important;
+}
+
+.searchButton {
+	margin: auto 0;
+	border: 2px solid lightgray;
+	border-width: 2px 2px 2px 0!important;
+	border-radius: 0;
+	background-color: white;
+	padding: 10px 24px;
 }

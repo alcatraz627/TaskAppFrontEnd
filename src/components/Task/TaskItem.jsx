@@ -17,14 +17,17 @@ function TaskItem({ task, userList, openEditModal, userId, updateStatus }) {
 
     useEffect(() => {
         if (task) {
-            // If it has turned to false, then save the value
-            if (!isUpdatingStatus && taskStatus != task.status) {
+            // Since the API update of status fires on the change of isUpdatingStatus from true->false, 
+            // it also needs to ensure that it's not firing with an empty value on initialization
+            if (!isUpdatingStatus && (taskStatus != "") && (taskStatus != task.status)) {
+                // If it has turned to false, then save the value
                 updateStatus(taskStatus.toUpperCase())
             }
         }
     }, [isUpdatingStatus])
 
     useEffect(() => {
+        // Filling in the initial value. taskStatus is also used for view to show the most recent value
         if (task && taskStatus == "")
             setTaskStatus(task.status.toUpperCase())
     }, [task])

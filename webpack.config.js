@@ -66,5 +66,6 @@ module.exports = {
         port: 9000,
         compress: true,
         historyApiFallback: true,
-    }
+    },
+    devtool: "eval-cheap-source-map",
 }

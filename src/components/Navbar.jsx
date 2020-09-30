@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react'
 
-import { Link } from 'react-router-dom'
+import { NavLink as Link } from 'react-router-dom'
 
 import { connect } from 'react-redux'
 
 import ROUTES from '../constants/routes'
 
-function Navbar({ isLoggedIn, user, notifHistory }) {
+function Navbar({ isLoggedIn, user, notifHistory, currRoute }) {
 
     const [notifOpen, setNotifOpen] = useState(false)
 
@@ -21,14 +21,28 @@ function Navbar({ isLoggedIn, user, notifHistory }) {
         return () => document.removeEventListener("keydown", catchEscapeKey, false)
     }, [])
 
+    useEffect(() => {
+        console.log(currRoute)
+    }, [currRoute])
+
     const toggleNotifOpen = () => { setNotifOpen(!notifOpen) }
+
+    // const isActiveLink = (route)
 
     return (
         <nav className="navbar">
             <div className="toolbar">
                 <Link to="/"><h5>TaskApp</h5></Link>
 
+                {/* <div className="grow" /> */}
+
+                {isLoggedIn && <>
+                    <Link to={ROUTES.USER_LIST.url} exact className="nav-link" activeClassName="activeLink">User List</Link>
+                    <Link to={ROUTES.TASK_LIST.url} exact className="nav-link" activeClassName="activeLink">Task List</Link>
+                </>
+                }
                 <div className="grow" />
+
                 <div className="navNotifButton"><i className="nav-icon fa fa-bell" onClick={toggleNotifOpen} />
                     <div className={`navNotifContainer${notifOpen ? " showNotifContainer" : ""}`}>
                         <div className="navNotifHeader">Notifications</div>
@@ -37,19 +51,16 @@ function Navbar({ isLoggedIn, user, notifHistory }) {
                         </div>
                     </div>
                 </div>
-
                 {isLoggedIn ?
-                    <div className="nav-links">
-                        <Link to={ROUTES.USER_LIST.url} className="nav-link">User List</Link>
-                        <Link to={ROUTES.TASK_LIST.url} className="nav-link">Task List</Link>
-                        <Link to={ROUTES.USER_PROFILE.getUrl("me")} className="nav-link">{user.name} | Profile</Link>
-                        <Link to={ROUTES.LOGOUT.url} className="nav-link">Log out</Link>
-                    </div>
+                    <>
+                        <Link to={ROUTES.USER_PROFILE.getUrl(user.id)} className="nav-link" activeClassName="activeLink">{user.name}</Link>
+                        <Link to={ROUTES.LOGOUT.url} className="nav-link" activeClassName="activeLink">Log out</Link>
+                    </>
                     :
-                    <div className="nav-links">
-                        <Link to={ROUTES.LOGIN.url} className="nav-link">Login</Link>
-                        <Link to={ROUTES.REGISTER.url} className="nav-link">Register</Link>
-                    </div>
+                    <>
+                        <Link to={ROUTES.LOGIN.url} className="nav-link" activeClassName="activeLink">Login</Link>
+                        <Link to={ROUTES.REGISTER.url} className="nav-link" activeClassName="activeLink">Register</Link>
+                    </>
                 }
             </div>
         </nav>
@@ -59,7 +70,8 @@ function Navbar({ isLoggedIn, user, notifHistory }) {
 const mapStateToProps = (state, ownProps) => ({
     isLoggedIn: !!state.user.token,
     user: state.user,
-    notifHistory: state.utils.notifHistory
+    notifHistory: state.utils.notifHistory,
+    currRoute: ownProps.match,
 })
 
 export default connect(mapStateToProps)(Navbar)

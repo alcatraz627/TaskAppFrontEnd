@@ -11,7 +11,7 @@ function ProtectedRoute(props) {
 
     const allow = guestOnly ? !isLoggedIn : (auth ? isLoggedIn : true)
 
-    return allow ? <Route path={path} render={() => <Component />} exact {...rest} /> : <Redirect to={redirect} />
+    return allow ? <Route path={path} component={Component} exact {...rest} /> : <Redirect to={redirect} />
 }
 
 const mapStateToProps = (state, ownProps) => ({

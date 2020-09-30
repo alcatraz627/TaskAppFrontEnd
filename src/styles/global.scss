@@ -21,7 +21,7 @@ nav.navbar {
 		h5 {
 			// @include fontSecondary;
 			// font-size: 1.4em;
-			padding: 15px 5px;
+			padding: 15px 30px 15px 5px;
 			margin: 0;
 		}
 
@@ -29,7 +29,7 @@ nav.navbar {
 			display: inline-block;
 			.nav-icon {
 				margin: 4px 4px;
-				margin-right: 24px;
+				margin: 0 12px;
 				border-radius: 100%;
 				color: #fffa;
 				cursor: pointer;
@@ -83,19 +83,29 @@ nav.navbar {
 		}
 
 		.nav-link {
-			@extend .button;
+			@extend .body2;
 			padding: 0 8px;
 			// font-size: 0.9em;
 			// text-transform: uppercase;
 			// letter-spacing: 0.2em;
 			// cursor: pointer;
+			margin: 0 4px;
 			&:hover {
 				border-width: 0 0 2px 0;
 				border-radius: 0;
 				border-style: solid;
 				border-color: $secondary;
-				padding-bottom: 10px;
-				// box-sizing: content-box;
+				padding: 10px 8px 8px;
+			}
+			&.activeLink {
+				background-color: $secondary;
+				// text-transform: uppercase;
+				// font-weight: 700;
+				border-width: 0 0 2px 0;
+				border-radius: 4px;
+				border-style: solid;
+				border-color: $secondary;
+				padding: 10px 8px  8px;
 			}
 		}
 	}

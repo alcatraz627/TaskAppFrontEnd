@@ -73,7 +73,7 @@ function TaskEdit(props) {
 
     return (
         <div className="modal" id="editTaskModal">
-            {!formData ? "Loading..." :
+            {!formData ? <div className="loader" /> :
                 <div className="taskContainer">
                     <div className="modalLabel">Title{isDirty('title')}</div>
                     <input type="text" name="title" placeholder="Enter task title" value={formData.title} onChange={updateForm} className="modalTextField heading" />
@@ -107,7 +107,6 @@ function TaskEdit(props) {
                     </div>
                 </div>
             }
-
         </div>
 
     )

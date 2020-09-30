@@ -17,7 +17,7 @@ export default async function apiCall({ url, method = HTTP_METHODS.GET, payload 
     //     // headers = { ...headers, 'Authorization': `${token_type} ${token}`, 'Hosted': 'localhost:8100' }
     // }
 
-    console.log(`Making req to [${method}]${url} with payload `, payload)
+    // console.log(`Making req to [${method}]${url} with payload `, payload)
 
     // Artificial delay for testing purpose
     // await new Promise(r => setTimeout(r, 1000)).then(r => r)

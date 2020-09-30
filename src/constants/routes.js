@@ -11,6 +11,7 @@ import TaskItem from '../components/Task/TaskItem'
 import TaskEdit from '../components/Task/TaskEdit'
 
 import Message from '../components/Utils/Message'
+import NotFound from '../components/Utils/NotFound'
 
 /**
  * Convention:
@@ -114,7 +115,7 @@ const routes = {
 
     NOT_FOUND: {
         url: '/404',
-        Component: Home,
+        Component: NotFound,
     },
 
     // Placed at the last otherwise it will override all other routes because of

@@ -91,22 +91,27 @@ nav.navbar {
 			// letter-spacing: 0.2em;
 			// cursor: pointer;
 			margin: 0 4px;
+			color: #ddd;
 			&:hover {
+				color: #fff;
 				border-width: 0 0 2px 0;
 				border-radius: 0;
 				border-style: solid;
-				border-color: $secondary;
+				// border-color: $secondary;
+				border-color: transparent;
 				padding: 10px 8px 8px;
 			}
 			&.activeLink {
+				// color: #fff;
+				// border-color: $secondary;
 				background-color: $secondary;
 				// text-transform: uppercase;
 				// font-weight: 700;
-				border-width: 0 0 2px 0;
+				border-width: 2px 0 2px 0;
 				border-radius: 4px;
 				border-style: solid;
 				border-color: $secondary;
-				padding: 10px 8px 8px;
+				padding: 8px 8px 8px;
 			}
 		}
 	}
@@ -119,7 +124,6 @@ nav.navbar {
 	// flex: 1 1 auto;
 	// align-self: stretch;
 	align-self: center;
-
 }
 
 .link {
@@ -249,14 +253,17 @@ nav.navbar {
 	}
 }
 
-.taskListControlPanel {
+.listControlPanel {
 	padding: 0 16px;
 	display: flex;
 	flex-direction: column;
-	.taskListTitleBar {
+	.listTitleBar {
 		display: flex;
+		button {
+			margin-right: 0;
+		}
 		.descTitle {
-			@extend h5;
+			@extend h6;
 			margin: 0;
 			// color: #333;
 		}
@@ -627,6 +634,9 @@ textarea.taskDesc {
 		// border-color: red!important;
 		border: 2px solid gray;
 	}
+	&:hover .searchButton i {
+		color: gray;
+	}
 	.searchBar {
 		border-radius: 0;
 		margin: 8px 0;
@@ -636,6 +646,10 @@ textarea.taskDesc {
 		border-width: 2px 0 2px 2px !important;
 		&:hover {
 			border: 2px solid gray;
+		}
+		&:focus,
+		&:focus + .searchButton {
+			border-color: $blue;
 		}
 	}
 
@@ -649,6 +663,61 @@ textarea.taskDesc {
 		&:hover {
 			border: 2px solid gray;
 			background-color: white;
+		}
+		i {
+			color: #aaa;
+		}
+	}
+}
+
+.notFoundContainer {
+	display: flex;
+	max-height: 100vh;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+
+	.bg {
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		background: url(http://www.reactiongifs.us/wp-content/uploads/2015/04/nothing_to_see_here_naked_gun.gif)
+			no-repeat center center fixed;
+		background-size: cover;
+		opacity: 0.5;
+		filter: alpha(opacity=50);
+		z-index: -1;
+	}
+
+	.container {
+		flex: 1 1 auto;
+		align-self: stretch;
+		padding: 160px 100px;
+		background-color: #0009;
+		// position: absolute;
+		// height: 100%;
+		width: auto;
+		// height: calc(100vh - 120px);
+
+		h1 {
+			// line-height: 0.3em;
+			@include fontPrimary;
+			font-size: 8em;
+		}
+
+		.text {
+			font-size: 1.25em;
+		}
+
+		.text,
+		h1, h4 {
+			color: #fff;
+			background-color: none;
+			z-index: 2;
+			// position: absolute;
+			display: inline-block;
+			color: white;
+			// padding: 8px;
 		}
 	}
 }

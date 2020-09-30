@@ -11,9 +11,15 @@ import { ACTION_TYPES, createAction } from '../../constants/actions'
 
 import { getDate } from '../../services/helpers'
 
-function TaskItem({ task, userList, openEditModal, userId, updateStatus }) {
+function TaskItem({ task, userList, openEditModal, userId, updateStatus, notFound }) {
     const [isUpdatingStatus, setUpdateStatus] = useState(false)
     const [taskStatus, setTaskStatus] = useState("")
+
+    useEffect(() => {
+        if (!task) {
+            notFound()
+        }
+    }, [])
 
     useEffect(() => {
         if (task) {
@@ -34,12 +40,8 @@ function TaskItem({ task, userList, openEditModal, userId, updateStatus }) {
 
     const updateTaskStatus = ({ target: { value } }) => { setTaskStatus(value.toUpperCase()) }
 
-    if (!task) {
-        // 404 not found
-        return <div>Not found</div>
-    }
 
-    return <div className="taskContainer">
+    return !task ? <div className="loader" /> : <div className="taskContainer">
         <div className="taskItemTitle">
             <h4 className="noSpacing">{task.title}</h4>
             <div className="grow" />
@@ -84,6 +86,7 @@ const mapStateToProps = (state, ownProps) => ({
 const mapDispatchToProps = (dispatch, ownProps) => ({
     openEditModal: () => dispatch(push(ROUTES.TASK_EDIT.getUrl(ownProps.match.params.id))),
     updateStatus: (status) => dispatch(createAction(ACTION_TYPES.ATTEMPT_TASK_EDIT, { formData: { status }, id: ownProps.match.params.id })),
+    notFound: () => dispatch(push(ROUTES.NOT_FOUND.url)),
 });
 
 

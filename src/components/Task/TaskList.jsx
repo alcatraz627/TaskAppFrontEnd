@@ -34,10 +34,10 @@ const TaskList = ({ fetchTaskList, taskList, fetchStatus, openEditModal, userLis
     function render() {
         return (
             <div className="container">
-                <div className="taskListControlPanel">
-                    <div className="taskListTitleBar">
+                <div className="listControlPanel">
+                    <div className="listTitleBar">
                         <div>
-                            <div className="descTitle">Tasks</div>
+                            <div className="descTitle">List of Tasks</div>
                             <div className="descText">Filter through tasks at different stages of progression, or just search with a keyword </div>
                         </div>
                         <div className="grow" />

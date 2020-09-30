@@ -123,7 +123,7 @@ input[type="email"] {
 		border-color: gray;
 	}
 	&:focus {
-		border-color: #4c83ff;
+		border-color: $blue;
 		// border-color: #28C76F;
 	}
 }

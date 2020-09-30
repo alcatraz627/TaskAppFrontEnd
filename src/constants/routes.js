@@ -89,15 +89,17 @@ const routes = {
         auth: true,
         isModal: true,
     },
-
-
     TASK_ITEM: {
         url: '/task/:id',
         getUrl: id => `/task/${id}`,
         Component: TaskItem,
         auth: true,
     },
-
+    TASK_CREATE: {
+        url: '/task/create',
+        Component: TaskEdit,
+        auth: true,
+    },
 
     TASK_LIST: {
         url: '/task',

@@ -23,10 +23,7 @@ export function* fetch_task_list(action) {
 }
 
 export function* edit_task({ payload: { formData, id } }) {
-    console.log(formData, id)
-    console.log("Calling")
     let { status, data, error } = yield call(apiCall, ({ url: API_ROUTES.TASK_ID(id), payload: formData, method: HTTP_METHODS.PATCH }))
-    console.log("Called")
     if (status == 201) {
         yield put(createAction(ACTION_TYPES.PUSH_NOTIF, { message: "Task updated!" }))
         yield put(createAction(ACTION_TYPES.UPDATE_TASK_ITEM, data.task))
@@ -36,11 +33,22 @@ export function* edit_task({ payload: { formData, id } }) {
         yield put(createAction(ACTION_TYPES.PUSH_NOTIF, { message: "An error occured." }))
         console.log("Error", data, error)
     }
-    // TODO: Nav to item and run a a fetch from API
+}
+
+export function* delete_task({ payload: { id } }) {
+    let { status, data, error } = yield call(apiCall, ({ url: API_ROUTES.TASK_ID(id), method: HTTP_METHODS.DELETE }))
+    if (status == 200) {
+        yield put(createAction(ACTION_TYPES.PUSH_NOTIF, data))
+        yield put(createAction(ACTION_TYPES.UPDATE_TASK_DELETE, { id }))
+    } else {
+        yield put(createAction(ACTION_TYPES.PUSH_NOTIF, data))
+        console.log("Error", data, error)
+    }
 }
 
 
 export default function* taskSaga() {
     yield takeEvery(ACTION_TYPES.FETCH_TASK_LIST, fetch_task_list)
     yield takeEvery(ACTION_TYPES.TASK_EDIT, edit_task)
+    yield takeEvery(ACTION_TYPES.ATTEMPT_TASK_DELETE, delete_task)
 }

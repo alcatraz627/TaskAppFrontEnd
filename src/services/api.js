@@ -18,6 +18,10 @@ export default async function apiCall({ url, method = HTTP_METHODS.GET, payload 
     // }
 
     console.log(`Making req to [${method}]${url} with payload `, payload)
+
+    // Artificial delay for testing purpose
+    // await new Promise(r => setTimeout(r, 1000)).then(r => r)
+
     const resp = await axios({
         baseURL,
         url,

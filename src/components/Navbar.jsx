@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 
 import ROUTES from '../constants/routes'
 
-function Navbar({ isLoggedIn, user, notifHistory, currRoute }) {
+function Navbar({ isLoggedIn, user, notifHistory }) {
 
     const [notifOpen, setNotifOpen] = useState(false)
 
@@ -20,10 +20,6 @@ function Navbar({ isLoggedIn, user, notifHistory, currRoute }) {
         document.addEventListener("keydown", catchEscapeKey, false)
         return () => document.removeEventListener("keydown", catchEscapeKey, false)
     }, [])
-
-    useEffect(() => {
-        console.log(currRoute)
-    }, [currRoute])
 
     const toggleNotifOpen = () => { setNotifOpen(!notifOpen) }
 
@@ -71,7 +67,6 @@ const mapStateToProps = (state, ownProps) => ({
     isLoggedIn: !!state.user.token,
     user: state.user,
     notifHistory: state.utils.notifHistory,
-    currRoute: ownProps.match,
 })
 
 export default connect(mapStateToProps)(Navbar)

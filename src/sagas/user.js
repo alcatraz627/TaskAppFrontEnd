@@ -44,8 +44,8 @@ export function* fetch_auth_user() {
         yield call(deleteToken)
     }
 
-    yield put(createAction(ACTION_TYPES.FETCH_USER_LIST));
-    yield put(createAction(ACTION_TYPES.FETCH_TASK_LIST));
+    // yield put(createAction(ACTION_TYPES.FETCH_USER_LIST))
+    // yield put(createAction(ACTION_TYPES.FETCH_TASK_LIST))
 
     yield put(createAction(ACTION_TYPES.LOGIN_ATTEMPTED))
 }

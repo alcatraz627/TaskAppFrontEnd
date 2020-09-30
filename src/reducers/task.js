@@ -11,6 +11,10 @@ export default function taskReducer(state = initialState.user, { type, payload =
         case ACTION_TYPES.UPDATE_TASK_ITEM:
             return { ...state, [payload.id]: { ...payload } };
 
+        case ACTION_TYPES.UPDATE_TASK_DELETE:
+            const { [payload.id]: value, ...newState } = state
+            return newState
+
         default:
             return state;
     }

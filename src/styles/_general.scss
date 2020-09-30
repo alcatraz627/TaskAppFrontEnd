@@ -52,6 +52,7 @@ h1 {
 	@include fontSecondary;
 	font-size: 6em;
 	font-weight: 300;
+	margin: 16px 0;
 	// letter-spacing: -1.5rem/6;
 }
 h2 {
@@ -59,6 +60,7 @@ h2 {
 	@include fontSecondary;
 	font-size: 3.75em;
 	font-weight: 300;
+	margin: 16px 0;
 	// letter-spacing: -1.5;
 }
 h3 {
@@ -66,26 +68,28 @@ h3 {
 	@include fontSecondary;
 	font-size: 3em;
 	font-weight: 500;
+	margin: 16px 0;
 	// letter-spacing: -1.5;
-	margin: 16px;
 }
 h4 {
 	@include fontSecondary;
 	font-size: 2.125em;
 	font-weight: 400;
-	margin: 16px;
+	margin: 16px 0;
 	// letter-spacing: -1.5;
 }
 h5 {
 	@include fontSecondary;
 	font-size: 1.5em;
 	font-weight: 400;
+	margin: 16px 0;
 	// letter-spacing: -1.5;
 }
 h6 {
 	@include fontSecondary;
 	font-size: 1.25em;
 	font-weight: 500;
+	margin: 16px 0;
 	// letter-spacing: -1.5;
 }
 
@@ -148,18 +152,16 @@ button {
 	}
 }
 
-button.primary,
-.button.primary {
-	color: $primary;
-
+@mixin btnStyling($color) {
+	color: $color;
 	&.contained:not(disabled) {
 		color: white;
-		background-color: $primary;
-		border: 3px solid $primary;
+		background-color: $color;
+		border: 3px solid $color;
 	}
 	&.contained:hover:not(disabled) {
-		background-color: #{$primary + "dd"};
-		border-color: #{$primary + "00"};
+		background-color: #{$color + "dd"};
+		border-color: #{$color + "00"};
 	}
 	&.contained[disabled],
 	&.contained[disabled]:hover {
@@ -168,16 +170,32 @@ button.primary,
 	}
 
 	&.outlined {
-		color: $primary;
+		color: $color;
 		background-color: transparent;
 		// border-color: #{$primary + "ff"};
-		border: 3px solid #{$primary + "ff"};
+		border: 3px solid #{$color + "ff"};
 		font-weight: 700;
 	}
 	&.outlined:hover {
 		// border-color: #{$primary + "ff"};
-		background-color: #{$primary + "22"};
+		background-color: #{$color + "22"};
 	}
+}
+
+button,
+.button {
+	&.primary {
+		@include btnStyling($primary);
+	}
+
+	&.secondary {
+		@include btnStyling($secondary);
+	}
+
+	// &.secondary {
+	// 	color: $secondary;
+	// 	@include btnStyling($secondary);
+	// }
 }
 
 input[type="datetime-local"] {
@@ -250,7 +268,8 @@ hr {
 		display: flex;
 		justify-content: space-between;
 
-		&:not(:first-child), &:not(:last-child) {
+		&:not(:first-child),
+		&:not(:last-child) {
 			margin: 0 4px;
 		}
 		&:first-child {
@@ -283,8 +302,11 @@ hr {
 }
 
 .mw-800 {
-	max-width: 800px;
-	margin: auto !important;
+	max-width: 800px !important;
+}
+
+.mw-1000 {
+	max-width: 1000px !important;
 }
 
 .highlight {

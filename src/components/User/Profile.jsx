@@ -7,8 +7,9 @@ import { Link } from 'react-router-dom'
 
 import { ROLES } from '../../constants'
 import ROUTES from '../../constants/routes'
+import { ACTION_TYPES, createAction } from '../../constants/actions'
 
-function Profile({ userList, id, userId, resolveSelf, taskList, openEditModal }) {
+function Profile({ userList, id, userId, resolveSelf, taskList, openEditModal, deleteTask }) {
 
     useEffect(() => {
         if (id == 'me') {
@@ -54,13 +55,22 @@ function Profile({ userList, id, userId, resolveSelf, taskList, openEditModal })
                             .filter(t => activeTab == 1 ? t.created_by == id : t.assigned_to == id)
                             .map(task =>
                                 <div className="detailedListItemContainer" key={task.id}>
-                                    {userId == task.created_by &&
-                                        <div className="editButton" onClick={() => openEditModal(task.id)}>
-                                            <i className="fa fa-pencil fa fa-2x"></i>
-                                        </div>
-                                    }
+                                    <div className="flex">
+                                        <Link to={ROUTES.TASK_ITEM.getUrl(task.id)} className="textPrimary">{task.title}</Link>
+                                        <div className="grow" />
+                                        {userId == task.created_by &&
+                                            <>
+                                                <div className="listActionButton edit" onClick={() => openEditModal(task.id)}>
+                                                    <i className="fa fa-pencil fa fa-2x"></i>
+                                                </div>
+                                                <div className="listActionButton delete" onClick={() => deleteTask(task.id)}>
+                                                    <i className="fa fa-trash fa fa-2x" />
+                                                </div>
+                                            </>
+                                        }
 
-                                    <Link to={ROUTES.TASK_ITEM.getUrl(task.id)} className="textPrimary">{task.title}</Link>
+                                    </div>
+
                                     <div className="taskMeta">{
                                         activeTab == 1 ?
                                             // userList[task.assigned_to].name :
@@ -87,6 +97,7 @@ const mapStateToProps = (state, ownProps) => ({
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
     openEditModal: (taskId) => dispatch(push(ROUTES.TASK_EDIT.getUrl(taskId))),
+    deleteTask: (id) => dispatch(createAction(ACTION_TYPES.ATTEMPT_TASK_DELETE, { id })),
     resolveSelf: (userId) => dispatch(push(ROUTES.USER_PROFILE.getUrl(userId))),
 })
 

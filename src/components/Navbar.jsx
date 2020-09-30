@@ -5,8 +5,9 @@ import { NavLink as Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 
 import ROUTES from '../constants/routes'
+import { createAction, ACTION_TYPES } from '../constants/actions'
 
-function Navbar({ isLoggedIn, user, notifHistory }) {
+function Navbar({ isLoggedIn, user, notifHistory, fetchTasks, fetchUsers }) {
 
     const [notifOpen, setNotifOpen] = useState(false)
 
@@ -23,6 +24,10 @@ function Navbar({ isLoggedIn, user, notifHistory }) {
 
     const toggleNotifOpen = () => { setNotifOpen(!notifOpen) }
 
+    const refreshStore = () => {
+        fetchUsers()
+        fetchTasks()
+    }
     // const isActiveLink = (route)
 
     return (
@@ -39,7 +44,7 @@ function Navbar({ isLoggedIn, user, notifHistory }) {
                 }
                 <div className="grow" />
 
-                <div className="navNotifButton"><i className="nav-icon fa fa-bell" onClick={toggleNotifOpen} />
+                <div className="navButton"><i className="nav-icon fa fa-bell" onClick={toggleNotifOpen} />
                     <div className={`navNotifContainer${notifOpen ? " showNotifContainer" : ""}`}>
                         <div className="navNotifHeader">Notifications</div>
                         <div className="notifScroll">
@@ -49,6 +54,7 @@ function Navbar({ isLoggedIn, user, notifHistory }) {
                 </div>
                 {isLoggedIn ?
                     <>
+                        <div className="navButton" onClick={refreshStore}><i className="nav-icon fa fa-refresh" /></div>
                         <Link to={ROUTES.USER_PROFILE.getUrl(user.id)} className="nav-link" activeClassName="activeLink">{user.name}</Link>
                         <Link to={ROUTES.LOGOUT.url} className="nav-link" activeClassName="activeLink">Log out</Link>
                     </>
@@ -69,4 +75,9 @@ const mapStateToProps = (state, ownProps) => ({
     notifHistory: state.utils.notifHistory,
 })
 
-export default connect(mapStateToProps)(Navbar)
+const mapDispatchToProps = (dispatch, ownProps) => ({
+    fetchUsers: () => dispatch(createAction(ACTION_TYPES.FETCH_USER_LIST)),
+    fetchTasks: () => dispatch(createAction(ACTION_TYPES.FETCH_TASK_LIST)),
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Navbar)

@@ -25,8 +25,9 @@ nav.navbar {
 			margin: 0;
 		}
 
-		.navNotifButton {
+		.navButton {
 			display: inline-block;
+
 			.nav-icon {
 				margin: 4px 4px;
 				margin: 0 12px;
@@ -113,8 +114,12 @@ nav.navbar {
 
 .container {
 	margin: 0;
-	padding: 60px;
-	flex: 1 1 auto;
+	padding: 60px 120px;
+	width: 80%;
+	// flex: 1 1 auto;
+	// align-self: stretch;
+	align-self: center;
+
 }
 
 .link {
@@ -259,6 +264,7 @@ nav.navbar {
 			margin: 4px 0 8px;
 			@extend .body2;
 			color: #999;
+			// padding-right: 60px; //This line right here is holding the page as wide as it is. Flexbox is weird.
 		}
 	}
 }
@@ -437,6 +443,9 @@ textarea.taskDesc {
 	// float: right;
 	padding: 8px;
 	display: inline;
+	&:hover {
+		color: #777;
+	}
 
 	&.edit:hover {
 		color: $yellow;

@@ -2,7 +2,6 @@ import { FETCH_RESOURCES, FETCH_STATUS } from './index'
 
 export default {
     user: {
-        isLoginAttempted: false, // If the login attempt has been made
         token: null,
 
         id: null,
@@ -18,6 +17,8 @@ export default {
     },
 
     utils: {
+        shouldRender: false, // If the login attempt has been made
+
         notifList: [],
         notifHistory: [],
 

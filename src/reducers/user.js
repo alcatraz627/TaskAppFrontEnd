@@ -29,7 +29,7 @@ export default function userReducer(state = initialState.user, { type, payload =
             return { ...state, userList: Object.assign({}, ...userList) };
 
         case ACTION_TYPES.LOGIN_ATTEMPTED:
-            return { ...state, isLoginAttempted: true }
+            return { ...state, shouldRender: true }
 
         default:
             return state

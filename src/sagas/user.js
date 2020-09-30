@@ -38,7 +38,6 @@ export function* logout_success() {
 export function* fetch_auth_user() {
     let { status, data, error } = yield call(apiCall, ({ url: API_ROUTES.USER_ME }))
     if (status == 200) {
-        console.log(data)
         yield put(createAction(ACTION_TYPES.LOGIN_SUCCESS, { user: data, token: getToken() }))
     } else {
         yield call(deleteToken)
@@ -47,13 +46,12 @@ export function* fetch_auth_user() {
     // yield put(createAction(ACTION_TYPES.FETCH_USER_LIST))
     // yield put(createAction(ACTION_TYPES.FETCH_TASK_LIST))
 
-    yield put(createAction(ACTION_TYPES.LOGIN_ATTEMPTED))
+    yield put(createAction(ACTION_TYPES.SHOULD_RENDER))
 }
 
 export function* attempt_register({ payload }) {
     let { status, data, error } = yield call(apiCall, ({ url: API_ROUTES.REGISTER, method: HTTP_METHODS.POST, payload }))
     if (status == 201) {
-        console.log(data)
         yield put(createAction(ACTION_TYPES.SET_MESSAGE, MESSAGES.REGISTRATION_SUCCESS))
         // yield put(createAction(ACTION_TYPES.REGISTER_SUCCESS, data))
     } else if (status == 422) {
@@ -76,16 +74,17 @@ export function* attempt_email_verif({ payload }) {
 }
 
 export function* fetch_user_list(action) {
+    yield put(createAction(ACTION_TYPES.PAUSE_RENDER))
     yield put(createAction(ACTION_TYPES.SET_FETCH_STATUS, { [FETCH_RESOURCES.USER_LIST]: FETCH_STATUS.FETCHING }))
     let { status, data, error } = yield call(apiCall, ({ url: API_ROUTES.USER_LIST }))
     if (status == 200) {
-        console.log(data)
-        yield put(createAction(ACTION_TYPES.SET_FETCH_STATUS, { [FETCH_RESOURCES.USER_LIST]: FETCH_STATUS.FETCHED }))
         yield put(createAction(ACTION_TYPES.UPDATE_USER_LIST, data))
+        yield put(createAction(ACTION_TYPES.SET_FETCH_STATUS, { [FETCH_RESOURCES.USER_LIST]: FETCH_STATUS.FETCHED }))
     } else {
         yield put(createAction(ACTION_TYPES.SET_FETCH_STATUS, { [FETCH_RESOURCES.USER_LIST]: FETCH_STATUS.FETCH_ERROR }))
         console.log("Error", data, error)
     }
+    yield put(createAction(ACTION_TYPES.SHOULD_RENDER))
 }
 
 // export function* fetch_user_item(action) {

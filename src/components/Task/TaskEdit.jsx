@@ -2,51 +2,73 @@ import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { push } from 'connected-react-router'
 
-import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
+import { disableBodyScroll, enableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock';
 
+import { FETCH_RESOURCES, MESSAGES } from '../../constants'
 import { ACTION_TYPES, createAction } from '../../constants/actions'
 import ROUTES from '../../constants/routes'
 
-import {getDate} from '../../services/helpers'
+import { getDate } from '../../services/helpers'
 
-function TaskEdit({ task, userList, updateTaskItem, closeModal }) {
+function TaskEdit(props) {
+    const { task, userList, userId, path } = props
+    const { updateTaskItem, createTaskItem, deleteTask, closeModal, unauthorized, notFound, redirAfterDelete } = props
 
     const [formData, setFormData] = useState(null)
 
+    const isCreateModal = path == ROUTES.TASK_CREATE.url // Is the modal opened for task creation or editing?
+    console.log("isCreateModal", isCreateModal, path, ROUTES.TASK_CREATE.url)
     // Refs don't trigger an update when assigned, so can't use them on mount
     // https://medium.com/@teh_builder/ref-objects-inside-useeffect-hooks-eb7c15198780
     // The current fix is to use the body-scroll-lock method after a timeout but this is not ideal.
     useEffect(() => {
+
+        if (!isCreateModal) {
+            // 404 not found
+            if (!task) notFound()
+            else if (task.created_by != userId) unauthorized()
+        }
+
         var targetElement
         setTimeout(() => {
             targetElement = document.getElementById('editTaskModal')
-            disableBodyScroll(targetElement)
+            if (targetElement) disableBodyScroll(targetElement)
             window.scrollTo(0, 0)
         }, 800)
-        return () => enableBodyScroll(targetElement)
+        if (targetElement) {
+            return () => enableBodyScroll(targetElement)
+        }
+        else {
+            return clearAllBodyScrollLocks
+        }
     }, [])
 
     useEffect(() => {
-        if (task && !formData) {
-            // Picking out only values needed for editing
-            const { title, description, due_date, assigned_to } = task;
-            setFormData({ title, description, due_date, assigned_to })
-            setFormData(task => ({ ...task, created_by: task.created_by || "", assigned_to: task.assigned_to || "" }))
+        if (isCreateModal) {
+            setFormData({ title: "", description: "", due_date: new Date(), assigned_to: "" })
+        } else {
+            if (task && !formData) {
+                // Picking out only values needed for editing
+                const { title, description, due_date, assigned_to } = task;
+                setFormData({ title, description, due_date, assigned_to })
+                setFormData(task => ({ ...task, created_by: task.created_by || "", assigned_to: task.assigned_to || "" }))
+            }
         }
+
     }, [task])
 
-    if (!task) {
-        // 404 not found
-        return <div>Not found</div>
-    }
-
-    const isDirty = field => ((formData[field] != task[field]) ? "*" : "")
+    const isDirty = field => isCreateModal ? "" : ((formData[field] == task[field]) ? "" : "*")
 
     const updateForm = ({ target: { name, value } }) => { setFormData(data => ({ ...data, [name]: value })) }
 
     const saveForm = () => {
         // TODO: Validate
-        updateTaskItem(formData)
+        isCreateModal ? createTaskItem(formData) : updateTaskItem(formData)
+    }
+
+    const deleteAction = (id) => {
+        deleteTask(id)
+        redirAfterDelete()
     }
 
     return (
@@ -54,12 +76,12 @@ function TaskEdit({ task, userList, updateTaskItem, closeModal }) {
             {!formData ? "Loading..." :
                 <div className="taskContainer">
                     <div className="modalLabel">Title{isDirty('title')}</div>
-                    <input type="text" name="title" value={formData.title} onChange={updateForm} className="modalTextField heading" />
+                    <input type="text" name="title" placeholder="Enter task title" value={formData.title} onChange={updateForm} className="modalTextField heading" />
                     {/* {JSON.stringify(Object.keys(task))} */}
                     <div className="taskMeta">
-                        Created on {getDate(task.created_at)}
+                        {!isCreateModal && `Created on ${getDate(task.created_at)}`}
                         <div className="grow" />
-                        <div className={`taskStatus ${task.status.toLowerCase()}`}>{task.status}</div>
+                        {!isCreateModal && <div className={`taskStatus ${task.status.toLowerCase()}`}>{task.status}</div>}
                     </div>
 
                     <div className="modalForm">
@@ -77,9 +99,10 @@ function TaskEdit({ task, userList, updateTaskItem, closeModal }) {
                     </div>
 
                     <div className="modalLabel">Description{isDirty('description')}</div>
-                    <textarea className="taskDesc" name="description" rows="16" value={formData.description} onChange={updateForm} />
+                    <textarea className="taskDesc" name="description" placeholder="Enter task description" rows="16" value={formData.description} onChange={updateForm} />
                     <div className="modalActions">
-                        <button className="primary contained" onClick={saveForm}>Save</button>
+                        <button className="primary contained" onClick={saveForm}>{isCreateModal ? "Create New" : "Save Changes"}</button>
+                        {!isCreateModal && <button className="secondary outlined" onClick={() => deleteAction(task.id)}>Delete</button>}
                         <button name="outlined" onClick={closeModal}>Close</button>
                     </div>
                 </div>
@@ -92,12 +115,22 @@ function TaskEdit({ task, userList, updateTaskItem, closeModal }) {
 
 const mapStateToProps = (state, ownProps) => ({
     task: state.task[ownProps.match.params.id],
-    userList: state.user.userList
+    fetchStatus: state.utils.fetchStatus[FETCH_RESOURCES.TASK_LIST],
+
+    userList: state.user.userList,
+    userId: state.user.id,
+    path: ownProps.match.path
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-    updateTaskItem: (formData) => dispatch(createAction(ACTION_TYPES.TASK_EDIT, { formData, id: ownProps.match.params.id })),
-    closeModal: () => dispatch(push(ROUTES.TASK_ITEM.getUrl(ownProps.match.params.id))),
+    createTaskItem: (formData) => dispatch(createAction(ACTION_TYPES.ATTEMPT_TASK_CREATE, { formData })),
+    updateTaskItem: (formData) => dispatch(createAction(ACTION_TYPES.ATTEMPT_TASK_EDIT, { formData, id: ownProps.match.params.id })),
+    deleteTask: (id) => dispatch(createAction(ACTION_TYPES.ATTEMPT_TASK_DELETE, { id })),
+    closeModal: () => dispatch(push(ownProps.match.params.id ? ROUTES.TASK_ITEM.getUrl(ownProps.match.params.id) : ROUTES.TASK_LIST.url)),
+
+    unauthorized: (message) => dispatch(createAction(ACTION_TYPES.SET_MESSAGE, MESSAGES.UNAUTHORIZED)),
+    notFound: () => dispatch(push(ROUTES.NOT_FOUND.url)),
+    redirAfterDelete: () => dispatch(push(ROUTES.TASK_LIST)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(TaskEdit)

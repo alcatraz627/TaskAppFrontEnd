@@ -5,10 +5,10 @@ import { Switch } from 'react-router-dom'
 import ProtectedRoute from './Utils/ProtectedRoute'
 import ROUTES from '../constants/routes'
 
-export const AppRouter = ({ isLoginAttempted }) => {
+export const AppRouter = ({ shouldRender }) => {
 
 
-    if (!isLoginAttempted) {
+    if (!shouldRender) {
         // So that no redirects based on auth happen until the user's login has been attempted and auth status finalized
         // TODO: Fancy spinner instead of this
         return <div className="loader" />
@@ -29,7 +29,7 @@ export const AppRouter = ({ isLoginAttempted }) => {
 }
 
 const mapStateToProps = (state) => ({
-    isLoginAttempted: state.user.isLoginAttempted
+    shouldRender: state.utils.shouldRender
 })
 
 export default connect(mapStateToProps)(AppRouter)

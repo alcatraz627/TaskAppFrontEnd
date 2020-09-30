@@ -38,7 +38,7 @@ const TaskList = ({ fetchTaskList, taskList, fetchStatus, openEditModal, userLis
                     <div className="taskListTitleBar">
                         <div>
                             <div className="descTitle">Tasks</div>
-                            <div className="descText">Filter through tasks at different stages or just search with a keyword</div>
+                            <div className="descText">Filter through tasks at different stages of progression, or just search with a keyword </div>
                         </div>
                         <div className="grow" />
                         <button className="button primary contained sm" onClick={openCreateModal}><i className="fa fa-plus" />&nbsp;&nbsp;Create Task</button>
@@ -112,7 +112,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
     fetchTaskList: () => dispatch(createAction(ACTION_TYPES.FETCH_TASK_LIST)),
     deleteTask: (id) => dispatch(createAction(ACTION_TYPES.ATTEMPT_TASK_DELETE, { id })),
     openEditModal: (taskId) => dispatch(push(ROUTES.TASK_EDIT.getUrl(taskId))),
-    openCreateModal: () => dispatch(push(ROUTES.TASK_CREATE))
+    openCreateModal: () => dispatch(push(ROUTES.TASK_CREATE.url))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(TaskList)

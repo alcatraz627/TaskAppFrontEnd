@@ -12,7 +12,8 @@ function Home({ notifList, push_notif, set_message }) {
     return (
         <div className="container">
             <h3>Home Page</h3>
-            <button className="primary outlined sm">Small</button>
+            <div className="body1">Flex your UI skills and fill this up</div>
+            {/* <button className="primary outlined sm">Small</button>
             <button className="primary outlined" onClick={() => push_notif("Test Message " + notifList.length)}>Push Notif</button>
             <button className="primary outlined lg">Large</button>
 
@@ -21,17 +22,17 @@ function Home({ notifList, push_notif, set_message }) {
             <button className="primary contained lg">Large</button>
             <hr />
             <Link className="button primary" to={ROUTES.USER_LIST.url}>User List</Link>
-            <Link className="button primary" to={ROUTES.TASK_LIST.url}>Task List</Link>
+            <Link className="button primary" to={ROUTES.TASK_LIST.url}>Task List</Link> */}
         </div>
     )
 }
 
 const mapStateToProps = (state, ownProps) => ({
-                notifList: state.utils.notifList
+    notifList: state.utils.notifList
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-                push_notif: (message) => dispatch(createAction(ACTION_TYPES.PUSH_NOTIF, { message: message })),
+    push_notif: (message) => dispatch(createAction(ACTION_TYPES.PUSH_NOTIF, { message: message })),
     set_message: (message) => dispatch(createAction(ACTION_TYPES.SET_MESSAGE, message)),
 })
 

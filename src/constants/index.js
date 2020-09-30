@@ -22,6 +22,14 @@ export const MESSAGES = {
         title: "Invalid token",
         body: "Invalid or expired token, no associated email was found.",
     },
+    NOT_FOUND: {
+        title: "Not found",
+        body: "The page you are looking for is unavailable. "
+    },
+    UNAUTHORIZED: {
+        title: "Unauthorized",
+        body: "Your account does not have sufficient permissions for that action."
+    },
 }
 
 export const ROLES = {

@@ -82,6 +82,11 @@ const routes = {
         guestOnly: true,
     },
 
+    TASK_CREATE: {
+        url: '/task/create',
+        Component: TaskEdit,
+        auth: true,
+    },
     TASK_EDIT: {
         url: '/task/:id/edit',
         getUrl: id => `/task/${id}/edit`,
@@ -95,11 +100,6 @@ const routes = {
         Component: TaskItem,
         auth: true,
     },
-    TASK_CREATE: {
-        url: '/task/create',
-        Component: TaskEdit,
-        auth: true,
-    },
 
     TASK_LIST: {
         url: '/task',
@@ -107,10 +107,14 @@ const routes = {
         auth: true,
     },
 
-
     MESSAGE: {
         url: '/message',
         Component: Message,
+    },
+
+    NOT_FOUND: {
+        url: '/404',
+        Component: Home,
     },
 
     // Placed at the last otherwise it will override all other routes because of

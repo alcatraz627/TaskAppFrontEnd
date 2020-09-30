@@ -40,17 +40,13 @@ function TaskItem({ task, userList, openEditModal, userId, updateStatus }) {
     }
 
     return <div className="taskContainer">
-        {userId == task.created_by &&
-            <div className="editButton" onClick={openEditModal}>
-                <i className="fa fa-pencil fa fa-2x"></i>
-            </div>
-        }
-
         <div className="taskItemTitle">
-            <h4 className="noSpacing">
-                {task.title}
-            </h4>
+            <h4 className="noSpacing">{task.title}</h4>
             <div className="grow" />
+            {userId == task.created_by &&
+                <div className="listActionButton edits" onClick={openEditModal}>
+                    <i className="fa fa-pencil fa fa-2x"></i>
+                </div>}
         </div>
 
         <div className="taskMeta">
@@ -69,7 +65,7 @@ function TaskItem({ task, userList, openEditModal, userId, updateStatus }) {
             }
 
         </div>
-    
+
         <div className="taskMeta">
             {task.due_date ? `Due by ${getDate(task.due_date)}` : "No due date assigned"} <div className="grow" /> Created on {getDate(task.created_at)}
         </div>
@@ -87,7 +83,7 @@ const mapStateToProps = (state, ownProps) => ({
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
     openEditModal: () => dispatch(push(ROUTES.TASK_EDIT.getUrl(ownProps.match.params.id))),
-    updateStatus: (status) => dispatch(createAction(ACTION_TYPES.TASK_EDIT, { formData: { status }, id: ownProps.match.params.id })),
+    updateStatus: (status) => dispatch(createAction(ACTION_TYPES.ATTEMPT_TASK_EDIT, { formData: { status }, id: ownProps.match.params.id })),
 });
 
 

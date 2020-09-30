@@ -112,19 +112,20 @@ const routes = {
         url: '/message',
         Component: Message,
     },
-
-    NOT_FOUND: {
-        url: '/404',
-        Component: NotFound,
-    },
-
-    // Placed at the last otherwise it will override all other routes because of
-    // the `/` in front of every route
     ROOT: {
         url: '/',
         Component: Home,
         exact: true,
     },
+
+    NOT_FOUND: {
+        // url: '/404',
+        url: '/*',
+        Component: NotFound,
+    },
+
+    // Placed at the last otherwise it will override all other routes because of
+    // the `/` in front of every route
 
 }
 

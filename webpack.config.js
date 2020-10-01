@@ -1,6 +1,8 @@
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
+const WorkBoxPlugin = require('workbox-webpack-plugin')
+
 module.exports = {
     entry: './src/index.js',
     module: {
@@ -52,7 +54,11 @@ module.exports = {
                     'viewport': 'width=device-width, initial-scale=1, shrink-to-fit=no',
                 }
             }
-        )
+        ),
+        new WorkBoxPlugin.GenerateSW({
+            clientsClaim: true,
+            skipWaiting: true,
+        })
     ],
     output: {
         path: __dirname + '/dist',

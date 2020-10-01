@@ -1,10 +1,13 @@
 import { put, takeEvery, call, all, delay } from 'redux-saga/effects'
 
+import { push } from 'connected-react-router'
+
 import apiCall from '../services/api'
 import { getToken, setToken, deleteToken } from '../services/localstorage'
 
 import { HTTP_METHODS, MESSAGES, FETCH_STATUS, FETCH_RESOURCES } from '../constants'
 import API_ROUTES from '../constants/apiRoutes'
+import ROUTES from '../constants/routes'
 import { ACTION_TYPES, createAction } from '../constants/actions'
 
 export function* attempt_login({ type, payload }) {
@@ -87,6 +90,23 @@ export function* fetch_user_list(action) {
     yield put(createAction(ACTION_TYPES.SHOULD_RENDER))
 }
 
+export function* delete_user({ payload: { id, toRedir = true } }) {
+    if (confirm("Are you sure you want to delete this task?")) {
+        let { status, data, error } = yield call(apiCall, ({ url: API_ROUTES.USER_ID(id), method: HTTP_METHODS.DELETE }))
+        if (status == 200) {
+            yield put(createAction(ACTION_TYPES.PUSH_NOTIF, data))
+            if (toRedir) {
+                yield put(push(ROUTES.USER_LIST.url))
+            }
+            yield put(createAction(ACTION_TYPES.UPDATE_USER_DELETE, { id }))
+        } else {
+            yield put(createAction(ACTION_TYPES.PUSH_NOTIF, data))
+            console.log("Error", data, error)
+        }
+    }
+}
+
+
 // export function* fetch_user_item(action) {
 //     yield put(createAction(ACTION_TYPES.SET_FETCH_STATUS, { [FETCH_RESOURCES.USER_ITEM]: FETCH_STATUS.FETCHING }))
 //     let { status, data, error } = yield call(apiCall, ({ url: API_ROUTES.USER_ID(1) }))
@@ -114,6 +134,8 @@ export default function* userSaga() {
     // yield takeEvery(ACTION_TYPES.REGISTER_SUCCESS, register_success)
 
     yield takeEvery(ACTION_TYPES.ATTEMPT_EMAIL_VERIF, attempt_email_verif)
+
+    yield takeEvery(ACTION_TYPES.ATTEMPT_USER_DELETE, delete_user)
 
 
     yield takeEvery(ACTION_TYPES.FETCH_USER_LIST, fetch_user_list)

@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 
 import { Link } from 'react-router-dom'
 
-import { FETCH_RESOURCES, FETCH_STATUS } from '../../constants'
+import { FETCH_RESOURCES, ROLES } from '../../constants'
 import ROUTES from '../../constants/routes'
 import { ACTION_TYPES, createAction } from '../../constants/actions'
 
@@ -15,6 +15,14 @@ const UserList = (props) => {
 
     const { userList } = props
     const { fetchUserList, openCreateModal, fetchStatus } = props
+
+    const searchUsers = users => users
+        .filter(user => (search.trim() == "") ||
+            (user.name.toLowerCase().includes(search.toLowerCase()) ||
+                user.email.toLowerCase().includes(search.toLowerCase())))
+
+
+    const usersToShow = searchUsers(Object.values(userList))
 
     function render() {
 
@@ -34,22 +42,16 @@ const UserList = (props) => {
                         <input type="text" className="searchBar" placeholder="Type here to search" value={search} onChange={({ target: { value } }) => setSearch(value)} />
                         <button type="submit" className="searchButton"><i className="fa fa-search" /></button>
                     </div>
-                    {/* <div className="tabPanel">
-                        <div className={`tab ${taskFilter == null && 'tab-active'}`} onClick={() => setTaskFilter(null)}>All <div className="label sm">{getFilterCount(null, tasksToList)} </div></div>
-                        <div className={`tab ${taskFilter == TASK_STATUS.PENDING && 'tab-active'}`} onClick={() => setTaskFilter(TASK_STATUS.PENDING)}>Pending <div className="label sm orange">{getFilterCount(TASK_STATUS.PENDING, tasksToList)}</div> </div>
-                        <div className={`tab ${taskFilter == TASK_STATUS.IN_PROGRESS && 'tab-active'}`} onClick={() => setTaskFilter(TASK_STATUS.IN_PROGRESS)}>In Progress <div className="label sm purple">{getFilterCount(TASK_STATUS.IN_PROGRESS, tasksToList)}</div></div>
-                        <div className={`tab ${taskFilter == TASK_STATUS.COMPLETE && 'tab-active'}`} onClick={() => setTaskFilter(TASK_STATUS.COMPLETE)}>Completed <div className="label sm green">{getFilterCount(TASK_STATUS.COMPLETE, tasksToList)}</div></div>
-                    </div> */}
                 </div>
                 <hr />
-
-
                 <div className="detailedList">
-                    {Object.values(userList).map(user =>
+                    {usersToShow.map(user =>
                         <div key={user.id} className="detailedListItemContainer">
-                            <Link to={ROUTES.USER_PROFILE.getUrl(user.id)} className="textPrimary highlight">{user.name}</Link>
-                            <br />
-                            <br />
+                            <div className="flex align-center">
+                                <Link to={ROUTES.USER_PROFILE.getUrl(user.id)} className="textPrimary highlight">{user.name}</Link>
+                                <div className="grow" />
+                                {user.role == ROLES.ADMIN && <div className="label">{user.role}</div>}
+                            </div>
                             <div className="textSecondary"><i className="fa fa-envelope" /> {user.email}</div>
                         </div>)}
                 </div>

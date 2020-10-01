@@ -7,7 +7,7 @@ import { connect } from 'react-redux'
 import ROUTES from '../constants/routes'
 import { createAction, ACTION_TYPES } from '../constants/actions'
 
-function Navbar({ isLoggedIn, user, notifHistory, fetchTasks, fetchUsers }) {
+function Navbar({ isLoggedIn, user, notifHistory, fetchTasks, fetchUsers, shouldRender }) {
 
     const [notifOpen, setNotifOpen] = useState(false)
 
@@ -40,6 +40,7 @@ function Navbar({ isLoggedIn, user, notifHistory, fetchTasks, fetchUsers }) {
                 {isLoggedIn && <>
                     <Link to={ROUTES.USER_LIST.url} exact className="nav-link" activeClassName="activeLink">User List</Link>
                     <Link to={ROUTES.TASK_LIST.url} exact className="nav-link" activeClassName="activeLink">Task List</Link>
+                    <Link to={ROUTES.TASK_CREATE.url} exact className="nav-link" activeClassName="activeLink"><i className="fa fa-plus" /> New Task</Link>
                 </>
                 }
                 <div className="grow" />
@@ -54,7 +55,7 @@ function Navbar({ isLoggedIn, user, notifHistory, fetchTasks, fetchUsers }) {
                 </div>
                 {isLoggedIn ?
                     <>
-                        <div className="navButton" onClick={refreshStore}><i className="nav-icon fa fa-refresh" /></div>
+                        <div className="navButton" onClick={refreshStore}><i className={`nav-icon fa fa-refresh ${shouldRender && 'fa-spin'}`} /></div>
                         <Link to={ROUTES.USER_PROFILE.getUrl(user.id)} className="nav-link" activeClassName="activeLink">{user.name}</Link>
                         <Link to={ROUTES.LOGOUT.url} className="nav-link" activeClassName="activeLink">Log out</Link>
                     </>
@@ -73,6 +74,7 @@ const mapStateToProps = (state, ownProps) => ({
     isLoggedIn: !!state.user.token,
     user: state.user,
     notifHistory: state.utils.notifHistory,
+    shouldRender: state.utils.shouldRender,
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({

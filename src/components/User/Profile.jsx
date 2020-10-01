@@ -9,7 +9,11 @@ import { ROLES } from '../../constants'
 import ROUTES from '../../constants/routes'
 import { ACTION_TYPES, createAction } from '../../constants/actions'
 
-function Profile({ userList, id, userId, resolveSelf, taskList, openEditModal, deleteTask, notFound }) {
+function Profile(props) {
+
+    const { userList, userRole, id, userId, taskList } = props
+    const { resolveSelf, openEditModal, deleteTask, notFound, deleteUser } = props
+
     useEffect(() => {
         if (id == 'me') {
             resolveSelf(userId);
@@ -39,6 +43,8 @@ function Profile({ userList, id, userId, resolveSelf, taskList, openEditModal, d
                 <h5 className="userName">{user.name}</h5>
                 <div className="userEmail"><i className="fa fa-envelope"></i> {user.email}</div>
                 {user.role == ROLES.ADMIN && <div className="label">{user.role}</div>}
+                {user.id == userId && <div className="button yellow outlined"><i className="fa fa-pencil" />&nbsp;&nbsp;Edit User</div>}
+                {userRole == ROLES.ADMIN && user.id != userId && <div className="button secondary contained" onClick={() => {deleteUser(user.id)}}><i className="fa fa-trash fa" />&nbsp;&nbsp;Delete User</div>}
             </div>
             <div className="userProfileDashboard">
                 <div className="taskPanel">
@@ -48,6 +54,13 @@ function Profile({ userList, id, userId, resolveSelf, taskList, openEditModal, d
                     </div>
                     <hr />
                     <div className="detailedList">
+                        {!getTasks(!activeTab).length &&
+                            <div className="emptyList">
+                                <h3>Oops</h3>
+                                <div>No Tasks found</div>
+                                <hr />
+                                {!activeTab && <button className="primary contained"><i className="fa fa-plus" /> &nbsp;Create Task</button>}
+                            </div>}
                         {getTasks(!activeTab).map(task =>
                             <div className="detailedListItemContainer" key={task.id}>
                                 <div className="flex">
@@ -85,15 +98,18 @@ const mapStateToProps = (state, ownProps) => ({
     id: ownProps.match.params.id,
     userList: state.user.userList,
     userId: state.user.id,
+    userRole: state.user.role,
 
     taskList: state.task
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
     openEditModal: (taskId) => dispatch(push(ROUTES.TASK_EDIT.getUrl(taskId))),
-    deleteTask: (id) => dispatch(createAction(ACTION_TYPES.ATTEMPT_TASK_DELETE, { id })),
+    deleteTask: (id) => dispatch(createAction(ACTION_TYPES.ATTEMPT_TASK_DELETE, { id, toRedir: false })),
     resolveSelf: (userId) => dispatch(push(ROUTES.USER_PROFILE.getUrl(userId))),
     notFound: () => dispatch(push(ROUTES.NOT_FOUND.url)),
+
+    deleteUser: (id) => dispatch(createAction(ACTION_TYPES.ATTEMPT_USER_DELETE, { id }))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Profile);

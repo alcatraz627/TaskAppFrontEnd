@@ -21,14 +21,14 @@ const TaskList = ({ fetchTaskList, taskList, fetchStatus, openEditModal, userLis
         return tasks.filter(t => t.status == filterType).length
     }
 
-    const searchTasks = (tasks) => Object.values(tasks)
+    const searchTasks = (tasks) => tasks
         .filter(task => (search.trim() == "") ||
             (task.title.toLowerCase().includes(search.toLowerCase()) ||
                 task.description.toLowerCase().includes(search.toLowerCase())))
 
     const filterTasks = (tasks, filter) => filter ? tasks.filter(t => t.status == taskFilter) : tasks
 
-    const tasksToList = searchTasks(taskList)
+    const tasksToList = searchTasks(Object.values(taskList))
 
 
     function render() {
@@ -56,6 +56,12 @@ const TaskList = ({ fetchTaskList, taskList, fetchStatus, openEditModal, userLis
                 </div>
                 <hr />
                 <div className="detailedList">
+                    {!filterTasks(tasksToList, taskFilter) &&
+                        <div className="emptyList">
+                            <h3>Oops</h3>
+                            <div>No Tasks found</div>
+                        </div>
+                    }
                     {filterTasks(tasksToList, taskFilter).map(task =>
                         <div key={task.id} className="detailedListItemContainer">
                             <div className="flex">
@@ -110,7 +116,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
     fetchTaskList: () => dispatch(createAction(ACTION_TYPES.FETCH_TASK_LIST)),
-    deleteTask: (id) => dispatch(createAction(ACTION_TYPES.ATTEMPT_TASK_DELETE, { id })),
+    deleteTask: (id) => dispatch(createAction(ACTION_TYPES.ATTEMPT_TASK_DELETE, { id, toRedir: false })),
     openEditModal: (taskId) => dispatch(push(ROUTES.TASK_EDIT.getUrl(taskId))),
     openCreateModal: () => dispatch(push(ROUTES.TASK_CREATE.url))
 })

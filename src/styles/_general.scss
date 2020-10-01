@@ -184,12 +184,19 @@ button {
 
 button,
 .button {
+	@include btnStyling(grey);
+	cursor: pointer;
+
 	&.primary {
 		@include btnStyling($primary);
 	}
 
 	&.secondary {
 		@include btnStyling($secondary);
+	}
+
+	&.yellow {
+		@include btnStyling($yellow);
 	}
 
 	// &.secondary {
@@ -322,4 +329,8 @@ hr {
 
 .flex {
 	display: flex;
+}
+
+.align-center {
+	align-items: center;
 }

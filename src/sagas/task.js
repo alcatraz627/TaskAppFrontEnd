@@ -2,7 +2,6 @@ import { put, takeEvery, call, all } from 'redux-saga/effects'
 
 import { push } from 'connected-react-router'
 import apiCall from '../services/api'
-import { getToken, setToken, deleteToken } from '../services/localstorage'
 
 import { HTTP_METHODS, MESSAGES, FETCH_STATUS, FETCH_RESOURCES } from '../constants'
 import ROUTES from '../constants/routes'

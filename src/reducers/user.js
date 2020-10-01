@@ -10,7 +10,7 @@ export default function userReducer(state = initialState.user, { type, payload =
                 'token': payload.token,
                 userList: {
                     ...state.userList,
-                    [payload.user.id]: {...payload.user}
+                    [payload.user.id]: { ...payload.user }
                 }
             })
 
@@ -30,6 +30,10 @@ export default function userReducer(state = initialState.user, { type, payload =
 
         case ACTION_TYPES.LOGIN_ATTEMPTED:
             return { ...state, shouldRender: true }
+
+        case ACTION_TYPES.UPDATE_USER_DELETE:
+            const { [payload.id]: value, ...newList } = state.userList
+            return { ...state, userList: { ...newList } }
 
         default:
             return state

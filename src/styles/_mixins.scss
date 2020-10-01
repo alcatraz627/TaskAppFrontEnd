@@ -11,3 +11,10 @@
 @mixin colorBlack {
 	color: #333;
 }
+
+// To assign bgcolor to notifs
+@mixin getNotifColored($color) {
+	background: $color;
+	// border-color: $green;
+	// color: $green;
+}

@@ -7,7 +7,7 @@ import { connect } from 'react-redux'
 import ROUTES from '../constants/routes'
 import { createAction, ACTION_TYPES } from '../constants/actions'
 
-function Navbar({ isLoggedIn, user, notifHistory, fetchTasks, fetchUsers, shouldRender }) {
+function Navbar({ isLoggedIn, user, notifHistory, fetchTasks, fetchUsers, shouldRender, clearNotifs }) {
 
     const [notifOpen, setNotifOpen] = useState(false)
 
@@ -45,11 +45,16 @@ function Navbar({ isLoggedIn, user, notifHistory, fetchTasks, fetchUsers, should
                 }
                 <div className="grow" />
 
-                <div className="navButton"><i className="nav-icon fa fa-bell" onClick={toggleNotifOpen} />
+                <div className="navButton"><i className={`nav-icon fa fa-bell ${notifOpen && "active"}`} onClick={toggleNotifOpen} />
                     <div className={`navNotifContainer${notifOpen ? " showNotifContainer" : ""}`}>
-                        <div className="navNotifHeader">Notifications</div>
+                        <div className="navNotifHeader">
+                            <i className="fa fa-caret-up fa-3x notifBoxArrow" />
+                            Notifications
+                            <div className="grow" />
+                            <div className="clearNotifButton" onClick={clearNotifs}>Clear</div>
+                        </div>
                         <div className="notifScroll">
-                            {notifHistory.slice().reverse().map(({ message }, i) => <div key={i} className="navNotifItem">{message}</div>)}
+                            {notifHistory.slice().reverse().map(({ message, id, type }) => <div key={id} className={`navNotifItem ${type || ""}`}>{message}</div>)}
                         </div>
                     </div>
                 </div>
@@ -80,6 +85,7 @@ const mapStateToProps = (state, ownProps) => ({
 const mapDispatchToProps = (dispatch, ownProps) => ({
     fetchUsers: () => dispatch(createAction(ACTION_TYPES.FETCH_USER_LIST)),
     fetchTasks: () => dispatch(createAction(ACTION_TYPES.FETCH_TASK_LIST)),
+    clearNotifs: () => dispatch(createAction(ACTION_TYPES.CLEAR_NOTIF_HISTORY))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Navbar)

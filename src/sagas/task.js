@@ -56,13 +56,13 @@ export function* delete_task({ payload: { id, toRedir = true } }) {
         let { status, data, error } = yield call(apiCall, ({ url: API_ROUTES.TASK_ID(id), method: HTTP_METHODS.DELETE }))
         if (status == 200) {
             yield put(createAction(ACTION_TYPES.PUSH_NOTIF, data))
+            if (toRedir) {
+                yield put(push(ROUTES.TASK_LIST.url))
+            }
             yield put(createAction(ACTION_TYPES.UPDATE_TASK_DELETE, { id }))
         } else {
             yield put(createAction(ACTION_TYPES.PUSH_NOTIF, data))
             console.log("Error", data, error)
-        }
-        if (toRedir) {
-            yield put(push(ROUTES.TASK_LIST.url))
         }
     }
 }

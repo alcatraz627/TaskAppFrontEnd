@@ -5,7 +5,7 @@ import { push } from 'connected-react-router'
 import apiCall from '../services/api'
 import { getToken, setToken, deleteToken } from '../services/localstorage'
 
-import { HTTP_METHODS, MESSAGES, FETCH_STATUS, FETCH_RESOURCES } from '../constants'
+import { HTTP_METHODS, MESSAGES, FETCH_STATUS, FETCH_RESOURCES, NOTIF_TYPE } from '../constants'
 import API_ROUTES from '../constants/apiRoutes'
 import ROUTES from '../constants/routes'
 import { ACTION_TYPES, createAction } from '../constants/actions'
@@ -15,10 +15,11 @@ export function* attempt_login({ type, payload }) {
     let { status, data, error } = yield call(apiCall, ({ url: API_ROUTES.LOGIN, method: HTTP_METHODS.POST, payload }))
     if (status == 200) {
         yield put(createAction(ACTION_TYPES.LOGIN_SUCCESS, data))
+        yield put(createAction(ACTION_TYPES.PUSH_NOTIF, { id: 'login', type: NOTIF_TYPE.SUCCESS, message: "Logged in successfully as " + data.user.name }))
     } else if (status == 401) {
-        yield put(createAction(ACTION_TYPES.PUSH_NOTIF, data))
+        yield put(createAction(ACTION_TYPES.PUSH_NOTIF, { id: 'login', type: NOTIF_TYPE.ERROR, ...data }))
     } else {
-        yield put(createAction(ACTION_TYPES.PUSH_NOTIF, error))
+        yield put(createAction(ACTION_TYPES.PUSH_NOTIF, { id: 'login', type: NOTIF_TYPE.ERROR, ...error }))
         console.log("Error", error, data)
     }
 }
@@ -41,6 +42,7 @@ export function* logout_success() {
 export function* fetch_auth_user() {
     let { status, data, error } = yield call(apiCall, ({ url: API_ROUTES.USER_ME }))
     if (status == 200) {
+        yield put(createAction(ACTION_TYPES.PUSH_NOTIF, { id: 'login', type: 'successful', message: "Logged in successfully as " + data.name }))
         yield put(createAction(ACTION_TYPES.LOGIN_SUCCESS, { user: data, token: getToken() }))
     } else {
         yield call(deleteToken)

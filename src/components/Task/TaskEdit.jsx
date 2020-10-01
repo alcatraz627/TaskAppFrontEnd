@@ -12,12 +12,11 @@ import { getDate } from '../../services/helpers'
 
 function TaskEdit(props) {
     const { task, userList, userId, path } = props
-    const { updateTaskItem, createTaskItem, deleteTask, closeModal, unauthorized, notFound, redirAfterDelete } = props
+    const { updateTaskItem, createTaskItem, deleteAction, closeModal, unauthorized, notFound } = props
 
     const [formData, setFormData] = useState(null)
 
     const isCreateModal = path == ROUTES.TASK_CREATE.url // Is the modal opened for task creation or editing?
-    console.log("isCreateModal", isCreateModal, path, ROUTES.TASK_CREATE.url)
     // Refs don't trigger an update when assigned, so can't use them on mount
     // https://medium.com/@teh_builder/ref-objects-inside-useeffect-hooks-eb7c15198780
     // The current fix is to use the body-scroll-lock method after a timeout but this is not ideal.
@@ -125,7 +124,6 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 
     unauthorized: (message) => dispatch(createAction(ACTION_TYPES.SET_MESSAGE, MESSAGES.UNAUTHORIZED)),
     notFound: () => dispatch(push(ROUTES.NOT_FOUND.url)),
-    // redirAfterDelete: () => dispatch(push(ROUTES.TASK_LIST)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(TaskEdit)

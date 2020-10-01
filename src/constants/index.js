@@ -7,7 +7,7 @@ export const HTTP_METHODS = {
 
 export const baseURL = 'http://localhost:8000/api/'
 
-export const NOTIF_DELAY = 2000 // in ms
+export const NOTIF_DELAY = 5000 // in ms
 
 export const MESSAGES = {
     REGISTRATION_SUCCESS: {
@@ -56,4 +56,11 @@ export const TASK_STATUS = {
     PENDING: "PENDING",
     IN_PROGRESS: "IN_PROGRESS",
     COMPLETE: "COMPLETE"
+}
+
+export const NOTIF_TYPE = {
+    SUCCESS: 'SUCCESS',
+    WARNING: 'WARNING',
+    INFO: 'INFO',
+    ERROR: 'ERROR',
 }

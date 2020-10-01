@@ -5,18 +5,34 @@ export default function utilsReducer(state = initialState.utils, { type, payload
     switch (type) {
 
         case ACTION_TYPES.PUSH_NOTIF:
-            return { ...state, notifList: [...state.notifList, payload] }
-        case ACTION_TYPES.CLEAR_NOTIF:
             return {
                 ...state,
-                notifHistory: [...state.notifHistory, Object.assign({}, state.notifList[0])],
-                notifList: state.notifList.splice(1)
+                notifList: {
+                    ...state.notifList,
+                    [payload.id]: { ...payload }
+                }
             }
-        case ACTION_TYPES.CLEAR_NOTIF_QUEUE:
+
+        case ACTION_TYPES.CLEAR_NOTIF:
+            const { [Object.keys(state.notifList)[0]]: clearedNotif, ...restNotifListCleared } = state.notifList
             return {
                 ...state,
-                notifHistory: [...notifList],
-                notifList: []
+                notifHistory: [...state.notifHistory, clearedNotif],
+                notifList: restNotifListCleared,
+            }
+
+        case ACTION_TYPES.CLEAR_NOTIF_HISTORY:
+            return {
+                ...state,
+                notifHistory: [],
+            }
+
+        case ACTION_TYPES.DISMISS_NOTIF:
+            const { [payload.id]: dismissedNotif, ...restNotifListDismissed } = state.notifList
+            return {
+                ...state,
+                notifList: restNotifListDismissed,
+                notifHistory: [...state.notifHistory, dismissedNotif],
             }
 
         case ACTION_TYPES.SET_MESSAGE:

@@ -17,9 +17,26 @@ export default {
     },
 
     utils: {
-        shouldRender: 1, // Count of pending tasks, will render only when >0
+        shouldRender: 1, // Count of pending tasks, will render only when > 0
 
-        notifList: [],
+        notifList: {
+            // testwarn: {
+            //     message: "Warning message",
+            //     id: "testwarn",
+            //     type: "WARNING"
+            // },
+            // testerr: {
+            //     message: "Error message",
+            //     id: "testerr",
+            //     type: "ERROR"
+            // },
+            // testinfo: {
+            //     message: "Info message",
+            //     id: "testinfo",
+            //     type: "INFO"
+            // },
+        },
+
         notifHistory: [],
 
         fetchStatus: Object.assign({},

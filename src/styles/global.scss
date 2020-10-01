@@ -27,6 +27,7 @@ nav.navbar {
 
 		.navButton {
 			display: inline-block;
+			z-index: 12;
 
 			.nav-icon {
 				margin: 4px 4px;
@@ -34,21 +35,22 @@ nav.navbar {
 				border-radius: 100%;
 				color: #fffa;
 				cursor: pointer;
-				&:hover {
+				&:hover,
+				&.active {
 					color: #fff;
 				}
 			}
 
 			.navNotifContainer {
-				// border: 1px dotted red;
 				display: none;
 				position: absolute;
-				margin-top: 10px;
-				margin-left: -60px;
+				margin-top: 36px;
+				margin-left: -114px;
 				background-color: #ddda;
-				min-width: 160px;
 				box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
 				z-index: 1;
+				max-width: 300px;
+				min-width: 300px;
 				&.showNotifContainer {
 					display: block !important;
 				}
@@ -56,26 +58,71 @@ nav.navbar {
 					max-height: 50vh;
 					overflow: auto;
 				}
-				// &:hover .navNotifContainer {
-				// 	display: block;
-				// }
 				.navNotifHeader {
+					.notifBoxArrow {
+						position: absolute;
+						height: auto;
+						top: -32px;
+						z-index: -12;
+						left: 122px;
+						// border: 2px dotted red;
+						// color: black;
+						color: #333;
+					}
+
 					background-color: #333;
-					margin-bottom: 8px;
+					margin-bottom: 4px;
 					color: white;
 					padding: 12px 16px;
 					text-decoration: none;
-					display: block;
+					display: flex;
+					align-items: center;
 					text-align: left;
+					// width: auto;
+					.clearNotifButton {
+						font-size: 0.75em;
+						margin-left: 32px;
+						text-transform: uppercase;
+						border: 1px solid white;
+						padding: 2px 4px;
+						border-radius: 4px;
+						cursor: pointer;
+						&:hover {
+							background-color: white;
+							border-color: white;
+							color: #333;
+						}
+					}
 				}
 				.navNotifItem {
 					background-color: #fff;
-					margin: 8px 0 0;
-					color: black;
+					font-size: 0.85em;
+					margin: 4px 0 0;
+					color: #333;
 					padding: 12px 16px;
 					text-decoration: none;
 					display: block;
 					text-align: left;
+
+					&.successful {
+						@include getNotifColored($green);
+						color: white;
+					}
+
+					&.info {
+						@include getNotifColored($blue);
+						color: white;
+					}
+
+					&.error {
+						@include getNotifColored($secondary);
+						color: white;
+					}
+
+					&.warning {
+						@include getNotifColored($yellow);
+						color: #333;
+					}
 				}
 			}
 			// &:hover .navNotifContainer {
@@ -120,10 +167,6 @@ nav.navbar {
 .container {
 	margin: 0;
 	padding: 60px 120px;
-	width: 80%;
-	// flex: 1 1 auto;
-	// align-self: stretch;
-	align-self: center;
 }
 
 .link {
@@ -204,18 +247,41 @@ nav.navbar {
 
 .notifContainer {
 	// border: 1px dotted red;
-	position: absolute;
+	position: sticky;
 	bottom: 4vh;
 	right: 20px;
 	@extend .body2;
 	.notifBar {
+		text-align: left;
 		box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
 		padding: 12px 32px;
-		background: #111e;
-		color: white;
 		border-radius: 2px;
 		margin: 8px;
 		max-width: 300px;
+		// border: 1px solid grey;
+		color: white;
+		background: #555;
+		opacity: 0.98;
+		display: flex;
+		align-items: baseline;
+
+		&.successful {
+			@include getNotifColored($green);
+		}
+
+		&.info {
+			@include getNotifColored($blue);
+		}
+
+		&.error {
+			@include getNotifColored($secondary);
+		}
+
+		&.warning {
+			@include getNotifColored($yellow);
+			color: #333;
+		}
+
 		// opacity: 0;
 		// bottom: -30px;
 		// visibility: hidden; /* Hidden by default. Visible on click */
@@ -230,7 +296,7 @@ nav.navbar {
 .detailedList {
 	// border: 1px dotted red;
 	.emptyList {
-		h3	{
+		h3 {
 			color: #999;
 		}
 		color: #999;
@@ -711,10 +777,7 @@ textarea.taskDesc {
 		align-self: stretch;
 		padding: 160px 100px;
 		background-color: #0009;
-		// position: absolute;
-		// height: 100%;
 		width: auto;
-		// height: calc(100vh - 120px);
 
 		h1 {
 			// line-height: 0.3em;

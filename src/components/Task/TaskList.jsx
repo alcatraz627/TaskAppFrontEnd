@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom'
 import { FETCH_RESOURCES, TASK_STATUS } from '../../constants'
 import ROUTES from '../../constants/routes'
 import { ACTION_TYPES, createAction } from '../../constants/actions'
-import { getDate, getUser, DELETED } from '../../services/helpers'
+import { getDate, getUser, DELETED, hasDatePassed } from '../../services/helpers'
 
 import ResxRender from '../Utils/ResxRender'
 
@@ -78,14 +78,11 @@ const TaskList = ({ fetchTaskList, taskList, fetchStatus, openEditModal, userLis
                                     </div>}
                             </div>
                             <div className="taskMeta">
-                                <div className="bigText">Created by
-                                    {/* <Link className="createdBy" to={ROUTES.USER_PROFILE.getUrl(task.created_by)}> {userList[task.created_by].name}</Link> */}
-                                    <Link className="createdBy" to={ROUTES.USER_PROFILE.getUrl(task.created_by)}> {getUser(userList, task.created_by).name}</Link>
-                                    {/* {JSON.stringify(getUser(userList, task.created_by))} */}
+                                <div className="bigText">Created by&nbsp;
+                                    <Link className="createdBy" to={ROUTES.USER_PROFILE.getUrl(task.created_by)}>{getUser(userList, task.created_by).name}</Link>
                                 </div>
                                 <div className="grow" />
-                                <div className="bigText">{task.due_date ? `Due by ${getDate(task.due_date)}` : "No due date"}</div>
-                                {/* <div className={`taskStatus ${task.status.toLowerCase()}`}>{task.status}</div> */}
+                                <div className={(task.status != TASK_STATUS.COMPLETE) && hasDatePassed(task.due_date) && "overdueTask"}>{task.due_date ? `Due ${hasDatePassed(task.due_date) ? "on" : "by"} ${getDate(task.due_date)}` : "No due date"}</div>
                             </div>
 
                             <div className="taskMeta">
@@ -100,7 +97,7 @@ const TaskList = ({ fetchTaskList, taskList, fetchStatus, openEditModal, userLis
 
                         </div>)}
                 </div>
-            </div>
+            </div >
         )
     }
 

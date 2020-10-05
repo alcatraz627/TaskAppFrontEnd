@@ -3,6 +3,14 @@ export const getDate = (dateString) => {
     return d.toDateString() + ", " + d.toLocaleTimeString()
 }
 
+export const hasDatePassed = (dateString) => {
+    if(!dateString) return false
+
+    const d = new Date(dateString)
+    const n = new Date()
+    return (n.getTime() >= d.getTime())
+}
+
 export const DELETED = "[DELETED]"
 
 

@@ -5,10 +5,10 @@ import { push, replace } from 'connected-react-router'
 
 import { Link } from 'react-router-dom'
 
-import { ROLES } from '../../constants'
+import { ROLES, TASK_STATUS } from '../../constants'
 import ROUTES from '../../constants/routes'
 import { ACTION_TYPES, createAction } from '../../constants/actions'
-import { getUser, DELETED } from '../../services/helpers'
+import { getDate, DELETED, hasDatePassed } from '../../services/helpers'
 
 function Profile(props) {
 
@@ -34,6 +34,13 @@ function Profile(props) {
     const getTasks = (getAssigned = true) => Object.values(taskList)
         .filter(t => getAssigned ? t.assigned_to == id : t.created_by == id)
 
+    const getTaskType = (filterType, tasks) => {
+        if (!filterType) return tasks
+        return tasks.filter(t => t.status == filterType)
+    }
+
+    const getIncompleteTasks = (tasks) => [...getTaskType(TASK_STATUS.PENDING, tasks), ...getTaskType(TASK_STATUS.IN_PROGRESS, tasks)]
+
     if (!user) {
         return <div className="loader" />
     }
@@ -49,18 +56,62 @@ function Profile(props) {
             </div>
             <div className="userProfileDashboard">
                 <div className="taskPanel">
+                    <div className="taskStatTitle">Performance Statistics</div>
+                    <div className="taskRatioBar">
+                        {(getTasks(true).length == 0) ?
+                            <div className="taskRatioItem default" style={{ flexGrow: 1 }}>No tasks assigned</div>
+                            :
+                            Object.keys(TASK_STATUS)
+                                .map(t => ({ type: t, count: getTaskType(t, getTasks(true)).length }))
+                                .map(({ type, count }, i) => <div key={i} className={`taskRatioItem ${type.toLowerCase()}`} style={{ flexGrow: Math.floor(count) }}>{count}</div>)}
+                    </div>
+
+                    <div className="taskStatTextBox">
+
+                        {(getTasks(true).length == 0) ?
+                            <div className="taskStatText">
+                                <div className="noPending">This user has had no tasks!</div>
+                            </div>
+                            :
+                            <>
+                                <div className="taskStatText">
+                                    <div className="legendBox">
+                                        {Object.keys(TASK_STATUS).map(t => <div key={t} className={`legend ${t.toLowerCase()}`}> {(t[0] + t.slice(1).toLowerCase()).replace("_", " ")} </div>)}
+                                    </div>
+                                </div>
+                                <div className="grow" />
+
+                                {getIncompleteTasks(getTasks(true)).length == 0 ?
+                                    <div className="taskStatText">
+                                        <div className="noPending">No pending tasks!</div>
+                                    </div>
+                                    :
+                                    <div className="taskStatText">
+                                        <div className="fraction">
+                                            <div className="numerator">{getIncompleteTasks(getTasks(true)).filter(t => hasDatePassed(t.due_date)).length}</div>
+                                            <div className="divider"></div>
+                                            <div className="denominator">{getIncompleteTasks(getTasks(true)).length}</div>
+                                        </div>
+                                    incomplete tasks are overdue.
+                                </div>
+                                }
+                            </>
+                        }
+                    </div>
+                </div>
+                <br />
+                <div className="taskPanel">
                     <div className="tabPanel">
                         <div className={`tab ${activeTab == 0 && 'tab-active'}`} onClick={() => setActiveTab(0)}>Assigned Tasks <div className="label sm">{getTasks().length}</div></div>
                         <div className={`tab ${activeTab == 1 && 'tab-active'}`} onClick={() => setActiveTab(1)}>Created Tasks <div className="label purple sm">{getTasks(false).length}</div></div>
                     </div>
                     <hr />
-                    <div className="detailedList">
+                    <div className="detailedList scroll">
                         {!getTasks(!activeTab).length &&
                             <div className="emptyList">
                                 <h3>Oops</h3>
                                 <div>No Tasks found</div>
-                                <hr />
-                                {!activeTab && <button className="primary contained" onClick={openCreateModal}><i className="fa fa-plus" /> &nbsp;Create Task</button>}
+                                {((user.id == userId) ? activeTab : !activeTab) ? <button className="primary contained" onClick={openCreateModal}><i className="fa fa-plus" /> &nbsp;Create Task</button> : ""}
                             </div>}
                         {getTasks(!activeTab).map(task =>
                             <div className="detailedListItemContainer" key={task.id}>
@@ -79,13 +130,17 @@ function Profile(props) {
                                     }
                                 </div>
 
-                                <div className="taskMeta">{
-                                    activeTab == 1 ?
-                                        // userList[task.assigned_to].name :
-                                        // userList[task.created_by].name
-                                        <>Assigned to&nbsp;{getUserName(task.assigned_to, "assignedTo")}</> :
-                                        <>Created by&nbsp;{getUserName(task.created_by, "createdBy", true)}</>
-                                }</div>
+                                <div className="taskMeta">
+                                    <div>
+                                        <div className={task.status != TASK_STATUS.COMPLETE && hasDatePassed(task.due_date) && "overdueTask"}>{task.due_date ? `Due ${hasDatePassed(task.due_date) ? "on" : "by"} ${getDate(task.due_date)}` : "No due date"}</div>
+                                        {activeTab == 1 ?
+                                            <>Assigned to&nbsp;{getUserName(task.assigned_to, "assignedTo")}</> :
+                                            <>Created by&nbsp;{getUserName(task.created_by, "createdBy", true)}</>
+                                        }
+                                    </div>
+                                    <div className="grow" />
+                                    <div className={`taskStatus ${task.status.toLowerCase()}`}>{task.status}</div>
+                                </div>
                             </div>
                         )}
                     </div>

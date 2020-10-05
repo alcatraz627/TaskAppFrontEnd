@@ -1,18 +1,19 @@
 import React, { useState, useEffect } from 'react'
 
 import { connect } from 'react-redux'
-import { push } from 'connected-react-router'
+import { push, replace } from 'connected-react-router'
 
 import { Link } from 'react-router-dom'
 
 import { ROLES } from '../../constants'
 import ROUTES from '../../constants/routes'
 import { ACTION_TYPES, createAction } from '../../constants/actions'
+import { getUser, DELETED } from '../../services/helpers'
 
 function Profile(props) {
 
     const { userList, userRole, id, userId, taskList } = props
-    const { resolveSelf, openEditModal, deleteTask, notFound, deleteUser } = props
+    const { resolveSelf, openEditModal, deleteTask, notFound, deleteUser, openCreateModal } = props
 
     useEffect(() => {
         if (id == 'me') {
@@ -27,8 +28,8 @@ function Profile(props) {
 
     const user = userList[id]
 
-    const getUserName = (id, className = "") =>
-        (userList.hasOwnProperty(id)) ? <Link className={className} to={ROUTES.USER_PROFILE.getUrl(id)}>{userList[id].name}</Link> : "no one"
+    const getUserName = (id, className = "", showIsDeleted) =>
+        (userList.hasOwnProperty(id)) ? <Link className={className} to={ROUTES.USER_PROFILE.getUrl(id)}>{userList[id].name}</Link> : (showIsDeleted ? DELETED : "no one currently")
 
     const getTasks = (getAssigned = true) => Object.values(taskList)
         .filter(t => getAssigned ? t.assigned_to == id : t.created_by == id)
@@ -44,7 +45,7 @@ function Profile(props) {
                 <div className="userEmail"><i className="fa fa-envelope"></i> {user.email}</div>
                 {user.role == ROLES.ADMIN && <div className="label">{user.role}</div>}
                 {user.id == userId && <div className="button yellow outlined"><i className="fa fa-pencil" />&nbsp;&nbsp;Edit User</div>}
-                {userRole == ROLES.ADMIN && user.id != userId && <div className="button secondary contained" onClick={() => {deleteUser(user.id)}}><i className="fa fa-trash fa" />&nbsp;&nbsp;Delete User</div>}
+                {userRole == ROLES.ADMIN && user.id != userId && <div className="button secondary contained" onClick={() => { deleteUser(user.id) }}><i className="fa fa-trash fa" />&nbsp;&nbsp;Delete User</div>}
             </div>
             <div className="userProfileDashboard">
                 <div className="taskPanel">
@@ -59,7 +60,7 @@ function Profile(props) {
                                 <h3>Oops</h3>
                                 <div>No Tasks found</div>
                                 <hr />
-                                {!activeTab && <button className="primary contained"><i className="fa fa-plus" /> &nbsp;Create Task</button>}
+                                {!activeTab && <button className="primary contained" onClick={openCreateModal}><i className="fa fa-plus" /> &nbsp;Create Task</button>}
                             </div>}
                         {getTasks(!activeTab).map(task =>
                             <div className="detailedListItemContainer" key={task.id}>
@@ -83,7 +84,7 @@ function Profile(props) {
                                         // userList[task.assigned_to].name :
                                         // userList[task.created_by].name
                                         <>Assigned to&nbsp;{getUserName(task.assigned_to, "assignedTo")}</> :
-                                        <>Created by&nbsp;{getUserName(task.created_by, "createdBy")}</>
+                                        <>Created by&nbsp;{getUserName(task.created_by, "createdBy", true)}</>
                                 }</div>
                             </div>
                         )}
@@ -104,10 +105,11 @@ const mapStateToProps = (state, ownProps) => ({
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
+    openCreateModal: () => dispatch(push(ROUTES.TASK_CREATE.url)),
     openEditModal: (taskId) => dispatch(push(ROUTES.TASK_EDIT.getUrl(taskId))),
     deleteTask: (id) => dispatch(createAction(ACTION_TYPES.ATTEMPT_TASK_DELETE, { id, toRedir: false })),
     resolveSelf: (userId) => dispatch(push(ROUTES.USER_PROFILE.getUrl(userId))),
-    notFound: () => dispatch(push(ROUTES.NOT_FOUND.url)),
+    notFound: () => dispatch(replace(ROUTES.NOT_FOUND.url)),
 
     deleteUser: (id) => dispatch(createAction(ACTION_TYPES.ATTEMPT_USER_DELETE, { id }))
 })

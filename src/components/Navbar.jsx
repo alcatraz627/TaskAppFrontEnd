@@ -54,7 +54,7 @@ function Navbar({ isLoggedIn, user, notifHistory, fetchTasks, fetchUsers, should
                             <div className="clearNotifButton" onClick={clearNotifs}>Clear</div>
                         </div>
                         <div className="notifScroll">
-                            {notifHistory.slice().reverse().map( ({ message, id, type }) => <div key={id} className={`navNotifItem ${type.toLowerCase() || ""}`}>{message}</div>)}
+                            {notifHistory.slice().reverse().map( ({ message, id, type }, i) => message && <div key={i} className={`navNotifItem ${type.toLowerCase() || ""}`}>{message}</div>)}
                         </div>
                     </div>
                 </div>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
-import { push } from 'connected-react-router'
+import { push, replace } from 'connected-react-router'
 
 import { disableBodyScroll, enableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock';
 
@@ -123,7 +123,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
     closeModal: () => dispatch(push(ownProps.match.params.id ? ROUTES.TASK_ITEM.getUrl(ownProps.match.params.id) : ROUTES.TASK_LIST.url)),
 
     unauthorized: (message) => dispatch(createAction(ACTION_TYPES.SET_MESSAGE, MESSAGES.UNAUTHORIZED)),
-    notFound: () => dispatch(push(ROUTES.NOT_FOUND.url)),
+    notFound: () => dispatch(replace(ROUTES.NOT_FOUND.url)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(TaskEdit)

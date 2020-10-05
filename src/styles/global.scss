@@ -104,7 +104,7 @@ nav.navbar {
 					display: block;
 					text-align: left;
 
-					&.successful {
+					&.successful, &.success {
 						@include getNotifColored($green);
 						color: white;
 					}
@@ -269,7 +269,7 @@ nav.navbar {
 			margin-left: 24px;
 		}
 
-		&.successful {
+		&.successful, &.success {
 			@include getNotifColored($green);
 		}
 

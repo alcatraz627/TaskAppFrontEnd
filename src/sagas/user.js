@@ -42,7 +42,7 @@ export function* logout_success() {
 export function* fetch_auth_user() {
     let { status, data, error } = yield call(apiCall, ({ url: API_ROUTES.USER_ME }))
     if (status == 200) {
-        yield put(createAction(ACTION_TYPES.PUSH_NOTIF, { id: 'login', type: 'successful', message: "Logged in successfully as " + data.name }))
+        yield put(createAction(ACTION_TYPES.PUSH_NOTIF, { id: 'login', type: NOTIF_TYPE.SUCCESS, message: "Logged in successfully as " + data.name }))
         yield put(createAction(ACTION_TYPES.LOGIN_SUCCESS, { user: data, token: getToken() }))
     } else {
         yield call(deleteToken)
@@ -61,7 +61,7 @@ export function* attempt_register({ payload }) {
         // yield put(createAction(ACTION_TYPES.REGISTER_SUCCESS, data))
     } else if (status == 422) {
         console.log("Error", data)
-        yield all(Object.values(data).map(message => put(createAction(ACTION_TYPES.PUSH_NOTIF, { message }))))
+        yield all(Object.values(data).map(message => put(createAction(ACTION_TYPES.PUSH_NOTIF, { message, type: NOTIF_TYPE.ERROR }))))
     } else {
         console.log("Error", data, error)
     }

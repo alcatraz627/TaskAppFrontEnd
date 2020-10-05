@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 
 import { Link } from 'react-router-dom'
-import { push } from 'connected-react-router'
+import { push, replace } from 'connected-react-router'
 
 import { TASK_STATUS } from '../../constants'
 import ROUTES from '../../constants/routes'
@@ -93,7 +93,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
     openEditModal: () => dispatch(push(ROUTES.TASK_EDIT.getUrl(ownProps.match.params.id))),
     updateStatus: (status) => dispatch(createAction(ACTION_TYPES.ATTEMPT_TASK_EDIT, { formData: { status }, id: ownProps.match.params.id })),
     deleteTask: (id) => dispatch(createAction(ACTION_TYPES.ATTEMPT_TASK_DELETE, { id })),
-    notFound: () => dispatch(push(ROUTES.NOT_FOUND.url)),
+    notFound: () => dispatch(replace(ROUTES.NOT_FOUND.url)),
 });
 
 

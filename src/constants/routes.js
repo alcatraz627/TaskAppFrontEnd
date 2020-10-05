@@ -113,19 +113,19 @@ const routes = {
         Component: Message,
     },
     ROOT: {
+        // Placed at the last otherwise it will override all other 
+        // routes because of the `/` in front of every route
         url: '/',
         Component: Home,
         exact: true,
     },
 
     NOT_FOUND: {
-        // url: '/404',
-        url: '/*',
+        // And placed this AFTER the root for a *default* case
+        url: '/oops',
         Component: NotFound,
     },
 
-    // Placed at the last otherwise it will override all other routes because of
-    // the `/` in front of every route
 
 }
 

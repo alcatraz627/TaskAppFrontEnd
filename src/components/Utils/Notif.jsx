@@ -21,7 +21,7 @@ function Notif({ notifList, dismissNotif, pushNotif, isLoggedIn, userId }) {
             channel.bind('listenerEvent', function (data) {
                 // console.log(data)
                 try {
-                    JSON.parse(data)
+                    // JSON.parse(data)
                     pushNotif(data)                    
                 } catch (error) {
                     console.log("Error displaying notification", error)

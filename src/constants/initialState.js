@@ -18,7 +18,7 @@ export default {
 
     utils: {
         shouldRender: 1, // Count of pending tasks, will render only when > 0
-
+        isOnline: false,
         notifList: {
             // testwarn: {
             //     message: "Warning message",

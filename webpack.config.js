@@ -3,6 +3,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 const WorkBoxPlugin = require('workbox-webpack-plugin')
 
+const Dotenv = require('dotenv-webpack')
+
 module.exports = {
     entry: './src/index.js',
     module: {
@@ -58,7 +60,8 @@ module.exports = {
         new WorkBoxPlugin.GenerateSW({
             clientsClaim: true,
             skipWaiting: true,
-        })
+        }),
+        new Dotenv(),
     ],
     output: {
         path: __dirname + '/dist',

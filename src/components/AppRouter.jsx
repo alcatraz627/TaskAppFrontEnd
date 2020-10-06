@@ -17,9 +17,9 @@ export const AppRouter = ({ shouldRender }) => {
         return (<>
             <Switch>
                 {Object.values(ROUTES).filter(f => f.hasOwnProperty('Component'))
-                    .map(({ url, Component, auth = false, guestOnly = false, redirect = ROUTES.LOGIN.url, exact }) =>
+                    .map(({ url, Component, auth = false, guestOnly = false, redirect = ROUTES.LOGIN.url, exact, onlineReq = true }) =>
                         <ProtectedRoute key={url} path={url} component={Component} auth={auth}
-                            guestOnly={guestOnly} redirect={redirect} exact={exact} />
+                            guestOnly={guestOnly} redirect={redirect} exact={exact} onlineReq={onlineReq} />
                     )}
                 <Route component={ROUTES.NOT_FOUND.Component} />
             </Switch>

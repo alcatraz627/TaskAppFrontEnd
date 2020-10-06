@@ -71,6 +71,8 @@ export const ACTION_TYPES = {
 
     SHOULD_RENDER: 'SHOULD_RENDER',
     PAUSE_RENDER: 'PAUSE_RENDER',
+
+    SET_ONLINE_STATUS: 'SET_ONLINE_STATUS',
 }
 
 export function createAction(action_type, payload = null) {

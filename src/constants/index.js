@@ -5,9 +5,11 @@ export const HTTP_METHODS = {
     DELETE: 'DELETE'
 }
 
-export const baseURL = 'http://localhost:8000/api/'
+// export const baseURL = 'http://localhost:8000/api/'
+export const baseURL = process.env.API_ROOT
 
-export const NOTIF_DELAY = 5000 // in ms
+// export const NOTIF_DELAY = 10 * 1000 // in ms
+export const NOTIF_DELAY = parseInt(process.env.NOTIF_DELAY) || 10 * 1000 // in ms
 
 export const MESSAGES = {
     REGISTRATION_SUCCESS: {

@@ -80,6 +80,8 @@ const mapStateToProps = (state, ownProps) => ({
     user: state.user,
     notifHistory: state.utils.notifHistory,
     shouldRender: state.utils.shouldRender,
+
+    isOnline: state.utils.isOnline,
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({

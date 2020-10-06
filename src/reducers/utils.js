@@ -63,6 +63,10 @@ export default function utilsReducer(state = initialState.utils, { type, payload
         case ACTION_TYPES.SHOULD_RENDER:
             return { ...state, shouldRender: state.shouldRender - 1 }
 
+        case ACTION_TYPES.SET_ONLINE_STATUS:
+            return { ...state, isOnline: payload.isOnline || false }
+
+
         default:
             return state
     }

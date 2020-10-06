@@ -37,8 +37,6 @@ const ForgotPass = (props) => {
             case ROUTES.FORGOTPASS_REQUEST.url:
                 forgotpass_request(email)
                 break;
-            // case ROUTES.FORGOTPASS_VERIFY.url:
-            //     forgotpass_reset(token)
             case ROUTES.FORGOTPASS_RESET.url:
                 forgotpass_reset(token, password, password_confirmation)
                 break;
@@ -84,7 +82,6 @@ const ForgotPass = (props) => {
             notFound()
             return <div className="loader" />
     }
-
 }
 
 const mapStateToProps = (state, ownProps) => ({

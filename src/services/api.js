@@ -3,7 +3,7 @@ import axios from 'axios'
 import { HTTP_METHODS, baseURL } from '../constants'
 
 // import store from '../utils/store'
-import {getToken} from './localstorage'
+import { getToken } from './localstorage'
 
 export default async function apiCall({ url, method = HTTP_METHODS.GET, payload = {} }) {
     // const state = store.getState()
@@ -34,7 +34,7 @@ export default async function apiCall({ url, method = HTTP_METHODS.GET, payload 
         return resp;
     }).catch((error) => {
         console.log("Axios error", error.toJSON())
-        return error;
+        return { error };
     })
 
     return resp;

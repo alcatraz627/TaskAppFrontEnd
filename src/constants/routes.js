@@ -20,14 +20,14 @@ import NotFound from '../components/Utils/NotFound'
  * - auth: whether the user must be logged in to access.
  * - guestOnly: whether to prevent logged in users from accessing the route(eg: login). Overrides the auth condition.
  * - Component: The React Component to render. The 'C' must be capitalized as per react component naming convention.
-//  * - extraProps: Any extra props to be passed to the component.
+ * - extraProps: Any extra props to be passed to the component.
  * - exact: Is the route match exact.
+ * - onlineReq: Does the app needs to be online to allow that route
  */
 
 const routes = {
     LOGIN: {
         url: '/login',
-        auth: false,
         guestOnly: true,
         Component: Login,
         redirect: '/',
@@ -48,6 +48,7 @@ const routes = {
         url: '/register',
         guestOnly: true,
         Component: Register,
+        redirect: '/',
     },
     // PROFILE: {
     //     url: "/user/:id",
@@ -110,6 +111,7 @@ const routes = {
     MESSAGE: {
         url: '/message',
         Component: Message,
+        onlineReq: false,
     },
     ROOT: {
         // Placed at the last otherwise it will override all other 
@@ -117,12 +119,14 @@ const routes = {
         url: '/',
         Component: Home,
         exact: true,
+        onlineReq: false,
     },
 
     NOT_FOUND: {
         // And placed this AFTER the root for a *default* case
         url: '/oops',
         Component: NotFound,
+        onlineReq: false,
     },
 
 

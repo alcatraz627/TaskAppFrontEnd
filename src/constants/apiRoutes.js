@@ -10,7 +10,11 @@ const apiRoutes = {
     TASK_ID: id => `tasks/${id}/`,
     
     REGISTER: 'auth/register/',
-    VERIFY_EMAIL_TOKEN: token => `auth/verify/${token}/`
+    VERIFY_EMAIL_TOKEN: token => `auth/verify/${token}/`,
+
+    FORGOTPASS_REQUEST: 'auth/forgotpass/request',
+    FORGOTPASS_VERIFY: 'auth/forgotpass/verify',
+    FORGOTPASS_RESET: 'auth/forgotpass/reset',
 }
 
 export default apiRoutes

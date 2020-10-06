@@ -21,7 +21,7 @@ export const AppRouter = ({ shouldRender }) => {
                         <ProtectedRoute key={url} path={url} component={Component} auth={auth}
                             guestOnly={guestOnly} redirect={redirect} exact={exact} />
                     )}
-                <Route component={ROUTES.NOT_FOUND.url} />
+                <Route component={ROUTES.NOT_FOUND.Component} />
             </Switch>
         </>
         )

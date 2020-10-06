@@ -41,6 +41,7 @@ function Login({ attempt_login, push_notif }) {
                 </div>
                 <button type="submit" className="primary contained lg" disabled={!(capVerified && email.length && password.length)}>Log in</button>
                 <div className="body1">Don't have an account? <Link className="link" to={ROUTES.REGISTER.url}>Sign up</Link> here</div>
+                <div className="body1">Forgot password? <Link className="link" to={ROUTES.FORGOTPASS_REQUEST.url}>Recover your password here</Link></div>
             </form>
         </div>)
 }

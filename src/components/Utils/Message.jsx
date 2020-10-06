@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 
 import { ACTION_TYPES, createAction } from '../../constants/actions'
 
-import { push } from 'connected-react-router'
+import { replace } from 'connected-react-router'
 import ROUTES from '../../constants/routes'
 
 function Message({ message: { title, body }, clearNotif, navAway }) {
@@ -17,7 +17,7 @@ function Message({ message: { title, body }, clearNotif, navAway }) {
     }, [])
 
     return <div className="container center">
-        <h3>{title}</h3>
+        <h4>{title}</h4>
         <div className="body1">{body}</div>
     </div>
 }
@@ -28,7 +28,7 @@ const mapStateToProps = (state, ownProps) => ({
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
     clearNotif: () => dispatch(createAction(ACTION_TYPES.CLEAR_MESSAGE)),
-    navAway: () => dispatch(push(ROUTES.ROOT.url)),
+    navAway: () => dispatch(replace(ROUTES.ROOT.url)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Message)

@@ -76,13 +76,8 @@ const routes = {
         guestOnly: true,
         Component: ForgotPass,
     },
-    FORGOTPASS_VERIFY: {
-        url: '/forgotpass/verify',
-        guestOnly: true,
-        Component: ForgotPass,
-    },
-    FORGOTPASS_SUCCESS: {
-        url: '/forgotpass/success',
+    FORGOTPASS_RESET: {
+        url: '/forgotpass/reset/:token',
         guestOnly: true,
         Component: ForgotPass,
     },

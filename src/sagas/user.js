@@ -108,6 +108,56 @@ export function* delete_user({ payload: { id, toRedir = true } }) {
     }
 }
 
+export function* forgotpass_request({ payload }) {
+    let { status, data, error } = yield call(apiCall, ({ url: API_ROUTES.FORGOTPASS_REQUEST, payload, method: HTTP_METHODS.POST }))
+    switch (status) {
+
+        case 201:
+            yield put(createAction(ACTION_TYPES.SET_MESSAGE, MESSAGES.FORGOTPASS_REQ_SUCCESS))
+            break;
+        case 401:
+        case 404:
+            yield put(createAction(ACTION_TYPES.PUSH_NOTIF, data))
+            break;
+
+        default:
+            console.log("Error", data, error)
+    }
+}
+
+export function* forgotpass_verify({ payload }) {
+    let { status, data, error } = yield call(apiCall, ({ url: API_ROUTES.FORGOTPASS_VERIFY, payload, method: HTTP_METHODS.POST }))
+    switch (status) {
+        // case 202:
+        //     yield put(createAction(ACTION_TYPES.PUSH_NOTIF, data))
+        //     break;
+        case 400:
+            yield put(createAction(ACTION_TYPES.SET_MESSAGE, MESSAGES.FORGOTPASS_VEFIF_FAIL))
+            break;
+
+        default:
+            console.log("Error", data, error)
+    }
+}
+
+export function* forgotpass_reset({ payload }) {
+    let { status, data, error } = yield call(apiCall, ({ url: API_ROUTES.FORGOTPASS_RESET, payload, method: HTTP_METHODS.POST }))
+
+    switch (status) {
+        case 200:
+            yield put(createAction(ACTION_TYPES.SET_MESSAGE, MESSAGES.FORGOTPASS_RESET_SUCCESS))
+            break;
+        case 422:
+            yield all(data.password.map(message => put(createAction(ACTION_TYPES.PUSH_NOTIF, { message, type: NOTIF_TYPE.ERROR }))))
+            break;
+
+        default:
+            if (error) {
+                console.log("Error", data, error)
+            }
+    }
+}
+
 
 // export function* fetch_user_item(action) {
 //     yield put(createAction(ACTION_TYPES.SET_FETCH_STATUS, { [FETCH_RESOURCES.USER_ITEM]: FETCH_STATUS.FETCHING }))
@@ -130,16 +180,16 @@ export default function* userSaga() {
     yield takeEvery(ACTION_TYPES.LOGIN_SUCCESS, login_success)
     yield takeEvery(ACTION_TYPES.LOGOUT_SUCCESS, logout_success)
 
+    yield takeEvery(ACTION_TYPES.FETCH_USER_LIST, fetch_user_list)
     yield takeEvery(ACTION_TYPES.FETCH_AUTH_USER, fetch_auth_user)
 
     yield takeEvery(ACTION_TYPES.ATTEMPT_REGISTER, attempt_register)
     // yield takeEvery(ACTION_TYPES.REGISTER_SUCCESS, register_success)
-
     yield takeEvery(ACTION_TYPES.ATTEMPT_EMAIL_VERIF, attempt_email_verif)
-
     yield takeEvery(ACTION_TYPES.ATTEMPT_USER_DELETE, delete_user)
 
-
-    yield takeEvery(ACTION_TYPES.FETCH_USER_LIST, fetch_user_list)
+    yield takeEvery(ACTION_TYPES.FORGOTPASS_REQUEST, forgotpass_request)
+    yield takeEvery(ACTION_TYPES.FORGOTPASS_VERIFY, forgotpass_verify)
+    yield takeEvery(ACTION_TYPES.FORGOTPASS_RESET, forgotpass_reset)
 
 }

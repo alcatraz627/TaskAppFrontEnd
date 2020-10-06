@@ -16,7 +16,7 @@ export const MESSAGES = {
     },
     EMAIL_VERIF_SUCCESS: {
         title: "Email Verified!",
-        body: "You can now proceed to login",
+        body: "You can now proceed to login.",
     },
     EMAIL_VERIF_FAILED: {
         title: "Invalid token",
@@ -24,11 +24,25 @@ export const MESSAGES = {
     },
     NOT_FOUND: {
         title: "Not found",
-        body: "The page you are looking for is unavailable. "
+        body: "The page you are looking for is unavailable."
     },
     UNAUTHORIZED: {
         title: "Unauthorized",
         body: "Your account does not have sufficient permissions for that action."
+    },
+
+    FORGOTPASS_REQ_SUCCESS: {
+        title: "A link has been sent to your email",
+        body: "Please click on that link to proceed with the passord recovery."
+    },
+
+    FORGOTPASS_VEFIF_FAIL: {
+        title: "Link error",
+        body: "The link is invalid or has expired. Please generate a fresh password reset link."
+    },
+    FORGOTPASS_RESET_SUCCESS: {
+        title: "Password reset successfully!",
+        body: "Your password has been successfully updated. You can now login with your new password."
     },
 }
 

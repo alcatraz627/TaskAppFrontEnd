@@ -241,9 +241,6 @@ nav.navbar {
 	padding: 40px 12px;
 	text-align: center;
 	flex: 1 1 auto;
-	// height: 100%;
-	// display: flex;
-	// border-radius: 20px;
 }
 
 .notifContainer {
@@ -579,6 +576,28 @@ nav.navbar {
 	.userProfileDashboard {
 		flex-grow: 1;
 		padding: 20px;
+	}
+}
+
+.forgotPassContainer {
+	// background: #f7f7f7;
+	flex-grow: 1;
+
+	.forgotPassForm {
+		max-width: 400px;
+		text-align: center;
+		margin: 60px auto;
+		border: 1px solid #ccc;
+		padding: 40px 48px;
+		border-radius: 12px;
+		background-color: #fff;
+	
+		// min-width: 400px;
+		// max-width: 500px;
+		// margin-left: auto;
+		// padding: 40px 12px;
+		// text-align: center;
+		// flex: 1 1 auto;
 	}
 }
 

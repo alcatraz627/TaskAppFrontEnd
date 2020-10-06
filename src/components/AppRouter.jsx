@@ -16,15 +16,13 @@ export const AppRouter = ({ shouldRender }) => {
     } else
         return (<>
             <Switch>
-                {Object.values(ROUTES).filter(f => !(f.isModal) && f.hasOwnProperty('Component'))
+                {Object.values(ROUTES).filter(f => f.hasOwnProperty('Component'))
                     .map(({ url, Component, auth = false, guestOnly = false, redirect = ROUTES.LOGIN.url, exact }) =>
                         <ProtectedRoute key={url} path={url} component={Component} auth={auth}
                             guestOnly={guestOnly} redirect={redirect} exact={exact} />
                     )}
                 <Route component={ROUTES.NOT_FOUND.url} />
             </Switch>
-            <ProtectedRoute path={ROUTES.TASK_EDIT.url} component={ROUTES.TASK_EDIT.Component}
-                guestOnly={ROUTES.TASK_EDIT.guestOnly} redirect={ROUTES.LOGIN.url} auth={ROUTES.TASK_EDIT.auth} />
         </>
         )
 }

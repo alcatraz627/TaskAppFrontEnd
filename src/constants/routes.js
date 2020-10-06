@@ -2,6 +2,7 @@ import Home from '../components/Home'
 import Login from '../components/Auth/Login'
 import Logout from '../components/Auth/Logout'
 import Register from '../components/Auth/Register'
+import ForgotPass from '../components/Auth/ForgotPass'
 
 import Profile from '../components/User/Profile'
 import UserList from '../components/User/UserList'
@@ -73,14 +74,17 @@ const routes = {
     FORGOTPASS_REQUEST: {
         url: '/forgotpass/request',
         guestOnly: true,
+        Component: ForgotPass,
     },
     FORGOTPASS_VERIFY: {
         url: '/forgotpass/verify',
         guestOnly: true,
+        Component: ForgotPass,
     },
     FORGOTPASS_SUCCESS: {
         url: '/forgotpass/success',
         guestOnly: true,
+        Component: ForgotPass,
     },
 
     TASK_CREATE: {

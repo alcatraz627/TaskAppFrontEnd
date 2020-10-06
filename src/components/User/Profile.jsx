@@ -132,7 +132,7 @@ function Profile(props) {
 
                                 <div className="taskMeta">
                                     <div>
-                                        <div className={task.status != TASK_STATUS.COMPLETE && hasDatePassed(task.due_date) && "overdueTask"}>{task.due_date ? `Due ${hasDatePassed(task.due_date) ? "on" : "by"} ${getDate(task.due_date)}` : "No due date"}</div>
+                                        <div className={(task.status != TASK_STATUS.COMPLETE && hasDatePassed(task.due_date)) ? "overdueTask" : ""}>{task.due_date ? `Due ${hasDatePassed(task.due_date) ? "on" : "by"} ${getDate(task.due_date)}` : "No due date"}</div>
                                         {activeTab == 1 ?
                                             <>Assigned to&nbsp;{getUserName(task.assigned_to, "assignedTo")}</> :
                                             <>Created by&nbsp;{getUserName(task.created_by, "createdBy", true)}</>

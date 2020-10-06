@@ -10,7 +10,7 @@ function ProtectedRoute(props) {
     const { Component, path, redir = ROUTES.LOGIN.url, guestOnly = false, auth = false, isLoggedIn, redirect, exact=false, ...rest } = props;
 
     const allow = guestOnly ? !isLoggedIn : (auth ? isLoggedIn : true)
-
+    console.log("Allow", path, allow)
     return allow ? <Route path={path} component={Component} exact {...rest} /> : <Redirect to={redirect} />
 }
 

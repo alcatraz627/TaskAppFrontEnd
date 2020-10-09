@@ -10,9 +10,11 @@ nav.navbar {
 	background-color: $primary;
 	color: white;
 
+	// background-image: linear-gradient(315deg, $secondary 0%, $primary 74%);
+
 	// -webkit-box-shadow: 0 8px 6px -6px #999;
 	// -moz-box-shadow: 0 8px 6px -6px #999;
-	box-shadow: 0 8px 6px -6px #555;
+// box-shadow: 0 8px 6px -6px #555;
 	z-index: 100;
 
 	.toolbar {
@@ -250,6 +252,7 @@ nav.navbar {
 	bottom: 4vh;
 	right: 20px;
 	@extend .body2;
+	z-index: 100;
 	.notifBar {
 		text-align: left;
 		box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
@@ -359,6 +362,11 @@ nav.navbar {
 	}
 }
 
+.userVerified {
+	@extend .body2;
+	color: $yellow;
+}
+
 .userProfileContainer {
 	flex-grow: 1;
 	display: flex;
@@ -388,6 +396,8 @@ nav.navbar {
 			@extend .body2;
 			margin-bottom: 8px;
 		}
+		// .userVerified {
+		// }
 
 		.button {
 			padding: 8px;
@@ -591,7 +601,7 @@ nav.navbar {
 		padding: 40px 48px;
 		border-radius: 12px;
 		background-color: #fff;
-	
+
 		// min-width: 400px;
 		// max-width: 500px;
 		// margin-left: auto;
@@ -853,8 +863,25 @@ textarea.taskDesc {
 	height: 100%;
 	// padding: 130px 0;
 	// margin:auto;
-	background: #000a;
+	// background: #000a;
+
 	display: flex;
+	z-index: 20;
+	background-color: #fffa;
+	background-image: linear-gradient(315deg, $secondary 0%, $primary 74%);
+
+	// &::before {
+	// 	content: "";
+	// 	position: absolute;
+
+	// 	width: 110%;
+	// 	height: 110%;
+	// 	margin: -5% -10%;
+
+	// 	// overflow: hidden!important;
+
+	// 	z-index: -11;
+	// }
 
 	.taskContainer {
 		background-color: #fff;
@@ -865,11 +892,28 @@ textarea.taskDesc {
 		flex-direction: column;
 	}
 
+	.userContainer {
+		border-radius: 12px;
+		background-color: #fffa;
+		margin: 140px auto 80px;
+		padding: 8px 32px;
+		display: flex;
+		flex-direction: column;
+		width: 400px;
+	}
+
 	.modalForm {
 		display: flex;
 		justify-content: space-between;
 		.modalFormData {
 			flex: 1;
+			// input,
+			// select {
+			// 	background-color: transparent;
+			// }
+		}
+		&.fullWidth {
+			flex-direction: column;
 		}
 	}
 
@@ -880,6 +924,11 @@ textarea.taskDesc {
 			font-size: 1.6em;
 			border-width: 0 0 2px 0;
 			width: 80%;
+		}
+		&.fullWidth {
+			width: -webkit-fill-available;
+			width: -moz-fill-available;
+			width: fill-available;
 		}
 	}
 

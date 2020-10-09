@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 
 import { connect } from 'react-redux'
+import { push } from 'connected-react-router'
 import { createAction, ACTION_TYPES } from '../../constants/actions'
 
 import Pusher from 'pusher-js';
@@ -10,7 +11,7 @@ const pusher = new Pusher('22b4002e02b4fa704cb1', {
     cluster: 'ap2'
 });
 
-function Notif({ notifList, dismissNotif, pushNotif, isLoggedIn, userId }) {
+function Notif({ notifList, dismissNotif, pushNotif, isLoggedIn, userId, redir }) {
 
     useEffect(() => {
         let channel;
@@ -22,7 +23,7 @@ function Notif({ notifList, dismissNotif, pushNotif, isLoggedIn, userId }) {
                 // console.log(data)
                 try {
                     // JSON.parse(data)
-                    pushNotif(data)                    
+                    pushNotif(data)
                 } catch (error) {
                     console.log("Error displaying notification", error)
                 }
@@ -36,9 +37,15 @@ function Notif({ notifList, dismissNotif, pushNotif, isLoggedIn, userId }) {
 
     }, [isLoggedIn])
 
+    const handleClick = (link) => {
+        if (link) {
+            redir(link)
+        }
+    }
+
     return <div className="notifContainer" align="right">
-        {Object.values(notifList).map(({ message, type, id }) => (
-            <div key={id} className={`notifBar visible ${type.toLowerCase()}`}>
+        {Object.values(notifList).map(({ message, type, id, link }) => (
+            <div key={id} className={`notifBar visible ${type.toLowerCase()} ${!!link?'pointer':''}`} onClick={() => handleClick(link)}>
                 {message}
                 <div className="grow"></div>
                 <i className="fa fa-times" onClick={() => dismissNotif(id)} />
@@ -54,7 +61,8 @@ const mapStateToProps = (state, ownProps) => ({
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
     dismissNotif: id => dispatch(createAction(ACTION_TYPES.DISMISS_NOTIF, { id })),
-    pushNotif: data => dispatch(createAction(ACTION_TYPES.PUSH_NOTIF, data))
+    pushNotif: data => dispatch(createAction(ACTION_TYPES.PUSH_NOTIF, data)),
+    redir: link => dispatch(push(link)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Notif)

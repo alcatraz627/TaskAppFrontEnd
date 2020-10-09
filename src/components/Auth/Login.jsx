@@ -37,7 +37,7 @@ function Login({ attempt_login, push_notif }) {
                 <div className="formgroup">
                     {/* ReCAPTCHA keys for testing on localhost: 
                     https://stackoverflow.com/questions/46421887/how-to-use-recaptcha-v2-on-localhost?rq=1 */}
-                    <ReCAPTCHA sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI" theme="dark" onChange={() => setCapVerified(true)} />
+                    <ReCAPTCHA sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI" onChange={() => setCapVerified(true)} />
                 </div>
                 <button type="submit" className="primary contained lg" disabled={!(capVerified && email.length && password.length)}>Log in</button>
                 <div className="body1">Don't have an account? <Link className="link" to={ROUTES.REGISTER.url}>Sign up</Link> here</div>

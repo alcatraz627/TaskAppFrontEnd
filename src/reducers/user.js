@@ -3,11 +3,14 @@ import { ACTION_TYPES } from '../constants/actions'
 
 export default function userReducer(state = initialState.user, { type, payload = {} }) {
     switch (type) {
+        case ACTION_TYPES.LOGIN_ATTEMPTED:
+            return { ...state, shouldRender: true }
+
         case ACTION_TYPES.LOGIN_SUCCESS:
             return ({
                 ...state,
                 ...payload.user,
-                'token': payload.token,
+                token: payload.token,
                 userList: {
                     ...state.userList,
                     [payload.user.id]: { ...payload.user }
@@ -28,8 +31,8 @@ export default function userReducer(state = initialState.user, { type, payload =
             const userList = payload.map((u) => ({ [u.id]: u }))
             return { ...state, userList: Object.assign({}, ...userList) };
 
-        case ACTION_TYPES.LOGIN_ATTEMPTED:
-            return { ...state, shouldRender: true }
+        case ACTION_TYPES.UPDATE_USER_ITEM:
+            return { ...state, userList: { ...state.userList, [payload.id]: { ...payload } } }
 
         case ACTION_TYPES.UPDATE_USER_DELETE:
             const { [payload.id]: value, ...newList } = state.userList
@@ -38,5 +41,4 @@ export default function userReducer(state = initialState.user, { type, payload =
         default:
             return state
     }
-    return (state)
 }

@@ -6,6 +6,7 @@ import ForgotPass from '../components/Auth/ForgotPass'
 
 import Profile from '../components/User/Profile'
 import UserList from '../components/User/UserList'
+import UserCreate from '../components/User/UserCreate'
 
 import TaskList from '../components/Task/TaskList'
 import TaskItem from '../components/Task/TaskItem'
@@ -56,6 +57,11 @@ const routes = {
     //     auth: true,
     //     Component: Profile,
     // },
+    USER_CREATE: {
+        url: '/user/create',
+        Component: UserCreate,
+        auth: true,
+    },
     USER_PROFILE: {
         url: "/user/:id",
         getUrl: id => `/user/${id}`,
@@ -67,6 +73,7 @@ const routes = {
         Component: UserList,
         auth: true,
     },
+
     DASHBOARD: {
         url: '/dashboard',
         auth: true,

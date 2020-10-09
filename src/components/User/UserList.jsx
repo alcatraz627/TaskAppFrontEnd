@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 
 import { Link } from 'react-router-dom'
+import { push } from 'connected-react-router'
 
 import { FETCH_RESOURCES, ROLES } from '../../constants'
 import ROUTES from '../../constants/routes'
@@ -52,7 +53,12 @@ const UserList = (props) => {
                                 <div className="grow" />
                                 {user.role == ROLES.ADMIN && <div className="label">{user.role}</div>}
                             </div>
-                            <div className="textSecondary"><i className="fa fa-envelope" /> {user.email}</div>
+                            <div className="flex">
+                                <div className="textSecondary"><i className="fa fa-envelope" /> {user.email}</div>
+                                <div className="grow" />
+                                {!user.verified && <div className="userVerified"><i className="fa fa-exclamation-triangle" /> User verification pending</div>}
+
+                            </div>
                         </div>)}
                 </div>
             </div>
@@ -69,7 +75,8 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-    fetchUserList: () => dispatch(createAction(ACTION_TYPES.FETCH_USER_LIST))
+    fetchUserList: () => dispatch(createAction(ACTION_TYPES.FETCH_USER_LIST)),
+    openCreateModal: () => dispatch(push(ROUTES.USER_CREATE.url)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserList)

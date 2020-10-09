@@ -49,7 +49,8 @@ function Profile(props) {
             <div className="userProfileSidebar">
                 <img className="profilePic" />
                 <h5 className="userName">{user.name}</h5>
-                <div className="userEmail"><i className="fa fa-envelope"></i> {user.email}</div>
+                <div className="userEmail"><i className="fa fa-envelope" /> {user.email}</div>
+                {!user.verified && <div className="userVerified"><i className="fa fa-exclamation-triangle" /> User verification pending</div>}
                 {user.role == ROLES.ADMIN && <div className="label">{user.role}</div>}
                 {user.id == userId && <div className="button yellow outlined"><i className="fa fa-pencil" />&nbsp;&nbsp;Edit User</div>}
                 {userRole == ROLES.ADMIN && user.id != userId && <div className="button secondary contained" onClick={() => { deleteUser(user.id) }}><i className="fa fa-trash fa" />&nbsp;&nbsp;Delete User</div>}

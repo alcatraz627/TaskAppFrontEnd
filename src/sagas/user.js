@@ -78,6 +78,26 @@ export function* attempt_email_verif({ payload }) {
     }
 }
 
+export function* attempt_user_create({ payload: { formData } }) {
+    let { status, data, error } = yield call(apiCall, ({ url: API_ROUTES.USER_LIST, method: HTTP_METHODS.POST, payload: formData }))
+    switch (status) {
+        case 201:
+            yield put(createAction(ACTION_TYPES.PUSH_NOTIF, { message: data.message, type: data.type }))
+            yield put(createAction(ACTION_TYPES.UPDATE_USER_ITEM, data.user))
+            // ?TODO: Task item re-render
+            yield put(push(ROUTES.USER_PROFILE.getUrl(data.user.id)))
+            break
+        case 201:
+        case 422:
+            yield all(Object.values(data).map(message => put(createAction(ACTION_TYPES.PUSH_NOTIF, { message, type: NOTIF_TYPE.ERROR }))))
+            break
+        default:
+            yield put(createAction(ACTION_TYPES.PUSH_NOTIF, { message: data.message, type: data.type || NOTIF_TYPE.ERROR }))
+            console.log("Error", data, error)
+            break
+    }
+}
+
 export function* fetch_user_list(action) {
     yield put(createAction(ACTION_TYPES.PAUSE_RENDER))
     yield put(createAction(ACTION_TYPES.SET_FETCH_STATUS, { [FETCH_RESOURCES.USER_LIST]: FETCH_STATUS.FETCHING }))
@@ -186,6 +206,7 @@ export default function* userSaga() {
     yield takeEvery(ACTION_TYPES.ATTEMPT_REGISTER, attempt_register)
     // yield takeEvery(ACTION_TYPES.REGISTER_SUCCESS, register_success)
     yield takeEvery(ACTION_TYPES.ATTEMPT_EMAIL_VERIF, attempt_email_verif)
+    yield takeEvery(ACTION_TYPES.ATTEMPT_USER_CREATE, attempt_user_create)
     yield takeEvery(ACTION_TYPES.ATTEMPT_USER_DELETE, delete_user)
 
     yield takeEvery(ACTION_TYPES.FORGOTPASS_REQUEST, forgotpass_request)

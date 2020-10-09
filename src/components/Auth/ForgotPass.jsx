@@ -19,7 +19,7 @@ const ForgotPass = (props) => {
     const [password, setPassword] = useState("")
     const [password_confirmation, setPasswordConfirmed] = useState("")
 
-    const [capVerified, setCapVerified] = useState(true)
+    const [capVerified, setCapVerified] = useState(false)
 
     useEffect(() => {
         if (props.match.path == ROUTES.FORGOTPASS_RESET.url) {
@@ -55,6 +55,9 @@ const ForgotPass = (props) => {
                     <div className="formgroup">
                         <label className="body2">Enter the email associated with your account</label>
                         <input name="email" type="email" placeholder="Enter Email" value={email} onChange={e => setEmail(e.target.value)} />
+                    </div>
+                    <div className="formgroup">
+                        <ReCAPTCHA sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI" theme="dark" onChange={() => setCapVerified(true)} />
                     </div>
                     <button type="submit" className="primary outlined" disabled={!capVerified}>Recover my account</button>
                 </form>

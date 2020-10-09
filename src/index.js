@@ -10,7 +10,7 @@ const renderApp = () => ReactDOM.render(<App />, document.getElementById('root')
 renderApp()
 
 if (module.hot) {
-    module.hot.accept('./components/App', () => { renderApp() });
+    module.hot.accept('./components/App.jsx', () => { renderApp() });
 }
 // Register the service worker root
 // if('serviceWorker' in navigator) {

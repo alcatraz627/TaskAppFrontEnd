@@ -82,7 +82,7 @@ const TaskList = ({ fetchTaskList, taskList, fetchStatus, openEditModal, userLis
                                     <Link className="createdBy" to={ROUTES.USER_PROFILE.getUrl(task.created_by)}>{getUser(userList, task.created_by).name}</Link>
                                 </div>
                                 <div className="grow" />
-                                <div className={(task.status != TASK_STATUS.COMPLETE) && hasDatePassed(task.due_date) && "overdueTask"}>{task.due_date ? `Due ${hasDatePassed(task.due_date) ? "on" : "by"} ${getDate(task.due_date)}` : "No due date"}</div>
+                                <div className={(task.status != TASK_STATUS.COMPLETE) && hasDatePassed(task.due_date) ? "overdueTask" : ""}>{task.due_date ? `Due ${hasDatePassed(task.due_date) ? "on" : "by"} ${getDate(task.due_date)}` : "No due date"}</div>
                             </div>
 
                             <div className="taskMeta">

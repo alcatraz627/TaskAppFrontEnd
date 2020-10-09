@@ -98,7 +98,7 @@ function TaskEdit(props) {
                     <div className="modalActions">
                         <button className="primary contained" onClick={saveForm}>{isCreateModal ? "Create New" : "Save Changes"}</button>
                         {!isCreateModal && <button className="secondary outlined" onClick={() => deleteAction(task.id)}>Delete</button>}
-                        <button name="outlined" onClick={closeModal}>Close</button>
+                        <button className="outlined" onClick={closeModal}>Close</button>
                     </div>
                 </div>
             }

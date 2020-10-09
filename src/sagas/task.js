@@ -26,7 +26,6 @@ export function* create_task({ payload: { formData } }) {
     let { status, data, error } = yield call(apiCall, ({ url: API_ROUTES.TASK_LIST, payload: formData, method: HTTP_METHODS.POST }))
     if (status == 201) {
         yield put(createAction(ACTION_TYPES.PUSH_NOTIF, { message: "Task created!" }))
-        console.log(data)
         yield put(createAction(ACTION_TYPES.UPDATE_TASK_ITEM, data.task))
         // ?TODO: Task item re-render
         yield put(push(ROUTES.TASK_ITEM.getUrl(data.task.id)))
@@ -41,7 +40,7 @@ export function* create_task({ payload: { formData } }) {
 export function* edit_task({ payload: { formData, id } }) {
     let { status, data, error } = yield call(apiCall, ({ url: API_ROUTES.TASK_ID(id), payload: formData, method: HTTP_METHODS.PATCH }))
     if (status == 201) {
-        yield put(createAction(ACTION_TYPES.PUSH_NOTIF, { message: "Task updated!" }))
+        // yield put(createAction(ACTION_TYPES.PUSH_NOTIF, { message: "Task updated!" }))
         yield put(createAction(ACTION_TYPES.UPDATE_TASK_ITEM, data.task))
         // ?TODO: Task item re-render
         yield put(push(ROUTES.TASK_ITEM.getUrl(data.task.id)))

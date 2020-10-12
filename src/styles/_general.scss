@@ -201,6 +201,22 @@ button,
 		@include btnStyling($secondary);
 	}
 
+	&.green {
+		@include btnStyling($green);
+	}
+
+	&.blue {
+		@include btnStyling($blue);
+	}
+
+	&.purple {
+		@include btnStyling($purple);
+	}
+
+	&.orange {
+		@include btnStyling($orange);
+	}
+
 	&.yellow {
 		@include btnStyling($yellow);
 	}

@@ -14,7 +14,7 @@ nav.navbar {
 
 	// -webkit-box-shadow: 0 8px 6px -6px #999;
 	// -moz-box-shadow: 0 8px 6px -6px #999;
-// box-shadow: 0 8px 6px -6px #555;
+	// box-shadow: 0 8px 6px -6px #555;
 	z-index: 100;
 
 	.toolbar {
@@ -403,6 +403,32 @@ nav.navbar {
 			padding: 8px;
 			margin: 20px 40px;
 			border-radius: 8px;
+		}
+
+		.userEditingForm {
+			margin: 0 0 20px;
+			.userEditingFormInput {
+				margin-bottom: 0px;
+				background-color: transparent;
+				color: white;
+				width: 70%;
+				border-width: 0 0 2px 0;
+				padding: 8px 20px;
+				// background-color: #fff1;
+				&.text {
+					font-size: 1.5em;
+					font-weight: 400;
+				}
+				&.email {
+				}
+			}
+		}
+
+		.userEdtingControls {
+			div.button {
+				margin-top: 8px;
+				margin-bottom: 0;
+			}
 		}
 
 		// .userRole {

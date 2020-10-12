@@ -14,7 +14,7 @@ const UserList = (props) => {
 
     const [search, setSearch] = useState("")
 
-    const { userList } = props
+    const { userList, isAdmin } = props
     const { fetchUserList, openCreateModal, fetchStatus } = props
 
     const searchUsers = users => users
@@ -37,7 +37,9 @@ const UserList = (props) => {
                             <div className="descText">All the users currently using this application</div>
                         </div>
                         <div className="grow" />
-                        <button className="button primary contained sm" onClick={openCreateModal}><i className="fa fa-plus" />&nbsp;&nbsp;Create User</button>
+                        {isAdmin && <button onClick={openCreateModal}
+                            className="button primary contained sm">
+                            <i className="fa fa-plus" />&nbsp;&nbsp;Create User</button>}
                     </div>
                     <div className="searchContainer">
                         <input type="text" className="searchBar" placeholder="Type here to search" value={search} onChange={({ target: { value } }) => setSearch(value)} />
@@ -71,7 +73,8 @@ const UserList = (props) => {
 
 const mapStateToProps = (state) => ({
     userList: state.user.userList,
-    fetchStatus: state.utils.fetchStatus[FETCH_RESOURCES.USER_LIST]
+    fetchStatus: state.utils.fetchStatus[FETCH_RESOURCES.USER_LIST],
+    isAdmin: state.user.role == ROLES.ADMIN,
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({

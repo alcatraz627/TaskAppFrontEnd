@@ -12,8 +12,15 @@ import { getDate, DELETED, hasDatePassed } from '../../services/helpers'
 
 function Profile(props) {
 
+    const [activeTab, setActiveTab] = useState(0)
+    const [isEditingUser, setEditingUser] = useState(false)
+    const [formData, setFormData] = useState({ name: null, email: null })
+
+
     const { userList, userRole, id, userId, taskList } = props
-    const { resolveSelf, openEditModal, deleteTask, notFound, deleteUser, openCreateModal } = props
+    const { resolveSelf, openEditModal, deleteTask, notFound, deleteUser, openCreateModal, editUser } = props
+
+    const user = userList[id]
 
     useEffect(() => {
         if (id == 'me') {
@@ -22,11 +29,14 @@ function Profile(props) {
         if (!Object.keys(userList).includes(id.toString())) {
             notFound()
         }
-    })
+        if (user && formData.name === null) {
+            setFormData({
+                name: user.name,
+                email: user.email,
+            })
+        }
+    }, [])
 
-    const [activeTab, setActiveTab] = useState(0)
-
-    const user = userList[id]
 
     const getUserName = (id, className = "", showIsDeleted) =>
         (userList.hasOwnProperty(id)) ? <Link className={className} to={ROUTES.USER_PROFILE.getUrl(id)}>{userList[id].name}</Link> : (showIsDeleted ? DELETED : "no one currently")
@@ -41,18 +51,58 @@ function Profile(props) {
 
     const getIncompleteTasks = (tasks) => [...getTaskType(TASK_STATUS.PENDING, tasks), ...getTaskType(TASK_STATUS.IN_PROGRESS, tasks)]
 
+    const updateForm = ({ target: { name, value } }) => { setFormData(data => ({ ...data, [name]: value })) }
+
+    const updateUser = () => {
+        // TODO: Validate
+        editUser({
+            ...((formData.name != user.name) && { name: formData.name }),
+            ...((formData.email != user.email) && { email: formData.email }),
+        })
+        setEditingUser(false)
+    }
+
     if (!user) {
         return <div className="loader" />
     }
+
     return (
         <div className="userProfileContainer">
             <div className="userProfileSidebar">
                 <img className="profilePic" />
-                <h5 className="userName">{user.name}</h5>
-                <div className="userEmail"><i className="fa fa-envelope" /> {user.email}</div>
-                {!user.verified && <div className="userVerified"><i className="fa fa-exclamation-triangle" /> User verification pending</div>}
-                {user.role == ROLES.ADMIN && <div className="label">{user.role}</div>}
-                {user.id == userId && <div className="button yellow outlined"><i className="fa fa-pencil" />&nbsp;&nbsp;Edit User</div>}
+                {isEditingUser
+                    ?
+                    <div className="userEditingForm">
+                        {/* <h5 className="userName">{user.name}</h5>
+                        <div className="userEmail"><i className="fa fa-envelope" /> {user.email}</div> */}
+                        <input type="text" name="name" className="userEditingFormInput text" value={formData.name} onChange={updateForm} />
+                        <input type="email" name="email" className="userEditingFormInput email" value={formData.email} onChange={updateForm} />
+                    </div>
+                    :
+                    <>
+                        <h5 className="userName">{user.name}</h5>
+                        <div className="userEmail"><i className="fa fa-envelope" /> {user.email}</div>
+                        {!user.verified && <div className="userVerified"><i className="fa fa-exclamation-triangle" /> User verification pending</div>}
+                        {user.role == ROLES.ADMIN && <div className="label">{user.role}</div>}
+                    </>
+                }
+
+
+                {isEditingUser ?
+                    <div className="userEdtingControls">
+
+                        <div onClick={updateUser} className="button green contained">
+                            <i className="fa fa-floppy-o" />&nbsp;&nbsp;Save Changes</div>
+
+                        <div onClick={() => setEditingUser(false)} className="button secondary outlined">
+                            <i className="fa fa-ban" />&nbsp;&nbsp;Cancel</div>
+                    </div> :
+
+                    (user.id == userId &&
+                        <div onClick={() => setEditingUser(true)} className="button yellow outlined">
+                            <i className="fa fa-pencil" />&nbsp;&nbsp;Edit User</div>)}
+
+
                 {userRole == ROLES.ADMIN && user.id != userId && <div className="button secondary contained" onClick={() => { deleteUser(user.id) }}><i className="fa fa-trash fa" />&nbsp;&nbsp;Delete User</div>}
             </div>
             <div className="userProfileDashboard">
@@ -156,7 +206,6 @@ const mapStateToProps = (state, ownProps) => ({
     userList: state.user.userList,
     userId: state.user.id,
     userRole: state.user.role,
-
     taskList: state.task
 })
 
@@ -164,6 +213,9 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
     openCreateModal: () => dispatch(push(ROUTES.TASK_CREATE.url)),
     openEditModal: (taskId) => dispatch(push(ROUTES.TASK_EDIT.getUrl(taskId))),
     deleteTask: (id) => dispatch(createAction(ACTION_TYPES.ATTEMPT_TASK_DELETE, { id, toRedir: false })),
+
+    editUser: (formData) => dispatch(createAction(ACTION_TYPES.ATTEMPT_USER_EDIT, { id: ownProps.match.params.id, formData })),
+
     resolveSelf: (userId) => dispatch(push(ROUTES.USER_PROFILE.getUrl(userId))),
     notFound: () => dispatch(replace(ROUTES.NOT_FOUND.url)),
 

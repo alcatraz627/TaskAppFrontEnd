@@ -13,7 +13,7 @@ function Login({ attempt_login, push_notif }) {
     const [email, setEmail] = useState("aakarsh.chopra@vmock.com")
     const [password, setPassword] = useState("12017")
 
-    const [capVerified, setCapVerified] = useState(true)
+    const [capVerified, setCapVerified] = useState(false)
 
     const login = (e) => {
         // TODO: Validate

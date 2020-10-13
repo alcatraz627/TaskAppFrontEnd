@@ -7,10 +7,29 @@ import { connect } from 'react-redux'
 import ROUTES from '../constants/routes'
 import { createAction, ACTION_TYPES } from '../constants/actions'
 
+const useClickOutside = (ref, callback) => {
+    const handleClick = e => {
+        if (ref.current && !ref.current.contains(e.target)) {
+            callback();
+        }
+    };
+    React.useEffect(() => {
+        document.addEventListener('click', handleClick);
+        return () => {
+            document.removeEventListener('click', handleClick);
+        };
+    });
+}
+
 function Navbar({ isLoggedIn, user, notifHistory, fetchTasks, fetchUsers, shouldRender, clearNotifs }) {
 
     const [notifOpen, setNotifOpen] = useState(false)
 
+    // To close notif dropdown when clicked outisde.
+    const clickRef = React.useRef();
+    useClickOutside(clickRef, () => setNotifOpen(false));
+
+    // To close notif dropdown when escape key is pressed
     const catchEscapeKey = e => {
         if (e.code == "Escape") {
             setNotifOpen(false)
@@ -45,7 +64,7 @@ function Navbar({ isLoggedIn, user, notifHistory, fetchTasks, fetchUsers, should
                 }
                 <div className="grow" />
 
-                <div className="navButton"><i className={`nav-icon fa fa-bell ${notifOpen && "active"}`} onClick={toggleNotifOpen} />
+                <div  ref={clickRef} className="navButton"><i className={`nav-icon fa fa-bell ${notifOpen && "active"}`} onClick={toggleNotifOpen} />
                     <div className={`navNotifContainer${notifOpen ? " showNotifContainer" : ""}`}>
                         <div className="navNotifHeader">
                             <i className="fa fa-caret-up fa-3x notifBoxArrow" />
@@ -54,7 +73,7 @@ function Navbar({ isLoggedIn, user, notifHistory, fetchTasks, fetchUsers, should
                             <div className="clearNotifButton" onClick={clearNotifs}>Clear</div>
                         </div>
                         <div className="notifScroll">
-                            {notifHistory.slice().reverse().map( ({ message, id, type }, i) => message && <div key={i} className={`navNotifItem ${type.toLowerCase() || ""}`}>{message}</div>)}
+                            {notifHistory.slice().reverse().map(({ message, id, type }, i) => message && <div key={i} className={`navNotifItem ${type.toLowerCase() || ""}`}>{message}</div>)}
                         </div>
                     </div>
                 </div>

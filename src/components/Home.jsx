@@ -13,16 +13,6 @@ function Home({ notifList, push_notif, set_message }) {
         <div className="container">
             <h3>Home Page</h3>
             <div className="body1">Flex your UI skills and fill this up</div>
-            {/* <button className="primary outlined sm">Small</button>
-            <button className="primary outlined" onClick={() => push_notif("Test Message " + notifList.length)}>Push Notif</button>
-            <button className="primary outlined lg">Large</button>
-
-            <button className="primary contained sm">Small</button>
-            <button className="primary contained" onClick={() => set_message({ title: "This works", body: "YepYep" })}>Set message</button>
-            <button className="primary contained lg">Large</button>
-            <hr />
-            <Link className="button primary" to={ROUTES.USER_LIST.url}>User List</Link>
-            <Link className="button primary" to={ROUTES.TASK_LIST.url}>Task List</Link> */}
         </div>
     )
 }

@@ -5,12 +5,15 @@ import App from './components/App';
 
 import './styles/global.scss';
 
-const renderApp = () => ReactDOM.render(<App />, document.getElementById('root'))
+const renderApp = (Root) => ReactDOM.render(<Root />, document.getElementById('root'))
 
-renderApp()
+renderApp(App)
 
 if (module.hot) {
-    module.hot.accept('./components/App.jsx', () => { renderApp() });
+    module.hot.accept('./components/App.jsx', () => {
+        const Root = require('./components/App').default
+        renderApp(Root)
+    });
 }
 // Register the service worker root
 // if('serviceWorker' in navigator) {

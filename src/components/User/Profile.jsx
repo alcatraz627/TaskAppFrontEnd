@@ -206,7 +206,7 @@ const mapStateToProps = (state, ownProps) => ({
     userList: state.user.userList,
     userId: state.user.id,
     userRole: state.user.role,
-    taskList: state.task
+    taskList: state.task.taskList
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({

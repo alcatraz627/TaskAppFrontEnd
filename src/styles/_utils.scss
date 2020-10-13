@@ -16,3 +16,9 @@
 .max-width {
     max-width: 1000px;
 }
+
+.fillWidth {
+    width: -webkit-fill-available;
+    width: -moz-fill-available;
+    width: fill-available;
+}

@@ -822,6 +822,10 @@ textarea.taskDesc {
 
 // Loading spinner
 
+.loaderContainer {
+	margin: 100px;
+}
+
 .loader,
 .loader:before,
 .loader:after {
@@ -952,9 +956,10 @@ textarea.taskDesc {
 			width: 80%;
 		}
 		&.fullWidth {
-			width: -webkit-fill-available;
-			width: -moz-fill-available;
-			width: fill-available;
+			@extend .fillWidth;
+			// width: -webkit-fill-available;
+			// width: -moz-fill-available;
+			// width: fill-available;
 		}
 	}
 
@@ -981,43 +986,35 @@ textarea.taskDesc {
 
 .searchContainer {
 	display: flex;
-	&:hover .searchBar,
-	&:hover .searchButton {
-		// border-color: red!important;
-		border: 2px solid gray;
-	}
-	&:hover .searchButton i {
-		color: gray;
-	}
+
 	.searchBar {
 		border-radius: 0;
 		margin: 8px 0;
-		// width: 100%;
 		flex-grow: 1;
-		// border-width: 0 0 2px 0!important;
 		border-width: 2px 0 2px 2px !important;
 		&:hover {
 			border: 2px solid gray;
 		}
-		&:focus,
-		&:focus + .searchButton {
+		&:focus
+		// ,&:focus + .searchButton 
+		{
 			border-color: $blue;
 		}
 	}
 
 	.searchButton {
 		margin: auto 0;
-		border: 2px solid lightgray;
+		border: 2px solid $blue;
 		border-width: 2px 2px 2px 0 !important;
 		border-radius: 0;
-		background-color: white;
+		// background-color: white;
+		background-color: $blue;
 		padding: 10px 24px;
 		&:hover {
-			border: 2px solid gray;
-			background-color: white;
+			opacity: 0.8;
 		}
 		i {
-			color: #aaa;
+			color: white;
 		}
 	}
 }
@@ -1069,5 +1066,24 @@ textarea.taskDesc {
 			color: white;
 			// padding: 8px;
 		}
+	}
+}
+
+.paginator {
+	@extend .fillWidth;
+	// border: 1px dotted red;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 20px 0;
+	button {
+		margin: auto 4px;
+	}
+	select {
+		margin: 8px 0;
+	}
+	.count {
+		color: gray;
+		font-size: 0.7em;
 	}
 }

@@ -13,7 +13,8 @@ export default {
     },
 
     task: {
-
+        taskList: {},
+        count: null,
     },
 
     utils: {

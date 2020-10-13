@@ -8,10 +8,10 @@ import ROUTES from '../constants/routes'
 import API_ROUTES from '../constants/apiRoutes'
 import { ACTION_TYPES, createAction } from '../constants/actions'
 
-export function* fetch_task_list(action) {
-    yield put(createAction(ACTION_TYPES.PAUSE_RENDER))
+export function* fetch_task_list({ payload: { limit, offset, search } }) {
+    // yield put(createAction(ACTION_TYPES.PAUSE_RENDER))
     yield put(createAction(ACTION_TYPES.SET_FETCH_STATUS, { [FETCH_RESOURCES.TASK_LIST]: FETCH_STATUS.FETCHING }))
-    let { status, data, error } = yield call(apiCall, ({ url: API_ROUTES.TASK_LIST }))
+    let { status, data, error } = yield call(apiCall, ({ url: API_ROUTES.TASK_LIST(offset, limit, search) }))
     if (status == 200) {
         yield put(createAction(ACTION_TYPES.UPDATE_TASK_LIST, data))
         yield put(createAction(ACTION_TYPES.SET_FETCH_STATUS, { [FETCH_RESOURCES.TASK_LIST]: FETCH_STATUS.FETCHED }))
@@ -19,11 +19,11 @@ export function* fetch_task_list(action) {
         yield put(createAction(ACTION_TYPES.SET_FETCH_STATUS, { [FETCH_RESOURCES.TASK_LIST]: FETCH_STATUS.FETCH_ERROR }))
         console.log("Error", data, error)
     }
-    yield put(createAction(ACTION_TYPES.SHOULD_RENDER))
+    // yield put(createAction(ACTION_TYPES.SHOULD_RENDER))
 }
 
 export function* create_task({ payload: { formData } }) {
-    let { status, data, error } = yield call(apiCall, ({ url: API_ROUTES.TASK_LIST, payload: formData, method: HTTP_METHODS.POST }))
+    let { status, data, error } = yield call(apiCall, ({ url: API_ROUTES.TASK_CREATE, payload: formData, method: HTTP_METHODS.POST }))
     if (status == 201) {
         yield put(createAction(ACTION_TYPES.PUSH_NOTIF, { message: "Task created!" }))
         yield put(createAction(ACTION_TYPES.UPDATE_TASK_ITEM, data.task))

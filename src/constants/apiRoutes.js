@@ -6,9 +6,10 @@ const apiRoutes = {
     USER_LIST: 'users/',
     USER_ID: id => `users/${id}/`,
 
-    TASK_LIST: 'tasks/',
+    TASK_LIST: (offset, limit, search) => `tasks/?limit=${limit || 2}&offset=${offset || 0}&search=${search || ""}`,
+    TASK_CREATE: `tasks/`,
     TASK_ID: id => `tasks/${id}/`,
-    
+
     REGISTER: 'auth/register/',
     VERIFY_EMAIL_TOKEN: token => `auth/verify/${token}/`,
 

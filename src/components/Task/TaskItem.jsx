@@ -84,7 +84,7 @@ function TaskItem({ task, userList, openEditModal, userId, updateStatus, notFoun
 }
 
 const mapStateToProps = (state, ownProps) => ({
-    task: state.task[ownProps.match.params.id],
+    task: state.task.taskList[ownProps.match.params.id],
     userList: state.user.userList,
     userId: state.user.id,
 });

@@ -5,15 +5,17 @@ export default function taskReducer(state = initialState.user, { type, payload =
     switch (type) {
 
         case ACTION_TYPES.UPDATE_TASK_LIST:
-            const taskList = payload.map(t => ({ [t.id]: {...t, assigned_to: t.assigned_to || ""} }))
-            return { ...state, ...Object.assign({}, ...taskList) };
+            const taskList = payload.data.map(t => ({ [t.id]: { ...t, assigned_to: t.assigned_to || "" } }))
+            // return { ...state, ...Object.assign({}, ...taskList) };
+            console.log(taskList)
+            return { ...state, taskList: Object.assign({}, ...taskList), count: payload.count };
 
         case ACTION_TYPES.UPDATE_TASK_ITEM:
-            return { ...state, [payload.id]: { ...payload, assigned_to: payload.assigned_to || "" } };
+            return { ...state, taskList: { ...state.taskList, [payload.id]: { ...payload, assigned_to: payload.assigned_to || "" } } };
 
         case ACTION_TYPES.UPDATE_TASK_DELETE:
-            const { [payload.id]: value, ...newState } = state
-            return newState
+            const { [payload.id]: value, ...newTaskList } = state.taskList
+            return { ...state, taskList: newTaskList }
 
         default:
             return state;

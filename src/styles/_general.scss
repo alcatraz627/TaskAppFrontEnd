@@ -129,8 +129,11 @@ input[type="email"] {
 }
 
 button {
+	&:not(disabled) {
+		cursor: pointer;
+	}
+
 	@extend .button;
-	cursor: pointer;
 	border: none;
 	border-radius: 4px;
 	border: 3px solid #eee;
@@ -186,12 +189,20 @@ button {
 		// border-color: #{$primary + "ff"};
 		background-color: #{$color + "22"};
 	}
+	&.rounded {
+		border-radius: 100px;
+		height: 3em;
+		width: 3em;
+	}
 }
 
 button,
 .button {
 	@include btnStyling(grey);
-	cursor: pointer;
+	&[disabled] {
+		cursor: not-allowed;
+		@include btnStyling(gray);
+	}
 
 	&.primary {
 		@include btnStyling($primary);
@@ -360,3 +371,7 @@ hr {
 .pointer {
 	cursor: pointer;
 }
+
+button:focus {
+	outline: none;
+  }

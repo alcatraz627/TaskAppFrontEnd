@@ -69,11 +69,11 @@ export const ACTION_TYPES = {
     SET_ONLINE_STATUS: 'SET_ONLINE_STATUS', 
 }
 
-export function createAction(action_type, payload = null) {
+export function createAction(action_type, payload) {
     try {
         return ({
             type: ACTION_TYPES[action_type],
-            payload: payload || null
+            payload: payload || {}
         })
     } catch {
         console.error("Invalid action ", action_type)

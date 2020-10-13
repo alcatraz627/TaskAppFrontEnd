@@ -73,7 +73,7 @@ function TaskEdit(props) {
 
     function render() {
         return (
-            !task ? "Loading..." : <div className="modal" id="editTaskModal">
+            <div className="modal" id="editTaskModal">
                 {!formData ? <div className="loader" /> :
                     <div className="taskContainer">
                         <div className="modalLabel">Title{isDirty('title')}</div>
@@ -112,7 +112,7 @@ function TaskEdit(props) {
 
         )
     }
-    return <ResxRender render={render} fetchStatus={fetchStatus} fetchMethod={fetchTaskItem} fetchType={FETCH_RESOURCES.TASK_ITEM} />
+    return isCreateModal ? render() : <ResxRender render={render} fetchStatus={fetchStatus} fetchMethod={fetchTaskItem} fetchType={FETCH_RESOURCES.TASK_ITEM} />
 }
 
 const mapStateToProps = (state, ownProps) => ({

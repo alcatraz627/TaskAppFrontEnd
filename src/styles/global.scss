@@ -996,7 +996,7 @@ textarea.taskDesc {
 			border: 2px solid gray;
 		}
 		&:focus
-		// ,&:focus + .searchButton 
+		// ,&:focus + .searchButton
 		{
 			border-color: $blue;
 		}
@@ -1075,14 +1075,32 @@ textarea.taskDesc {
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	justify-items: space-between;
+	padding: 4px 0;
 	button {
 		margin: auto 4px;
 	}
 	select {
-		margin: 8px 0;
+		margin: 0;
+		padding: 4px;
+		border-width: 0;
+		background-color: #ddd;
+		border-radius: 4px;
 	}
-	.count {
-		color: gray;
-		font-size: 0.7em;
+	.paginatorTextBox {
+		flex: 1;
+		display: flex;
+		justify-content: center;
+		&:first-child > .paginatorText {
+			margin-right: auto;
+		}
+		&:last-child > .paginatorText {
+			margin-left: auto;
+		}
+
+		.paginatorText {
+			color: gray;
+			font-size: 0.75em;
+		}
 	}
 }

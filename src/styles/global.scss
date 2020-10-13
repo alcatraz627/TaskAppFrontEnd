@@ -17,6 +17,26 @@ nav.navbar {
 	// box-shadow: 0 8px 6px -6px #555;
 	z-index: 100;
 
+	@keyframes loadingNavAnimation {
+		0% {
+			background-position: 0px 0;
+		}
+		100% {
+			background-position: 100vh 0;
+		}
+	}
+
+	// &.loadingNavbar {
+	// 	animation-duration: 0.5s;
+	// 	animation-fill-mode: forwards;
+	// 	animation-iteration-count: infinite;
+	// 	animation-name: loadingNavAnimation;
+	// 	animation-timing-function: linear;
+	// 	background-color: $primary;
+	// 	background-color: linear-gradient(to right, $primary 0%, $secondary 50%, $primary 100%);
+	// 	-webkit-backface-visibility: hidden;
+	// }
+
 	.toolbar {
 		display: flex;
 		align-items: center;

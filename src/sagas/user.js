@@ -39,6 +39,7 @@ export function* logout_success() {
     yield call(deleteToken)
 }
 
+// Fetching user data on boot when token is already present in localstorage
 export function* fetch_auth_user() {
     let { status, data, error } = yield call(apiCall, ({ url: API_ROUTES.USER_ME }))
     if (status == 200) {
@@ -114,7 +115,7 @@ export function* attempt_user_edit({ payload: { formData, id } }) {
     }
 }
 
-export function* fetch_user_list({payload: {offset, limit, search}}) {
+export function* fetch_user_list({ payload: { offset, limit, search } }) {
     yield put(createAction(ACTION_TYPES.PAUSE_RENDER))
     yield put(createAction(ACTION_TYPES.SET_FETCH_STATUS, { [FETCH_RESOURCES.USER_LIST]: FETCH_STATUS.FETCHING }))
     let { status, data, error } = yield call(apiCall, ({ url: API_ROUTES.USER_LIST(offset, limit, search) }))
@@ -126,6 +127,24 @@ export function* fetch_user_list({payload: {offset, limit, search}}) {
         console.log("Error", data, error)
     }
     yield put(createAction(ACTION_TYPES.SHOULD_RENDER))
+}
+
+export function* fetch_user_item({ payload: { id } }) {
+    // yield put(createAction(ACTION_TYPES.PAUSE_RENDER))
+    yield put(createAction(ACTION_TYPES.SET_FETCH_STATUS, { [FETCH_RESOURCES.USER_ITEM]: FETCH_STATUS.FETCHING }))
+    let { status, data, error } = yield call(apiCall, ({ url: API_ROUTES.USER_ID(id) }))
+
+    if (status == 200) {
+        yield put(createAction(ACTION_TYPES.UPDATE_USER_ITEM, data))
+        yield put(createAction(ACTION_TYPES.SET_FETCH_STATUS, { [FETCH_RESOURCES.USER_ITEM]: FETCH_STATUS.FETCHED }))
+    } else if (status == 404) {
+        yield put(replace(ROUTES.NOT_FOUND.url))
+        yield put(createAction(ACTION_TYPES.SET_FETCH_STATUS, { [FETCH_RESOURCES.TASK_ITEM]: FETCH_STATUS.NOT_FOUND }))
+    } else {
+        yield put(createAction(ACTION_TYPES.SET_FETCH_STATUS, { [FETCH_RESOURCES.USER_ITEM]: FETCH_STATUS.FETCH_ERROR }))
+        console.log("Error", data, error)
+    }
+    // yield put(createAction(ACTION_TYPES.SHOULD_RENDER))
 }
 
 export function* delete_user({ payload: { id, toRedir = true } }) {
@@ -217,6 +236,7 @@ export default function* userSaga() {
     yield takeEvery(ACTION_TYPES.LOGOUT_SUCCESS, logout_success)
 
     yield takeEvery(ACTION_TYPES.FETCH_USER_LIST, fetch_user_list)
+    yield takeEvery(ACTION_TYPES.FETCH_USER_ITEM, fetch_user_item)
     yield takeEvery(ACTION_TYPES.FETCH_AUTH_USER, fetch_auth_user)
 
     yield takeEvery(ACTION_TYPES.ATTEMPT_REGISTER, attempt_register)

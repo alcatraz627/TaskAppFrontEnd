@@ -9,7 +9,6 @@ import API_ROUTES from '../constants/apiRoutes'
 import { ACTION_TYPES, createAction } from '../constants/actions'
 
 export function* fetch_task_list({ payload: { limit, offset, search, taskStatus } }) {
-    // yield put(createAction(ACTION_TYPES.PAUSE_RENDER))
     yield put(createAction(ACTION_TYPES.SET_FETCH_STATUS, { [FETCH_RESOURCES.TASK_LIST]: FETCH_STATUS.FETCHING }))
     let { status, data, error } = yield call(apiCall, ({ url: API_ROUTES.TASK_LIST(offset, limit, search, taskStatus) }))
     if (status == 200) {
@@ -19,7 +18,17 @@ export function* fetch_task_list({ payload: { limit, offset, search, taskStatus 
         yield put(createAction(ACTION_TYPES.SET_FETCH_STATUS, { [FETCH_RESOURCES.TASK_LIST]: FETCH_STATUS.FETCH_ERROR }))
         console.log("Error", data, error)
     }
-    // yield put(createAction(ACTION_TYPES.SHOULD_RENDER))
+}
+export function* fetch_user_tasks({ payload: { id, limit, offset, search, taskStatus } }) {
+    yield put(createAction(ACTION_TYPES.SET_FETCH_STATUS, { [FETCH_RESOURCES.TASK_LIST]: FETCH_STATUS.FETCHING }))
+    let { status, data, error } = yield call(apiCall, ({ url: API_ROUTES.USER_TASKS(id, offset, limit, search, taskStatus) }))
+    if (status == 200) {
+        yield put(createAction(ACTION_TYPES.UPDATE_TASK_LIST, data))
+        yield put(createAction(ACTION_TYPES.SET_FETCH_STATUS, { [FETCH_RESOURCES.TASK_LIST]: FETCH_STATUS.FETCHED }))
+    } else {
+        yield put(createAction(ACTION_TYPES.SET_FETCH_STATUS, { [FETCH_RESOURCES.TASK_LIST]: FETCH_STATUS.FETCH_ERROR }))
+        console.log("Error", data, error)
+    }
 }
 
 export function* fetch_task_item({ payload: { id } }) {
@@ -88,6 +97,7 @@ export function* delete_task({ payload: { id, toRedir = true } }) {
 export default function* taskSaga() {
     yield takeEvery(ACTION_TYPES.FETCH_TASK_ITEM, fetch_task_item)
     yield takeEvery(ACTION_TYPES.FETCH_TASK_LIST, fetch_task_list)
+    yield takeEvery(ACTION_TYPES.FETCH_USER_TASKS, fetch_user_tasks)
     yield takeEvery(ACTION_TYPES.ATTEMPT_TASK_CREATE, create_task)
     yield takeEvery(ACTION_TYPES.ATTEMPT_TASK_EDIT, edit_task)
     yield takeEvery(ACTION_TYPES.ATTEMPT_TASK_DELETE, delete_task)

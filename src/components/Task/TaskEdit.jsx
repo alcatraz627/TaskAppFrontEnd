@@ -112,8 +112,7 @@ function TaskEdit(props) {
 
         )
     }
-    return <ResxRender render={render} fetchStatus={fetchStatus} fetchMethod={fetchTaskItem} />
-
+    return <ResxRender render={render} fetchStatus={fetchStatus} fetchMethod={fetchTaskItem} fetchType={FETCH_RESOURCES.TASK_ITEM} />
 }
 
 const mapStateToProps = (state, ownProps) => ({

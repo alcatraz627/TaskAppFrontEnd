@@ -115,7 +115,7 @@ function TaskList(props) {
             </div>
             <Pagniator page={page} setPage={setPage} count={taskCount} pageLen={pageLen} setPageLen={setPageLen} />
             <form className="searchContainer" onSubmit={performSearch}>
-                <input name="search" type="text" className="searchBar" placeholder="Type here to search" value={search} onChange={({ target: { value } }) => setSearch(value)} />
+                <input name="search" type="text" className="searchBar" placeholder="Enter search query here" value={search} onChange={({ target: { value } }) => setSearch(value)} />
                 <button type="submit" className="searchButton"><i className="fa fa-search" /></button>
             </form>
             <div className="tabPanel">
@@ -126,7 +126,7 @@ function TaskList(props) {
             </div>
         </div>
         <hr />
-        <ResxRender render={render} fetchStatus={fetchStatus} fetchMethod={fetchTaskList} />
+        <ResxRender render={render} fetchStatus={fetchStatus} fetchMethod={fetchTaskList} fetchType={FETCH_RESOURCES.TASK_LIST} />
     </div >
 
 

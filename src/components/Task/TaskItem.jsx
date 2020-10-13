@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 
 import { Link } from 'react-router-dom'
-import { push, replace } from 'connected-react-router'
+import { push } from 'connected-react-router'
 
 import { TASK_STATUS, FETCH_RESOURCES } from '../../constants'
 import ROUTES from '../../constants/routes'
@@ -82,7 +82,7 @@ function TaskItem(props) {
             </div>
         </div>
     }
-    return <ResxRender render={render} fetchStatus={fetchStatus} fetchMethod={fetchTaskItem} />
+    return <ResxRender render={render} fetchStatus={fetchStatus} fetchMethod={fetchTaskItem} fetchType={FETCH_RESOURCES.TASK_ITEM}  />
 
 }
 

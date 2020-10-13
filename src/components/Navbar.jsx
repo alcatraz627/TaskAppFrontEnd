@@ -47,14 +47,12 @@ function Navbar({ isLoggedIn, user, notifHistory, fetchTasks, fetchUsers, should
         fetchUsers()
         fetchTasks()
     }
-    // const isActiveLink = (route)
 
     return (
+        // <nav className={"navbar" + (shouldRender ? " loadingNavbar" : "")}>
         <nav className="navbar">
             <div className="toolbar">
                 <Link to="/"><h5>TaskApp</h5></Link>
-
-                {/* <div className="grow" /> */}
 
                 {isLoggedIn && <>
                     <Link to={ROUTES.USER_LIST.url} exact className="nav-link" activeClassName="activeLink">User List</Link>
@@ -64,7 +62,7 @@ function Navbar({ isLoggedIn, user, notifHistory, fetchTasks, fetchUsers, should
                 }
                 <div className="grow" />
 
-                <div  ref={clickRef} className="navButton"><i className={`nav-icon fa fa-bell ${notifOpen && "active"}`} onClick={toggleNotifOpen} />
+                <div ref={clickRef} className="navButton"><i className={`nav-icon fa fa-bell ${notifOpen && "active"}`} onClick={toggleNotifOpen} />
                     <div className={`navNotifContainer${notifOpen ? " showNotifContainer" : ""}`}>
                         <div className="navNotifHeader">
                             <i className="fa fa-caret-up fa-3x notifBoxArrow" />

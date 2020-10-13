@@ -1,6 +1,6 @@
 import initialState from '../constants/initialState'
 import { ACTION_TYPES } from '../constants/actions'
-import { NOTIF_TYPE } from '../constants'
+import { NOTIF_TYPE, FETCH_STATUS, FETCH_RESOURCES } from '../constants'
 
 /** I know that implementing this directly in the reducer makes it impure and is a sacreligious to the principles of 
  * functional programming, but I just wanted this as a fallback for now rather than have to add it everywhere. In the 
@@ -56,6 +56,9 @@ export default function utilsReducer(state = initialState.utils, { type, payload
 
         case ACTION_TYPES.SET_FETCH_STATUS:
             return { ...state, fetchStatus: { ...state.fetchStatus, ...payload } }
+
+            case ACTION_TYPES.CLEAR_FETCH_STATUS:
+            return { ...state, fetchStatus: { ...state.fetchStatus, [FETCH_RESOURCES[payload.fetchType]]: FETCH_STATUS.NOT_FETCHED } }
 
         case ACTION_TYPES.PAUSE_RENDER:
             return { ...state, shouldRender: state.shouldRender + 1 }

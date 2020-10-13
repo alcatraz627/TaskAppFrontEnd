@@ -31,8 +31,8 @@ export function* attempt_logout() {
 
 export function* login_success({ type, payload }) {
     yield call(setToken, payload.token)
-    yield put(createAction(ACTION_TYPES.FETCH_USER_LIST));
-    yield put(createAction(ACTION_TYPES.FETCH_TASK_LIST));
+    // yield put(createAction(ACTION_TYPES.FETCH_USER_LIST));
+    // yield put(createAction(ACTION_TYPES.FETCH_TASK_LIST));
 }
 
 export function* logout_success() {

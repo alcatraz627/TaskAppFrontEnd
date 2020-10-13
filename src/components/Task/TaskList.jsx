@@ -55,7 +55,7 @@ function TaskList(props) {
 
     const tasksToList = Object.values(taskList)
 
-    function render(fetchData) {
+    function render() {
         return (
             <div className="detailedList">
                 {tasksToList.length == 0 &&
@@ -126,7 +126,7 @@ function TaskList(props) {
             </div>
         </div>
         <hr />
-        <ResxRender render={render} fetchStatus={fetchStatus} fetchMethod={fetchTaskList} fetchData={taskList} />
+        <ResxRender render={render} fetchStatus={fetchStatus} fetchMethod={fetchTaskList} />
     </div >
 
 

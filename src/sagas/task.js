@@ -1,6 +1,6 @@
 import { put, takeEvery, call, all } from 'redux-saga/effects'
 
-import { push } from 'connected-react-router'
+import { push, replace } from 'connected-react-router'
 import apiCall from '../services/api'
 
 import { HTTP_METHODS, MESSAGES, FETCH_STATUS, FETCH_RESOURCES } from '../constants'
@@ -17,6 +17,24 @@ export function* fetch_task_list({ payload: { limit, offset, search, taskStatus 
         yield put(createAction(ACTION_TYPES.SET_FETCH_STATUS, { [FETCH_RESOURCES.TASK_LIST]: FETCH_STATUS.FETCHED }))
     } else {
         yield put(createAction(ACTION_TYPES.SET_FETCH_STATUS, { [FETCH_RESOURCES.TASK_LIST]: FETCH_STATUS.FETCH_ERROR }))
+        console.log("Error", data, error)
+    }
+    // yield put(createAction(ACTION_TYPES.SHOULD_RENDER))
+}
+
+export function* fetch_task_item({ payload: { id } }) {
+    // yield put(createAction(ACTION_TYPES.PAUSE_RENDER))
+    yield put(createAction(ACTION_TYPES.SET_FETCH_STATUS, { [FETCH_RESOURCES.TASK_ITEM]: FETCH_STATUS.FETCHING }))
+    let { status, data, error } = yield call(apiCall, ({ url: API_ROUTES.TASK_ID(id) }))
+    if (status == 200) {
+        yield put(createAction(ACTION_TYPES.UPDATE_TASK_ITEM, data))
+        yield put(createAction(ACTION_TYPES.SET_FETCH_STATUS, { [FETCH_RESOURCES.TASK_ITEM]: FETCH_STATUS.FETCHED }))
+    } else if (status == 404) {
+        yield put(replace(ROUTES.NOT_FOUND.url))
+        yield put(createAction(ACTION_TYPES.SET_FETCH_STATUS, { [FETCH_RESOURCES.TASK_ITEM]: FETCH_STATUS.NOT_FOUND }))
+
+    } else {
+        yield put(createAction(ACTION_TYPES.SET_FETCH_STATUS, { [FETCH_RESOURCES.TASK_ITEM]: FETCH_STATUS.FETCH_ERROR }))
         console.log("Error", data, error)
     }
     // yield put(createAction(ACTION_TYPES.SHOULD_RENDER))
@@ -68,6 +86,7 @@ export function* delete_task({ payload: { id, toRedir = true } }) {
 
 
 export default function* taskSaga() {
+    yield takeEvery(ACTION_TYPES.FETCH_TASK_ITEM, fetch_task_item)
     yield takeEvery(ACTION_TYPES.FETCH_TASK_LIST, fetch_task_list)
     yield takeEvery(ACTION_TYPES.ATTEMPT_TASK_CREATE, create_task)
     yield takeEvery(ACTION_TYPES.ATTEMPT_TASK_EDIT, edit_task)

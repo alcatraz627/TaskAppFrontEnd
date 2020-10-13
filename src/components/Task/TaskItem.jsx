@@ -5,20 +5,29 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { push, replace } from 'connected-react-router'
 
-import { TASK_STATUS } from '../../constants'
+import { TASK_STATUS, FETCH_RESOURCES } from '../../constants'
 import ROUTES from '../../constants/routes'
 import { ACTION_TYPES, createAction } from '../../constants/actions'
 
 import { getDate } from '../../services/helpers'
+import ResxRender from '../Utils/ResxRender'
 
-function TaskItem({ task, userList, openEditModal, userId, updateStatus, notFound, deleteTask }) {
+function TaskItem(props) {
+
+    const { openEditModal, updateStatus, notFound, deleteTask, fetchTaskItem } = props
+    const { task, userList, userId, fetchStatus } = props
+
     const [isUpdatingStatus, setUpdateStatus] = useState(false)
     const [taskStatus, setTaskStatus] = useState("")
 
+    // useEffect(() => {
+    //     if (!task) {
+    //         notFound()
+    //     }
+    // }, [])
+
     useEffect(() => {
-        if (!task) {
-            notFound()
-        }
+        fetchTaskItem()
     }, [])
 
     useEffect(() => {
@@ -40,53 +49,62 @@ function TaskItem({ task, userList, openEditModal, userId, updateStatus, notFoun
 
     const updateTaskStatus = ({ target: { value } }) => { setTaskStatus(value.toUpperCase()) }
 
+    function render() {
 
-    return !task ? <div className="loader" /> : <div className="taskContainer">
-        <div className="taskItemTitle">
-            <h4 className="noSpacing">{task.title}</h4>
-            <div className="grow" />
-            {userId == task.created_by &&
-                <>
-                    <div className="listActionButton delete" onClick={() => deleteTask(task.id)}>
-                        <i className="fa fa-trash fa fa-2x" />
-                    </div>
-                    <div className="listActionButton edits" onClick={openEditModal}>
-                        <i className="fa fa-pencil fa fa-2x"></i>
-                    </div>
-                </>
-            }
-        </div>
+        // !task ? <div className="loader" /> : 
+        return <div className="taskContainer">
+            <div className="taskItemTitle">
+                <h4 className="noSpacing">{task.title}</h4>
+                <div className="grow" />
+                {userId == task.created_by &&
+                    <>
+                        <div className="listActionButton delete" onClick={() => deleteTask(task.id)}>
+                            <i className="fa fa-trash fa fa-2x" />
+                        </div>
+                        <div className="listActionButton edits" onClick={openEditModal}>
+                            <i className="fa fa-pencil fa fa-2x"></i>
+                        </div>
+                    </>
+                }
+            </div>
 
-        <div className="taskMeta">
-            <Link to={ROUTES.USER_PROFILE.getUrl(task.created_by)} className="createdBy">{userList[task.created_by].name}</Link>
+            <div className="taskMeta">
+                <Link to={ROUTES.USER_PROFILE.getUrl(task.created_by)} className="createdBy">{userList[task.created_by].name}</Link>
             assigned this to
             {task.assigned_to ? <Link to={ROUTES.USER_PROFILE.getUrl(task.assigned_to)} className="assignedTo">{userList[task.assigned_to].name}</Link> : " no one currently"}
-            <div className="grow" />
-            {((userId == task.assigned_to) && isUpdatingStatus) ?
-                <select value={taskStatus} onChange={updateTaskStatus}>
-                    {Object.values(TASK_STATUS).map(status => <option key={status} value={status}>{(status[0] + status.slice(1).toLowerCase()).replace("_", " ")}</option>)}
-                </select> :
-                <div className={`taskStatus ${taskStatus.toLowerCase()}`}>{taskStatus}</div>
-            }
-            {userId == task.assigned_to &&
-                <div className="changeStatusButton" onClick={() => setUpdateStatus(s => !s)}>{isUpdatingStatus ? <i className="fa fa-floppy-o" /> : <i className="fa fa-pencil" />}</div>
-            }
+                <div className="grow" />
+                {((userId == task.assigned_to) && isUpdatingStatus) ?
+                    <select value={taskStatus} onChange={updateTaskStatus}>
+                        {Object.values(TASK_STATUS).map(status => <option key={status} value={status}>{(status[0] + status.slice(1).toLowerCase()).replace("_", " ")}</option>)}
+                    </select> :
+                    <div className={`taskStatus ${taskStatus.toLowerCase()}`}>{taskStatus}</div>
+                }
+                {userId == task.assigned_to &&
+                    <div className="changeStatusButton" onClick={() => setUpdateStatus(s => !s)}>{isUpdatingStatus ? <i className="fa fa-floppy-o" /> : <i className="fa fa-pencil" />}</div>
+                }
 
-        </div>
+            </div>
 
-        <div className="taskMeta">
-            {task.due_date ? `Due by ${getDate(task.due_date)}` : "No due date assigned"} <div className="grow" /> Created on {getDate(task.created_at)}
+            <div className="taskMeta">
+                {task.due_date ? `Due by ${getDate(task.due_date)}` : "No due date assigned"} <div className="grow" /> Created on {getDate(task.created_at)}
+            </div>
+            <div className="taskDesc">
+                {task.description}
+            </div>
         </div>
-        <div className="taskDesc">
-            {task.description}
-        </div>
-    </div>
+    }
+
+    return <ResxRender render={render} fetchStatus={fetchStatus} fetchMethod={fetchTaskItem} />
+
 }
 
 const mapStateToProps = (state, ownProps) => ({
     task: state.task.taskList[ownProps.match.params.id],
     userList: state.user.userList,
     userId: state.user.id,
+
+    fetchStatus: state.utils.fetchStatus[FETCH_RESOURCES.TASK_ITEM],
+
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
@@ -94,6 +112,8 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
     updateStatus: (status) => dispatch(createAction(ACTION_TYPES.ATTEMPT_TASK_EDIT, { formData: { status }, id: ownProps.match.params.id })),
     deleteTask: (id) => dispatch(createAction(ACTION_TYPES.ATTEMPT_TASK_DELETE, { id })),
     notFound: () => dispatch(replace(ROUTES.NOT_FOUND.url)),
+
+    fetchTaskItem: () => dispatch(createAction(ACTION_TYPES.FETCH_TASK_ITEM, { id: ownProps.match.params.id })),
 });
 
 

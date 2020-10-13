@@ -337,7 +337,27 @@ hr {
 		&.tab-active {
 			background-color: $primary;
 			color: white;
+
+			&.pending {
+				background-color: $orange;
+			}
+			&.in_progress {
+				background-color: $purple;
+			}
+			&.complete {
+				background-color: $green;
+			}
 		}
+		&.pending {
+			border-color: $orange;
+		}
+		&.in_progress {
+			border-color: $purple;
+		}
+		&.complete {
+			border-color: $green;
+		}
+	
 	}
 }
 
@@ -374,4 +394,4 @@ hr {
 
 button:focus {
 	outline: none;
-  }
+}

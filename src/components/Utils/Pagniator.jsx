@@ -18,12 +18,13 @@ function Pagniator(props) {
             <button className="sm blue contained" disabled={page < 1} onClick={() => setPage(0)}><i className="fa fa-step-backward" /></button>
             <button className="sm blue contained" disabled={page < 1} onClick={() => setPage(page - 1)}><i className="fa fa-chevron-left" /></button>
 
-            {page > 3 && page > maxPage - 1 && <button className="sm rounded" onClick={() => setPage(page - 2)}>{page - 1}</button>}
-            {page > 2 && page > maxPage - 2 && <button className="sm rounded" onClick={() => setPage(page - 1)}>{page}</button>}
+            {page > 3 && page > maxPage - 1 && <button className="sm rounded" onClick={() => setPage(page - 4)}>{page - 3}</button>}
+            {page > 2 && page > maxPage - 2 && <button className="sm rounded" onClick={() => setPage(page - 3)}>{page - 2}</button>}
 
             {page > 1 && <button className="sm rounded" onClick={() => setPage(page - 2)}>{page - 1}</button>}
             {page > 0 && <button className="sm rounded" onClick={() => setPage(page - 1)}>{page}</button>}
 
+            {/* Current */}
             {count > 0 ?
                 <button className="sm green outlined rounded">{page + 1}</button> :
                 <button className="sm outlined" disabled={true}>No results found</button>

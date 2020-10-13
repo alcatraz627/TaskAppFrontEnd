@@ -33,7 +33,7 @@ export default async function apiCall({ url, method = HTTP_METHODS.GET, payload 
         // console.log(resp);
         return resp;
     }).catch((error) => {
-        console.log("Axios error", error.toJSON())
+        console.log("Axios error", error)
         return { error };
     })
 

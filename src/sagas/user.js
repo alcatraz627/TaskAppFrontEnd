@@ -114,10 +114,10 @@ export function* attempt_user_edit({ payload: { formData, id } }) {
     }
 }
 
-export function* fetch_user_list(action) {
+export function* fetch_user_list({payload: {offset, limit, search}}) {
     yield put(createAction(ACTION_TYPES.PAUSE_RENDER))
     yield put(createAction(ACTION_TYPES.SET_FETCH_STATUS, { [FETCH_RESOURCES.USER_LIST]: FETCH_STATUS.FETCHING }))
-    let { status, data, error } = yield call(apiCall, ({ url: API_ROUTES.USER_LIST }))
+    let { status, data, error } = yield call(apiCall, ({ url: API_ROUTES.USER_LIST(offset, limit, search) }))
     if (status == 200) {
         yield put(createAction(ACTION_TYPES.UPDATE_USER_LIST, data))
         yield put(createAction(ACTION_TYPES.SET_FETCH_STATUS, { [FETCH_RESOURCES.USER_LIST]: FETCH_STATUS.FETCHED }))

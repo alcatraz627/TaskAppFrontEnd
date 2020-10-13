@@ -11,6 +11,7 @@ import { getDate, getUser, DELETED, hasDatePassed } from '../../services/helpers
 
 import ResxRender from '../Utils/ResxRender'
 import Pagniator from '../Utils/Pagniator'
+import { isObject } from 'lodash'
 
 function TaskList(props) {
 
@@ -21,33 +22,37 @@ function TaskList(props) {
     const [search, setSearch] = useState("")
 
     const [page, setPage] = useState(0)
-    const [pageLen, setPageLen] = useState(process.env.PAGE_LEN || 5)
-
-    useEffect(() => {
-        if (Number.isInteger(page) || Number.isInteger(pageLen)) {
-            fetchTaskList({ offset: page * pageLen, limit: pageLen, search: search || null })
-        }
-    }, [page, pageLen])
+    const [pageLen, setPageLen] = useState(parseInt(process.env.PAGE_LEN) || 5)
 
 
-    const performSearch = (e) => {
-        e.preventDefault()
-        fetchTaskList({ offset: page * pageLen, limit: pageLen, search: search || null })
+    // Dispatches the action to perform fetch with params 
+    const updateList = () => {
+        fetchTaskList({
+            offset: page * pageLen, limit: pageLen,
+            search: search || null, taskStatus: taskFilter
+        })
     }
 
-    // const getFilterCount = (filterType, tasks) => {
-    //     if (!filterType) return tasks.length
-    //     return tasks.filter(t => t.status == filterType).length
-    // }
+    // Fetch new results on page nav, page len change or filter change
+    useEffect(() => {
+        if (Number.isInteger(page) || Number.isInteger(pageLen)) {
+            updateList()
+        }
+    }, [page, pageLen, taskFilter])
 
-    // const searchTasks = (tasks) => tasks
-    //     .filter(task => (search.trim() == "") ||
-    //         (task.title.toLowerCase().includes(search.toLowerCase()) ||
-    //             task.description.toLowerCase().includes(search.toLowerCase())))
+    // Update pagination page len and count on new data
+    useEffect(() => {
+        if (isObject(taskList)) {
+            setPage(Math.max(0, Math.min(page, Math.floor((taskCount - 1) / pageLen))))
+        }
+    }, [taskList])
 
-    // const filterTasks = (tasks, filter) => filter ? tasks.filter(t => t.status == taskFilter) : tasks
+    // Handler when search query is submitted
+    const performSearch = (e) => {
+        e.preventDefault()
+        updateList()
+    }
 
-    // const tasksToList = searchTasks(Object.values(taskList))
     const tasksToList = Object.values(taskList)
 
     function render(fetchData) {
@@ -113,12 +118,12 @@ function TaskList(props) {
                 <input name="search" type="text" className="searchBar" placeholder="Type here to search" value={search} onChange={({ target: { value } }) => setSearch(value)} />
                 <button type="submit" className="searchButton"><i className="fa fa-search" /></button>
             </form>
-            {/* <div className="tabPanel">
-                <div className={`tab ${taskFilter == null && 'tab-active'}`} onClick={() => setTaskFilter(null)}>All <div className="label sm">{getFilterCount(null, tasksToList)} </div></div>
-                <div className={`tab ${taskFilter == TASK_STATUS.PENDING && 'tab-active'}`} onClick={() => setTaskFilter(TASK_STATUS.PENDING)}>Pending <div className="label sm orange">{getFilterCount(TASK_STATUS.PENDING, tasksToList)}</div> </div>
-                <div className={`tab ${taskFilter == TASK_STATUS.IN_PROGRESS && 'tab-active'}`} onClick={() => setTaskFilter(TASK_STATUS.IN_PROGRESS)}>In Progress <div className="label sm purple">{getFilterCount(TASK_STATUS.IN_PROGRESS, tasksToList)}</div></div>
-                <div className={`tab ${taskFilter == TASK_STATUS.COMPLETE && 'tab-active'}`} onClick={() => setTaskFilter(TASK_STATUS.COMPLETE)}>Completed <div className="label sm green">{getFilterCount(TASK_STATUS.COMPLETE, tasksToList)}</div></div>
-            </div> */}
+            <div className="tabPanel">
+                <div className={`tab ${taskFilter == null ? 'tab-active' : ""}`} onClick={() => setTaskFilter(null)}>All</div>
+                <div className={`tab ${TASK_STATUS.PENDING.toLowerCase()} ${taskFilter == TASK_STATUS.PENDING ? 'tab-active' : ""}`} onClick={() => setTaskFilter(TASK_STATUS.PENDING)}>Pending</div>
+                <div className={`tab ${TASK_STATUS.IN_PROGRESS.toLowerCase()} ${taskFilter == TASK_STATUS.IN_PROGRESS ? 'tab-active' : ""}`} onClick={() => setTaskFilter(TASK_STATUS.IN_PROGRESS)}>In Progress</div>
+                <div className={`tab ${TASK_STATUS.COMPLETE.toLowerCase()} ${taskFilter == TASK_STATUS.COMPLETE ? 'tab-active' : ""}`} onClick={() => setTaskFilter(TASK_STATUS.COMPLETE)}>Completed</div>
+            </div>
         </div>
         <hr />
         <ResxRender render={render} fetchStatus={fetchStatus} fetchMethod={fetchTaskList} fetchData={taskList} />
@@ -138,7 +143,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-    fetchTaskList: ({ limit, offset, search }) => dispatch(createAction(ACTION_TYPES.FETCH_TASK_LIST, { limit, offset, search })),
+    fetchTaskList: (params) => dispatch(createAction(ACTION_TYPES.FETCH_TASK_LIST, params)),
     deleteTask: (id) => dispatch(createAction(ACTION_TYPES.ATTEMPT_TASK_DELETE, { id, toRedir: false })),
     openEditModal: (taskId) => dispatch(push(ROUTES.TASK_EDIT.getUrl(taskId))),
     openCreateModal: () => dispatch(push(ROUTES.TASK_CREATE.url))

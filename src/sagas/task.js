@@ -8,10 +8,10 @@ import ROUTES from '../constants/routes'
 import API_ROUTES from '../constants/apiRoutes'
 import { ACTION_TYPES, createAction } from '../constants/actions'
 
-export function* fetch_task_list({ payload: { limit, offset, search } }) {
+export function* fetch_task_list({ payload: { limit, offset, search, taskStatus } }) {
     // yield put(createAction(ACTION_TYPES.PAUSE_RENDER))
     yield put(createAction(ACTION_TYPES.SET_FETCH_STATUS, { [FETCH_RESOURCES.TASK_LIST]: FETCH_STATUS.FETCHING }))
-    let { status, data, error } = yield call(apiCall, ({ url: API_ROUTES.TASK_LIST(offset, limit, search) }))
+    let { status, data, error } = yield call(apiCall, ({ url: API_ROUTES.TASK_LIST(offset, limit, search, taskStatus) }))
     if (status == 200) {
         yield put(createAction(ACTION_TYPES.UPDATE_TASK_LIST, data))
         yield put(createAction(ACTION_TYPES.SET_FETCH_STATUS, { [FETCH_RESOURCES.TASK_LIST]: FETCH_STATUS.FETCHED }))

@@ -3,10 +3,10 @@ const apiRoutes = {
     LOGOUT: 'auth/logout/',
     USER_ME: `auth/me/`,
 
-    USER_LIST: 'users/',
+    USER_LIST: (offset, limit, search) => `users/?limit=${limit || parseInt(process.env.PAGE_LEN)}&offset=${offset || 0}&search=${search || ""}`,
     USER_ID: id => `users/${id}/`,
 
-    TASK_LIST: (offset, limit, search) => `tasks/?limit=${limit || 2}&offset=${offset || 0}&search=${search || ""}`,
+    TASK_LIST: (offset, limit, search, taskStatus) => `tasks/?limit=${limit || parseInt(process.env.PAGE_LEN)}&offset=${offset || 0}&search=${search || ""}&taskStatus=${taskStatus || ""}`,
     TASK_CREATE: `tasks/`,
     TASK_ID: id => `tasks/${id}/`,
 

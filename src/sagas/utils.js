@@ -19,7 +19,7 @@ export function* set_message() {
 
 export function* check_connection() {
     let { status, data, error } = yield apiCall({ url: "/" })
-    console.log("Conn", error)
+    console.log("Conn", data, error)
     if (error) {
         yield put(createAction(ACTION_TYPES.PUSH_NOTIF, { type: NOTIF_TYPE.WARNING, message: "The server seems to be unavailable. Capabilities of the app will be limited." }))
         yield put(createAction(ACTION_TYPES.SET_ONLINE_STATUS, { isOnline: false }))

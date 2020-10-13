@@ -14,21 +14,11 @@ import ResxRender from '../Utils/ResxRender'
 
 function TaskItem(props) {
 
-    const { openEditModal, updateStatus, notFound, deleteTask, fetchTaskItem } = props
     const { task, userList, userId, fetchStatus } = props
+    const { openEditModal, updateStatus, deleteTask, fetchTaskItem } = props
 
     const [isUpdatingStatus, setUpdateStatus] = useState(false)
     const [taskStatus, setTaskStatus] = useState("")
-
-    // useEffect(() => {
-    //     if (!task) {
-    //         notFound()
-    //     }
-    // }, [])
-
-    useEffect(() => {
-        fetchTaskItem()
-    }, [])
 
     useEffect(() => {
         if (task) {
@@ -51,7 +41,6 @@ function TaskItem(props) {
 
     function render() {
 
-        // !task ? <div className="loader" /> : 
         return <div className="taskContainer">
             <div className="taskItemTitle">
                 <h4 className="noSpacing">{task.title}</h4>
@@ -93,7 +82,6 @@ function TaskItem(props) {
             </div>
         </div>
     }
-
     return <ResxRender render={render} fetchStatus={fetchStatus} fetchMethod={fetchTaskItem} />
 
 }
@@ -111,7 +99,6 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
     openEditModal: () => dispatch(push(ROUTES.TASK_EDIT.getUrl(ownProps.match.params.id))),
     updateStatus: (status) => dispatch(createAction(ACTION_TYPES.ATTEMPT_TASK_EDIT, { formData: { status }, id: ownProps.match.params.id })),
     deleteTask: (id) => dispatch(createAction(ACTION_TYPES.ATTEMPT_TASK_DELETE, { id })),
-    notFound: () => dispatch(replace(ROUTES.NOT_FOUND.url)),
 
     fetchTaskItem: () => dispatch(createAction(ACTION_TYPES.FETCH_TASK_ITEM, { id: ownProps.match.params.id })),
 });

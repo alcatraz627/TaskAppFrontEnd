@@ -9,24 +9,43 @@ import { ACTION_TYPES, createAction } from '../../constants/actions'
 import ROUTES from '../../constants/routes'
 
 import { getDate } from '../../services/helpers'
+import ResxRender from '../Utils/ResxRender'
 
 function TaskEdit(props) {
-    const { task, userList, userId, path } = props
-    const { updateTaskItem, createTaskItem, deleteAction, closeModal, unauthorized, notFound } = props
+    const { task, userList, userId, path, fetchStatus } = props
+    const { updateTaskItem, createTaskItem, deleteAction,
+        closeModal, unauthorized, notFound, fetchTaskItem } = props
 
     const [formData, setFormData] = useState(null)
 
     const isCreateModal = path == ROUTES.TASK_CREATE.url // Is the modal opened for task creation or editing?
-    // Refs don't trigger an update when assigned, so can't use them on mount
-    // https://medium.com/@teh_builder/ref-objects-inside-useeffect-hooks-eb7c15198780
-    // The current fix is to use the body-scroll-lock method after a timeout but this is not ideal.
+
     useEffect(() => {
 
-        if (!isCreateModal) {
-            // 404 not found
-            if (!task) notFound()
-            else if (task.created_by != userId) unauthorized()
+        if (isCreateModal) {
+            setFormData({ title: "", description: "", due_date: new Date(), assigned_to: "" })
+        } else {
+            if (!!task) {
+                if (!isCreateModal) {
+                    if (task.created_by != userId) unauthorized()
+                }
+
+                if (!formData) {
+                    // Picking out only values needed for editing
+                    const { title, description, due_date, assigned_to } = task;
+                    setFormData({ title, description, due_date, assigned_to })
+                    setFormData(task => ({ ...task, created_by: task.created_by || "", assigned_to: task.assigned_to || "" }))
+                }
+            }
         }
+
+    }, [task])
+
+    useEffect(() => {
+
+        // Refs don't trigger an update when assigned, so can't use them on mount
+        // https://medium.com/@teh_builder/ref-objects-inside-useeffect-hooks-eb7c15198780
+        // The current fix is to use the body-scroll-lock method after a timeout but this is not ideal.
 
         var targetElement
         setTimeout(() => {
@@ -40,21 +59,8 @@ function TaskEdit(props) {
         else {
             return clearAllBodyScrollLocks
         }
+
     }, [])
-
-    useEffect(() => {
-        if (isCreateModal) {
-            setFormData({ title: "", description: "", due_date: new Date(), assigned_to: "" })
-        } else {
-            if (task && !formData) {
-                // Picking out only values needed for editing
-                const { title, description, due_date, assigned_to } = task;
-                setFormData({ title, description, due_date, assigned_to })
-                setFormData(task => ({ ...task, created_by: task.created_by || "", assigned_to: task.assigned_to || "" }))
-            }
-        }
-
-    }, [task])
 
     const isDirty = field => isCreateModal ? "" : ((formData[field] == task[field]) ? "" : "*")
 
@@ -65,51 +71,54 @@ function TaskEdit(props) {
         isCreateModal ? createTaskItem(formData) : updateTaskItem(formData)
     }
 
-
-    return (
-        <div className="modal" id="editTaskModal">
-            {!formData ? <div className="loader" /> :
-                <div className="taskContainer">
-                    <div className="modalLabel">Title{isDirty('title')}</div>
-                    <input type="text" name="title" placeholder="Enter task title" value={formData.title} onChange={updateForm} className="modalTextField heading" />
-                    {/* {JSON.stringify(Object.keys(task))} */}
-                    <div className="taskMeta">
-                        {!isCreateModal && `Created on ${getDate(task.created_at)}`}
-                        <div className="grow" />
-                        {!isCreateModal && <div className={`taskStatus ${task.status.toLowerCase()}`}>{task.status}</div>}
-                    </div>
-
-                    <div className="modalForm">
-                        <div className="modalFormData">
-                            <div className="modalLabel">Assigned to{isDirty('assigned_to')}</div>
-                            <select name="assigned_to" value={formData.assigned_to} onChange={updateForm}>
-                                <option value="">None</option>
-                                {Object.values(userList).map(user => <option key={user.id} value={user.id}>{user.name}</option>)}
-                            </select>
+    function render() {
+        return (
+            !task ? "Loading..." : <div className="modal" id="editTaskModal">
+                {!formData ? <div className="loader" /> :
+                    <div className="taskContainer">
+                        <div className="modalLabel">Title{isDirty('title')}</div>
+                        <input type="text" name="title" placeholder="Enter task title" value={formData.title} onChange={updateForm} className="modalTextField heading" />
+                        {/* {JSON.stringify(Object.keys(task))} */}
+                        <div className="taskMeta">
+                            {!isCreateModal && `Created on ${getDate(task.created_at)}`}
+                            <div className="grow" />
+                            {!isCreateModal && <div className={`taskStatus ${task.status.toLowerCase()}`}>{task.status}</div>}
                         </div>
-                        <div className="modalFormData">
-                            <div className="modalLabel">Due Date{isDirty('due_date')}</div>
-                            <input type="datetime-local" name="due_date" value={formData.due_date} onChange={updateForm} />
+
+                        <div className="modalForm">
+                            <div className="modalFormData">
+                                <div className="modalLabel">Assigned to{isDirty('assigned_to')}</div>
+                                <select name="assigned_to" value={formData.assigned_to} onChange={updateForm}>
+                                    <option value="">None</option>
+                                    {Object.values(userList).map(user => <option key={user.id} value={user.id}>{user.name}</option>)}
+                                </select>
+                            </div>
+                            <div className="modalFormData">
+                                <div className="modalLabel">Due Date{isDirty('due_date')}</div>
+                                <input type="datetime-local" name="due_date" value={formData.due_date} onChange={updateForm} />
+                            </div>
+                        </div>
+
+                        <div className="modalLabel">Description{isDirty('description')}</div>
+                        <textarea className="taskDesc" name="description" placeholder="Enter task description" rows="16" value={formData.description} onChange={updateForm} />
+                        <div className="modalActions">
+                            <button className="primary contained" onClick={saveForm}>{isCreateModal ? "Create New" : "Save Changes"}</button>
+                            {!isCreateModal && <button className="secondary outlined" onClick={() => deleteAction(task.id)}>Delete</button>}
+                            <button className="outlined" onClick={closeModal}>Close</button>
                         </div>
                     </div>
+                }
+            </div>
 
-                    <div className="modalLabel">Description{isDirty('description')}</div>
-                    <textarea className="taskDesc" name="description" placeholder="Enter task description" rows="16" value={formData.description} onChange={updateForm} />
-                    <div className="modalActions">
-                        <button className="primary contained" onClick={saveForm}>{isCreateModal ? "Create New" : "Save Changes"}</button>
-                        {!isCreateModal && <button className="secondary outlined" onClick={() => deleteAction(task.id)}>Delete</button>}
-                        <button className="outlined" onClick={closeModal}>Close</button>
-                    </div>
-                </div>
-            }
-        </div>
+        )
+    }
+    return <ResxRender render={render} fetchStatus={fetchStatus} fetchMethod={fetchTaskItem} />
 
-    )
 }
 
 const mapStateToProps = (state, ownProps) => ({
     task: state.task.taskList[ownProps.match.params.id],
-    // fetchStatus: state.utils.fetchStatus[FETCH_RESOURCES.TASK_LIST],
+    fetchStatus: state.utils.fetchStatus[FETCH_RESOURCES.TASK_ITEM],
 
     userList: state.user.userList,
     userId: state.user.id,
@@ -117,6 +126,8 @@ const mapStateToProps = (state, ownProps) => ({
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
+    fetchTaskItem: () => dispatch(createAction(ACTION_TYPES.FETCH_TASK_ITEM, { id: ownProps.match.params.id })),
+
     createTaskItem: (formData) => dispatch(createAction(ACTION_TYPES.ATTEMPT_TASK_CREATE, { formData })),
     updateTaskItem: (formData) => dispatch(createAction(ACTION_TYPES.ATTEMPT_TASK_EDIT, { formData, id: ownProps.match.params.id })),
     deleteAction: (id) => dispatch(createAction(ACTION_TYPES.ATTEMPT_TASK_DELETE, { id })),

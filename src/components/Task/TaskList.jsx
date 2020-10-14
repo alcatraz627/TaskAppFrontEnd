@@ -11,7 +11,6 @@ import { getDate, getUser, DELETED, hasDatePassed } from '../../services/helpers
 
 import ResxRender from '../Utils/ResxRender'
 import Pagniator from '../Utils/Pagniator'
-import { isObject } from 'lodash'
 
 function TaskList(props) {
 
@@ -35,6 +34,7 @@ function TaskList(props) {
 
     // Fetch new results on page nav, page len change or filter change
     useEffect(() => {
+        // Check if the page has initialized state before making any requests
         if (Number.isInteger(page) || Number.isInteger(pageLen)) {
             updateList()
         }
@@ -42,7 +42,7 @@ function TaskList(props) {
 
     // Update pagination page len and count on new data
     useEffect(() => {
-        if (isObject(taskList)) {
+        if (typeof (taskList) == 'object') {
             setPage(Math.max(0, Math.min(page, Math.floor((taskCount - 1) / pageLen))))
         }
     }, [taskList])
@@ -103,7 +103,7 @@ function TaskList(props) {
         )
     }
 
-    return <div className="container">
+    return <div className="container narrowContainer">
         <div className="listControlPanel">
             <div className="listTitleBar">
                 <div>
@@ -126,10 +126,8 @@ function TaskList(props) {
             </div>
         </div>
         <hr />
-        <ResxRender render={render} fetchStatus={fetchStatus} fetchMethod={fetchTaskList} fetchType={FETCH_RESOURCES.TASK_LIST} />
-    </div >
-
-
+        <ResxRender render={render} fetchStatus={fetchStatus} fetchType={FETCH_RESOURCES.TASK_LIST} />
+    </div>
 
 }
 

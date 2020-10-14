@@ -44,8 +44,8 @@ function Navbar({ isLoggedIn, user, notifHistory, fetchTasks, fetchUsers, should
     const toggleNotifOpen = () => { setNotifOpen(!notifOpen) }
 
     const refreshStore = () => {
-        fetchUsers()
-        fetchTasks()
+        // fetchUsers()
+        // fetchTasks()
     }
 
     return (
@@ -102,8 +102,8 @@ const mapStateToProps = (state, ownProps) => ({
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-    fetchUsers: () => dispatch(createAction(ACTION_TYPES.FETCH_USER_LIST)),
-    fetchTasks: () => dispatch(createAction(ACTION_TYPES.FETCH_TASK_LIST)),
+    // fetchUsers: () => dispatch(createAction(ACTION_TYPES.FETCH_USER_LIST)),
+    // fetchTasks: () => dispatch(createAction(ACTION_TYPES.FETCH_TASK_LIST)),
     clearNotifs: () => dispatch(createAction(ACTION_TYPES.CLEAR_NOTIF_HISTORY))
 })
 

@@ -20,7 +20,8 @@ module.exports = {
                 loader: 'babel-loader',
                 // https://stackoverflow.com/questions/52541561/module-build-failed-from-node-modules-babel-loader-lib-index-js-error-cann
                 options: {
-                    presets: ['@babel/preset-react']
+                    presets: ['@babel/preset-react'],
+                    plugins: ['babel-plugin-redux-saga']
                 },
             }
         },

@@ -28,8 +28,8 @@ export default function userReducer(state = initialState.user, { type, payload =
             }
 
         case ACTION_TYPES.UPDATE_USER_LIST:
-            const userList = payload.map((u) => ({ [u.id]: u }))
-            return { ...state, userList: Object.assign({}, ...userList) };
+            const userList = payload.data.map((u) => ({ [u.id]: u }))
+            return { ...state, userList: Object.assign({}, ...userList), count: payload.count };
 
         case ACTION_TYPES.UPDATE_USER_ITEM:
             return { ...state, userList: { ...state.userList, [payload.id]: { ...payload } } }

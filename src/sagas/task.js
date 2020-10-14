@@ -9,6 +9,7 @@ import API_ROUTES from '../constants/apiRoutes'
 import { ACTION_TYPES, createAction } from '../constants/actions'
 
 export function* fetch_task_list({ payload: { limit, offset, search, taskStatus } }) {
+    console.log("Fetching task list")
     yield put(createAction(ACTION_TYPES.SET_FETCH_STATUS, { [FETCH_RESOURCES.TASK_LIST]: FETCH_STATUS.FETCHING }))
     let { status, data, error } = yield call(apiCall, ({ url: API_ROUTES.TASK_LIST(offset, limit, search, taskStatus) }))
     if (status == 200) {
@@ -20,6 +21,7 @@ export function* fetch_task_list({ payload: { limit, offset, search, taskStatus 
     }
 }
 export function* fetch_user_tasks({ payload: { id, limit, offset, search, taskStatus } }) {
+    console.log("Fetching user tasks")
     yield put(createAction(ACTION_TYPES.SET_FETCH_STATUS, { [FETCH_RESOURCES.TASK_LIST]: FETCH_STATUS.FETCHING }))
     let { status, data, error } = yield call(apiCall, ({ url: API_ROUTES.USER_TASKS(id, offset, limit, search, taskStatus) }))
     if (status == 200) {

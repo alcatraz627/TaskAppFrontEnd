@@ -10,6 +10,7 @@ export default {
         role: null,
 
         userList: {},
+        count: null,
     },
 
     task: {
@@ -18,35 +19,28 @@ export default {
     },
 
     utils: {
-        shouldRender: 1, // Count of pending tasks, will render only when > 0
-        isOnline: false,
-        notifList: {
-            // testwarn: {
-            //     message: "Warning message",
-            //     id: "testwarn",
-            //     type: "WARNING"
-            // },
-            // testerr: {
-            //     message: "Error message",
-            //     id: "testerr",
-            //     type: "ERROR"
-            // },
-            // testinfo: {
-            //     message: "Info message",
-            //     id: "testinfo",
-            //     type: "INFO"
-            // },
-        },
+        // Count of pending jobs that need to be completed before 
+        // rendering the view can happen, will render only when > 0
+        shouldRender: 1,
 
+        // Keeps track of if the app has connection to the backend
+        isOnline: false,
+
+        // List of notifs at the bottom right
+        notifList: {},
+        // History of notifs in the bell icon dropdown
         notifHistory: [],
 
+        // Fetch statuses of various resource types
         fetchStatus: Object.assign({},
             ...Object.keys(FETCH_RESOURCES)
                 .map(r => ({ [r]: FETCH_STATUS.NOT_FETCHED }))),
 
+        // Data for the message page
         message: {
             title: null,
             body: null,
+            // TODO: Add an optional link functionality.
         }
     }
 }

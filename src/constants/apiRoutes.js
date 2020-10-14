@@ -3,7 +3,7 @@ const apiRoutes = {
     LOGOUT: 'auth/logout/',
     USER_ME: `auth/me/`,
 
-    USER_LIST: (offset, limit, search) => `users/?limit=${limit || parseInt(process.env.PAGE_LEN)}&offset=${offset || 0}&search=${search || ""}`,
+    USER_LIST: (offset, limit, search, isVerified) => `users/?limit=${limit || parseInt(process.env.PAGE_LEN)}&offset=${offset || 0}&search=${search || ""}&isVerified=${isVerified || null}`,
     USER_ID: id => `users/${id}/`,
     USER_TASKS: (id, offset, limit, search, taskStatus) => `users/${id}/tasks/?limit=${limit || parseInt(process.env.PAGE_LEN)}&offset=${offset || 0}&search=${search || ""}&taskStatus=${taskStatus || ""}`,
 

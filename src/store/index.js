@@ -1,8 +1,11 @@
-import { applyMiddleware, compose, createStore, } from 'redux'
+import { applyMiddleware, createStore, } from 'redux'
 
 import createSagaMiddleware from 'redux-saga'
 
 import { routerMiddleware } from 'connected-react-router'
+
+import { composeWithDevTools } from 'redux-devtools-extension'
+import { createAction } from '../constants/actions'
 
 import createRootReducer from '../reducers'
 import rootSaga from '../sagas'
@@ -17,7 +20,9 @@ const sagaMiddleware = createSagaMiddleware()
 
 const middleware = [sagaMiddleware, routerMiddleware(history)];
 
-const composeEnhancers = (window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose)
+// const composeEnhancers = (window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose)
+// List of arguments: https://github.com/zalmoxisus/redux-devtools-extension/blob/master/docs/API/Arguments.md#trace
+const composeEnhancers = composeWithDevTools({ name: "VMock TaskApp", actionCreators: createAction, trace: true, traceLimit: 50 });
 
 const store = createStore(createRootReducer(history), initialState, composeEnhancers(applyMiddleware(...middleware),))
 

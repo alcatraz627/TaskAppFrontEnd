@@ -190,6 +190,10 @@ nav.navbar {
 .container {
 	margin: 0;
 	padding: 60px 120px;
+	align-self: stretch;
+	&.narrowContainer {
+
+	}
 }
 
 .link {
@@ -366,7 +370,9 @@ nav.navbar {
 	.listTitleBar {
 		display: flex;
 		button {
-			margin-right: 0;
+			margin: auto 0 auto 0;
+			white-space: pre;
+			padding: 8px;
 		}
 		.descTitle {
 			@extend h6;
@@ -843,13 +849,15 @@ textarea.taskDesc {
 // Loading spinner
 
 .loaderContainer {
-	margin: 100px;
+	margin: 100px auto;
+	// border: 1px dotted red;
 }
 
 .loader,
 .loader:before,
 .loader:after {
-	background: #1e3760;
+	background-image: linear-gradient(315deg, $secondary 0%, $primary 74%);
+	// background: #1e3760;
 	-webkit-animation: load1 1s infinite ease-in-out;
 	animation: load1 1s infinite ease-in-out;
 	width: 1em;
@@ -1038,6 +1046,14 @@ textarea.taskDesc {
 		}
 	}
 }
+.filterDropDown {
+	margin: 8px 0;
+	&.default {
+		color: #888;
+	}
+	// width: 50%;
+	align-self: center;
+}
 
 .notFoundContainer {
 	display: flex;
@@ -1096,7 +1112,7 @@ textarea.taskDesc {
 	justify-content: center;
 	align-items: center;
 	justify-items: space-between;
-	padding: 4px 0;
+	padding: 4px 20px;
 	button {
 		margin: auto 4px;
 	}

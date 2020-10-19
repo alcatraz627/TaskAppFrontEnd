@@ -22,7 +22,7 @@ const UserList = (props) => {
     const { userList, userCount, isAdmin } = props
     const { fetchUserList, openCreateModal, fetchStatus } = props
 
-    const [verifFilter, setVerifFilter] = useState(VERIF_FILTER.UNSET)
+    const [verifFilter, setVerifFilter] = useState(VERIF_FILTER.UNSET.key)
     const [search, setSearch] = useState("")
 
     const [page, setPage] = useState(0)

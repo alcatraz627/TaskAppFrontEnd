@@ -10,9 +10,7 @@ function ResxRender({ render, fetchStatus, fetchMethod, fetchType, clearFetchSta
 
     // If you provide a fetch type it will also clear it on unmount
     useEffect(() => {
-        if (fetchType && [FETCH_STATUS.FETCHED, FETCH_STATUS.FETCH_ERROR].includes(fetchStatus)) {
-            return () => { console.log("Cleared fetch status of: ", fetchType); return clearFetchStatus(fetchType) }
-        }
+        return () => { console.log("Cleared fetch status of: ", fetchType); return clearFetchStatus(fetchType) }
     }, [])
 
     switch (fetchStatus) {
@@ -25,7 +23,13 @@ function ResxRender({ render, fetchStatus, fetchMethod, fetchType, clearFetchSta
             return render()
         case FETCH_STATUS.FETCH_ERROR:
         default:
-            return <div>An error has occured. Please try later. [Fetch Status of type )){fetchStatus}(( encountered ]</div>
+            return <div className="container">
+                <div className="h4">An error has occured. </div>
+                <div className="body1">
+                    Fetch Status of type <div className="label red">{fetchStatus}</div> encountered
+
+                </div>
+            </div>
     }
 }
 

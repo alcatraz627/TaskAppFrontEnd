@@ -11,7 +11,6 @@ export const AppRouter = ({ shouldRender }) => {
 
     if (!shouldRender) {
         // So that no redirects based on auth happen until the user's login has been attempted and auth status finalized
-        // TODO: Fancy spinner instead of this
         return <div className="loader" />
     } else
         return (<>

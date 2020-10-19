@@ -5,6 +5,7 @@ export default function taskReducer(state = initialState.user, { type, payload =
     switch (type) {
 
         case ACTION_TYPES.UPDATE_TASK_LIST:
+            console.log("TASK_LIST", payload)
             const taskList = payload.data.map(t => ({ [t.id]: { ...t, assigned_to: t.assigned_to || "" } }))
             return { ...state, taskList: Object.assign({}, ...taskList), count: payload.count };
 

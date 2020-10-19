@@ -10,6 +10,7 @@ body {
 	margin: 0;
 	@include fontPrimary;
 	@include colorBlack;
+	// background-image: linear-gradient(315deg, #{$secondary + '99'} 0%, #{$primary + '99'} 74%);
 }
 
 #root {
@@ -47,7 +48,7 @@ a {
 	font-size: inherit;
 }
 
-h1 {
+h1, .h1 {
 	@include colorBlack;
 	@include fontSecondary;
 	font-size: 6em;
@@ -55,7 +56,7 @@ h1 {
 	margin: 16px 0;
 	// letter-spacing: -1.5rem/6;
 }
-h2 {
+h2, .h2 {
 	@include colorBlack;
 	@include fontSecondary;
 	font-size: 3.75em;
@@ -63,7 +64,7 @@ h2 {
 	margin: 16px 0;
 	// letter-spacing: -1.5;
 }
-h3 {
+h3, .h3 {
 	@include colorBlack;
 	@include fontSecondary;
 	font-size: 3em;
@@ -71,21 +72,21 @@ h3 {
 	margin: 16px 0;
 	// letter-spacing: -1.5;
 }
-h4 {
+h4, .h4 {
 	@include fontSecondary;
 	font-size: 2.125em;
 	font-weight: 400;
 	margin: 16px 0;
 	// letter-spacing: -1.5;
 }
-h5 {
+h5, .h5 {
 	@include fontSecondary;
 	font-size: 1.5em;
 	font-weight: 400;
 	margin: 16px 0;
 	// letter-spacing: -1.5;
 }
-h6 {
+h6, .h6 {
 	@include fontSecondary;
 	font-size: 1.25em;
 	font-weight: 500;

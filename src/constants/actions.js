@@ -65,6 +65,12 @@ export const ACTION_TYPES = {
     // Clear Fetch Status on page change if needed
     CLEAR_FETCH_STATUS: 'CLEAR_FETCH_STATUS',
 
+    // Set query params for resx type to be used for sync and polling
+    SET_QUERY_PARAMS: 'SET_QUERY_PARAMS',
+    // Run sync task, either manually or periodically
+    RUN_SYNC: 'RUN_SYNC',
+    
+    // TODO: Rename for better intuitive understanding
     SHOULD_RENDER: 'SHOULD_RENDER',
     PAUSE_RENDER: 'PAUSE_RENDER',
 

@@ -44,9 +44,9 @@ function Notif({ notifList, dismissNotif, pushNotif, isLoggedIn, userId, redir }
     }
 
     return <div className="notifContainer" align="right">
-        {Object.values(notifList).map(({ message, type, id, link }) => (
+        {Object.values(notifList).map(({ message, type, id, timestamp, link }) => (
             <div key={id} className={`notifBar visible ${type.toLowerCase()} ${!!link?'pointer':''}`} onClick={() => handleClick(link)}>
-                {message}
+                {message} <br /> [{timestamp}]
                 <div className="grow"></div>
                 <i className="fa fa-times" onClick={() => dismissNotif(id)} />
             </div>))}

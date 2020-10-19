@@ -75,6 +75,7 @@ function Profile(props) {
                         :
                         Object.keys(TASK_STATUS)
                             .map(t => ({ type: t, count: getTaskType(t, getTasks(true)).length }))
+                            .filter(({count}) => count > 0)
                             .map(({ type, count }, i) => <div key={i} className={`taskRatioItem ${type.toLowerCase()}`} style={{ flexGrow: Math.floor(count) }}>{count}</div>)}
                 </div>
 
@@ -206,7 +207,7 @@ function Profile(props) {
                     {userRole == ROLES.ADMIN && user.id != authId && <div className="button secondary contained" onClick={() => { deleteUser(user.id) }}><i className="fa fa-trash fa" />&nbsp;&nbsp;Delete User</div>}
                 </div>
 
-                <ResxRender render={renderDashboard} fetchStatus={fetchTaskListStatus} fetchMethod={fetchUserTasks} fetchType={FETCH_RESOURCES.TASK_LIST} />
+                <ResxRender render={renderDashboard} fetchStatus={fetchTaskListStatus} fetchMethod={fetchUserTasks} fetchType={FETCH_RESOURCES.USER_TASKS} />
 
             </div>
         )
@@ -223,7 +224,7 @@ const mapStateToProps = (state, ownProps) => ({
     taskList: state.task.taskList,
 
     fetchUserItemStatus: state.utils.fetchStatus[FETCH_RESOURCES.USER_ITEM],
-    fetchTaskListStatus: state.utils.fetchStatus[FETCH_RESOURCES.TASK_LIST],
+    fetchTaskListStatus: state.utils.fetchStatus[FETCH_RESOURCES.USER_TASKS],
 
 })
 

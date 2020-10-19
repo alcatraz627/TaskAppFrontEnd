@@ -1,4 +1,4 @@
-import { put, takeEvery, call, all, delay } from 'redux-saga/effects'
+import { put, takeEvery, takeLatest, call, all, delay } from 'redux-saga/effects'
 
 import { push } from 'connected-react-router'
 
@@ -14,6 +14,7 @@ import { ACTION_TYPES, createAction } from '../constants/actions'
 export function* fetch_user_list({ payload: { offset, limit, search, isVerified } }) {
     console.log("Fetching user list")
     yield put(createAction(ACTION_TYPES.SET_FETCH_STATUS, { [FETCH_RESOURCES.USER_LIST]: FETCH_STATUS.FETCHING }))
+    yield put(createAction(ACTION_TYPES.SET_QUERY_PARAMS, { [FETCH_RESOURCES.USER_LIST]: { limit, offset, search, isVerified } }))
     let { status, data, error } = yield call(apiCall, ({ url: API_ROUTES.USER_LIST(offset, limit, search, isVerified) }))
     if (status == 200) {
         yield put(createAction(ACTION_TYPES.UPDATE_USER_LIST, data))
@@ -27,6 +28,7 @@ export function* fetch_user_list({ payload: { offset, limit, search, isVerified 
 export function* fetch_user_item({ payload: { id } }) {
     console.log("Fetching user item")
     yield put(createAction(ACTION_TYPES.SET_FETCH_STATUS, { [FETCH_RESOURCES.USER_ITEM]: FETCH_STATUS.FETCHING }))
+    yield put(createAction(ACTION_TYPES.SET_QUERY_PARAMS, { [FETCH_RESOURCES.TASK_LIST]: { id } }))
     let { status, data, error } = yield call(apiCall, ({ url: API_ROUTES.USER_ID(id) }))
 
     if (status == 200) {
@@ -230,15 +232,15 @@ export function* forgotpass_reset({ payload }) {
 
 
 export default function* userSaga() {
-    yield takeEvery(ACTION_TYPES.ATTEMPT_LOGIN, attempt_login)
-    yield takeEvery(ACTION_TYPES.ATTEMPT_LOGOUT, attempt_logout)
+    yield takeLatest(ACTION_TYPES.ATTEMPT_LOGIN, attempt_login)
+    yield takeLatest(ACTION_TYPES.ATTEMPT_LOGOUT, attempt_logout)
 
-    yield takeEvery(ACTION_TYPES.LOGIN_SUCCESS, login_success)
-    yield takeEvery(ACTION_TYPES.LOGOUT_SUCCESS, logout_success)
+    yield takeLatest(ACTION_TYPES.LOGIN_SUCCESS, login_success)
+    yield takeLatest(ACTION_TYPES.LOGOUT_SUCCESS, logout_success)
 
-    yield takeEvery(ACTION_TYPES.FETCH_USER_LIST, fetch_user_list)
-    yield takeEvery(ACTION_TYPES.FETCH_USER_ITEM, fetch_user_item)
-    yield takeEvery(ACTION_TYPES.FETCH_AUTH_USER, fetch_auth_user)
+    yield takeLatest(ACTION_TYPES.FETCH_USER_LIST, fetch_user_list)
+    yield takeLatest(ACTION_TYPES.FETCH_USER_ITEM, fetch_user_item)
+    yield takeLatest(ACTION_TYPES.FETCH_AUTH_USER, fetch_auth_user)
 
     yield takeEvery(ACTION_TYPES.ATTEMPT_REGISTER, attempt_register)
     // yield takeEvery(ACTION_TYPES.REGISTER_SUCCESS, register_success)

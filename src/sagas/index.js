@@ -2,7 +2,7 @@ import { fork, call, put, takeEvery } from 'redux-saga/effects'
 
 import user, { fetch_auth_user } from './user'
 import task from './task'
-import utils, { check_connection } from './utils'
+import utils, { check_connection, run_sync } from './utils'
 
 import { ACTION_TYPES, createAction } from '../constants/actions'
 
@@ -12,6 +12,7 @@ export function* logSagas(data) {
 }
 
 export default function* rootSaga() {
+    // Fork every saga module
     yield fork(user)
     yield fork(task)
     yield fork(utils)
@@ -27,6 +28,7 @@ export default function* rootSaga() {
         yield put(createAction(ACTION_TYPES.SHOULD_RENDER))
     }
     // yield put(createAction(ACTION_TYPES.FETCH_AUTH_USER))
+    yield* run_sync()
 }
 
 // export function* boot() {

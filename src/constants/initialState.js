@@ -35,6 +35,10 @@ export default {
         fetchStatus: Object.assign({},
             ...Object.keys(FETCH_RESOURCES)
                 .map(r => ({ [r]: FETCH_STATUS.NOT_FETCHED }))),
+        // Store the params of the last appropriate query to fetch and refresh in the background
+        lastQueryParams: Object.assign({},
+            ...Object.keys(FETCH_RESOURCES)
+                .map(r => ({ [r]: null }))),
 
         // Data for the message page
         message: {

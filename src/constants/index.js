@@ -57,6 +57,8 @@ export const FETCH_RESOURCES = {
     USER_LIST: 'USER_LIST',
     USER_ITEM: 'USER_ITEM',
 
+    USER_TASKS: 'USER_TASKS',
+
     TASK_LIST: 'TASK_LIST',
     TASK_ITEM: 'TASK_ITEM',
 }

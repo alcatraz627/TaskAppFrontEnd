@@ -50,7 +50,7 @@ function Pagniator(props) {
             <div className="paginatorTextBox">
                 <div className="paginatorText">
                     Showing&nbsp;&nbsp;
-                    <select name="pageLen" value={pageLen} onChange={({ target: { value } }) => setPageLen(value)}>
+                    <select name="pageLen" value={pageLen} onChange={({ target: { value } }) => setPageLen(parseInt(value))}>
                         {[2, 5, 10].map(n => <option key={n} value={n}>{n}</option>)}
                     </select>
                     &nbsp;&nbsp;items per page </div>

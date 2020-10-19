@@ -2,11 +2,13 @@ import initialState from '../constants/initialState'
 import { ACTION_TYPES } from '../constants/actions'
 import { NOTIF_TYPE, FETCH_STATUS, FETCH_RESOURCES } from '../constants'
 
-/** I know that implementing this directly in the reducer makes it impure and is a sacreligious to the principles of 
+/** I know that implementing these directly in the reducer makes it impure and is a sacreligious to the principles of 
  * functional programming, but I just wanted this as a fallback for now rather than have to add it everywhere. In the 
  * future I plan to have an appropriate ID generated everywhere for the notifs so this should not be needed. I guess. 
 */
 const generateID = () => Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 8);
+
+const getTimeStamp = () => (new Date()).toGMTString()
 
 export default function utilsReducer(state = initialState.utils, { type, payload = {} }) {
     switch (type) {
@@ -21,6 +23,7 @@ export default function utilsReducer(state = initialState.utils, { type, payload
                         ...payload, // This is just payload.message for now
                         type: payload.type || NOTIF_TYPE.INFO,
                         id,
+                        timestamp: getTimeStamp(),
                     }
                 }
             }
@@ -54,11 +57,24 @@ export default function utilsReducer(state = initialState.utils, { type, payload
         case ACTION_TYPES.CLEAR_MESSAGE:
             return { ...state, message: { title: null, body: null } }
 
+        case ACTION_TYPES.SET_QUERY_PARAMS:
+            return { ...state, lastQueryParams: { ...state.lastQueryParams, ...payload }, }
+
         case ACTION_TYPES.SET_FETCH_STATUS:
             return { ...state, fetchStatus: { ...state.fetchStatus, ...payload } }
 
-            case ACTION_TYPES.CLEAR_FETCH_STATUS:
-            return { ...state, fetchStatus: { ...state.fetchStatus, [FETCH_RESOURCES[payload.fetchType]]: FETCH_STATUS.NOT_FETCHED } }
+        case ACTION_TYPES.CLEAR_FETCH_STATUS:
+            return {
+                ...state,
+                fetchStatus: {
+                    ...state.fetchStatus,
+                    [FETCH_RESOURCES[payload.fetchType]]: FETCH_STATUS.NOT_FETCHED
+                },
+                lastQueryParams: {
+                    ...state.lastQueryParams,
+                    [FETCH_RESOURCES[payload.fetchType]]: null
+                }
+            }
 
         case ACTION_TYPES.PAUSE_RENDER:
             return { ...state, shouldRender: state.shouldRender + 1 }

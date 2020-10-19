@@ -1,4 +1,4 @@
-import { put, takeEvery, call, delay } from 'redux-saga/effects'
+import { put, putResolve, takeEvery, takeLatest, all, call, delay, select } from 'redux-saga/effects'
 
 import apiCall from '../services/api'
 
@@ -30,7 +30,19 @@ export function* check_connection() {
     }
 }
 
+export function* run_sync() {
+    let lastQueryParams = yield select(store => store.utils.lastQueryParams)
+    console.log(lastQueryParams)
+
+    yield all(Object.keys(lastQueryParams).filter(k => !!lastQueryParams[k])
+        .map(k => putResolve(createAction(`FETCH_${k}`, lastQueryParams[k]))))
+
+    yield delay(parseInt(process.env.SYNC_DELAY) || 5 * 60 * 1000)
+    yield put(createAction(ACTION_TYPES.RUN_SYNC))
+}
+
 export default function* utilsSaga() {
     yield takeEvery(ACTION_TYPES.PUSH_NOTIF, push_notif)
     yield takeEvery(ACTION_TYPES.SET_MESSAGE, set_message)
+    yield takeLatest(ACTION_TYPES.RUN_SYNC, run_sync)
 }

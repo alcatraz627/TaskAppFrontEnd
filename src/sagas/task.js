@@ -1,4 +1,4 @@
-import { put, takeEvery, call, all } from 'redux-saga/effects'
+import { put, takeEvery, takeLatest, call, all } from 'redux-saga/effects'
 
 import { push, replace } from 'connected-react-router'
 import apiCall from '../services/api'
@@ -11,9 +11,12 @@ import { ACTION_TYPES, createAction } from '../constants/actions'
 export function* fetch_task_list({ payload: { limit, offset, search, taskStatus } }) {
     console.log("Fetching task list")
     yield put(createAction(ACTION_TYPES.SET_FETCH_STATUS, { [FETCH_RESOURCES.TASK_LIST]: FETCH_STATUS.FETCHING }))
+    yield put(createAction(ACTION_TYPES.SET_QUERY_PARAMS, { [FETCH_RESOURCES.TASK_LIST]: { limit, offset, search, taskStatus } }))
     let { status, data, error } = yield call(apiCall, ({ url: API_ROUTES.TASK_LIST(offset, limit, search, taskStatus) }))
     if (status == 200) {
-        yield put(createAction(ACTION_TYPES.UPDATE_TASK_LIST, data))
+        yield put(createAction(ACTION_TYPES.UPDATE_TASK_LIST, { count: data.count, data: data.data.map(data => data.task) }));
+        yield put(createAction(ACTION_TYPES.UPDATE_USER_LIST, { count: data.count, data: data.data.reduce((accum, curr) => [...accum, curr.users.assigned_to, curr.users.created_by], []) }))
+
         yield put(createAction(ACTION_TYPES.SET_FETCH_STATUS, { [FETCH_RESOURCES.TASK_LIST]: FETCH_STATUS.FETCHED }))
     } else {
         yield put(createAction(ACTION_TYPES.SET_FETCH_STATUS, { [FETCH_RESOURCES.TASK_LIST]: FETCH_STATUS.FETCH_ERROR }))
@@ -22,20 +25,26 @@ export function* fetch_task_list({ payload: { limit, offset, search, taskStatus 
 }
 export function* fetch_user_tasks({ payload: { id, limit, offset, search, taskStatus } }) {
     console.log("Fetching user tasks")
-    yield put(createAction(ACTION_TYPES.SET_FETCH_STATUS, { [FETCH_RESOURCES.TASK_LIST]: FETCH_STATUS.FETCHING }))
-    let { status, data, error } = yield call(apiCall, ({ url: API_ROUTES.USER_TASKS(id, offset, limit, search, taskStatus) }))
-    if (status == 200) {
-        yield put(createAction(ACTION_TYPES.UPDATE_TASK_LIST, data))
-        yield put(createAction(ACTION_TYPES.SET_FETCH_STATUS, { [FETCH_RESOURCES.TASK_LIST]: FETCH_STATUS.FETCHED }))
-    } else {
-        yield put(createAction(ACTION_TYPES.SET_FETCH_STATUS, { [FETCH_RESOURCES.TASK_LIST]: FETCH_STATUS.FETCH_ERROR }))
-        console.log("Error", data, error)
+    if (id) {
+        yield put(createAction(ACTION_TYPES.SET_FETCH_STATUS, { [FETCH_RESOURCES.USER_TASKS]: FETCH_STATUS.FETCHING }))
+        yield put(createAction(ACTION_TYPES.SET_QUERY_PARAMS, { [FETCH_RESOURCES.USER_TASKS]: { limit, offset, search, taskStatus } }))
+        let { status, data, error } = yield call(apiCall, ({ url: API_ROUTES.USER_TASKS(id, offset, limit, search, taskStatus) }))
+        if (status == 200) {
+            // yield put(createAction(ACTION_TYPES.UPDATE_TASK_LIST, data))
+            yield put(createAction(ACTION_TYPES.UPDATE_TASK_LIST, { count: data.count, data: data.data.map(data => data.task) }));
+            yield put(createAction(ACTION_TYPES.UPDATE_USER_LIST, { count: data.count, data: data.data.reduce((accum, curr) => [...accum, curr.users.assigned_to, curr.users.created_by], []) }))
+                yield put(createAction(ACTION_TYPES.SET_FETCH_STATUS, { [FETCH_RESOURCES.USER_TASKS]: FETCH_STATUS.FETCHED }))
+        } else {
+            yield put(createAction(ACTION_TYPES.SET_FETCH_STATUS, { [FETCH_RESOURCES.USER_TASKS]: FETCH_STATUS.FETCH_ERROR }))
+            console.log("Error", data, error)
+        }
     }
 }
 
 export function* fetch_task_item({ payload: { id } }) {
     // yield put(createAction(ACTION_TYPES.PAUSE_RENDER))
     yield put(createAction(ACTION_TYPES.SET_FETCH_STATUS, { [FETCH_RESOURCES.TASK_ITEM]: FETCH_STATUS.FETCHING }))
+    yield put(createAction(ACTION_TYPES.SET_QUERY_PARAMS, { [FETCH_RESOURCES.TASK_ITEM]: { id } }))
     let { status, data, error } = yield call(apiCall, ({ url: API_ROUTES.TASK_ID(id) }))
     if (status == 200) {
         yield put(createAction(ACTION_TYPES.UPDATE_TASK_ITEM, data))
@@ -48,7 +57,6 @@ export function* fetch_task_item({ payload: { id } }) {
         yield put(createAction(ACTION_TYPES.SET_FETCH_STATUS, { [FETCH_RESOURCES.TASK_ITEM]: FETCH_STATUS.FETCH_ERROR }))
         console.log("Error", data, error)
     }
-    // yield put(createAction(ACTION_TYPES.SHOULD_RENDER))
 }
 
 export function* create_task({ payload: { formData } }) {
@@ -97,9 +105,9 @@ export function* delete_task({ payload: { id, toRedir = true } }) {
 
 
 export default function* taskSaga() {
-    yield takeEvery(ACTION_TYPES.FETCH_TASK_ITEM, fetch_task_item)
-    yield takeEvery(ACTION_TYPES.FETCH_TASK_LIST, fetch_task_list)
-    yield takeEvery(ACTION_TYPES.FETCH_USER_TASKS, fetch_user_tasks)
+    yield takeLatest(ACTION_TYPES.FETCH_TASK_ITEM, fetch_task_item)
+    yield takeLatest(ACTION_TYPES.FETCH_TASK_LIST, fetch_task_list)
+    yield takeLatest(ACTION_TYPES.FETCH_USER_TASKS, fetch_user_tasks)
     yield takeEvery(ACTION_TYPES.ATTEMPT_TASK_CREATE, create_task)
     yield takeEvery(ACTION_TYPES.ATTEMPT_TASK_EDIT, edit_task)
     yield takeEvery(ACTION_TYPES.ATTEMPT_TASK_DELETE, delete_task)

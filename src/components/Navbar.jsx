@@ -21,9 +21,10 @@ const useClickOutside = (ref, callback) => {
     });
 }
 
-function Navbar({ isLoggedIn, user, notifHistory, fetchTasks, fetchUsers, shouldRender, clearNotifs }) {
+function Navbar({ isLoggedIn, user, notifHistory, runSync, shouldRender, clearNotifs }) {
 
     const [notifOpen, setNotifOpen] = useState(false)
+    const [notifUndead, setNotifUnread] = useState(false)
 
     // To close notif dropdown when clicked outisde.
     const clickRef = React.useRef();
@@ -43,10 +44,13 @@ function Navbar({ isLoggedIn, user, notifHistory, fetchTasks, fetchUsers, should
 
     const toggleNotifOpen = () => { setNotifOpen(!notifOpen) }
 
-    const refreshStore = () => {
-        // fetchUsers()
-        // fetchTasks()
-    }
+    useEffect(() => {
+        if(notifOpen) setNotifUnread(false)
+    }, [notifOpen])
+
+    useEffect(() => {
+        if(notifHistory.length > 0) setNotifUnread(true)
+    }, [notifHistory])
 
     return (
         // <nav className={"navbar" + (shouldRender ? " loadingNavbar" : "")}>
@@ -62,7 +66,7 @@ function Navbar({ isLoggedIn, user, notifHistory, fetchTasks, fetchUsers, should
                 }
                 <div className="grow" />
 
-                <div ref={clickRef} className="navButton"><i className={`nav-icon fa fa-bell ${notifOpen && "active"}`} onClick={toggleNotifOpen} />
+                <div ref={clickRef} className={"navButton" + (notifUndead ? " navBellUnread" : "")}><i className={`nav-icon fa fa-bell ${notifOpen && "active"}`} onClick={toggleNotifOpen} />
                     <div className={`navNotifContainer${notifOpen ? " showNotifContainer" : ""}`}>
                         <div className="navNotifHeader">
                             <i className="fa fa-caret-up fa-3x notifBoxArrow" />
@@ -71,13 +75,13 @@ function Navbar({ isLoggedIn, user, notifHistory, fetchTasks, fetchUsers, should
                             <div className="clearNotifButton" onClick={clearNotifs}>Clear</div>
                         </div>
                         <div className="notifScroll">
-                            {notifHistory.slice().reverse().map(({ message, id, type }, i) => message && <div key={i} className={`navNotifItem ${type.toLowerCase() || ""}`}>{message}</div>)}
+                {notifHistory.slice().reverse().map(({ message, id, type, timestamp }, i) => message && <div key={i} className={`navNotifItem ${type.toLowerCase() || ""}`}>{message}<span className="navNotifTimestamp">{timestamp}</span></div>)}
                         </div>
                     </div>
                 </div>
                 {isLoggedIn ?
                     <>
-                        <div className="navButton" onClick={refreshStore}><i className={`nav-icon fa fa-refresh ${shouldRender && 'fa-spin'}`} /></div>
+                        <div className="navButton" onClick={runSync}><i className={`nav-icon fa fa-refresh ${shouldRender && 'fa-spin'}`} /></div>
                         <Link to={ROUTES.USER_PROFILE.getUrl(user.id)} className="nav-link" activeClassName="activeLink">{user.name}</Link>
                         <Link to={ROUTES.LOGOUT.url} className="nav-link" activeClassName="activeLink">Log out</Link>
                     </>
@@ -102,8 +106,7 @@ const mapStateToProps = (state, ownProps) => ({
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-    // fetchUsers: () => dispatch(createAction(ACTION_TYPES.FETCH_USER_LIST)),
-    // fetchTasks: () => dispatch(createAction(ACTION_TYPES.FETCH_TASK_LIST)),
+    runSync: () => dispatch(createAction(ACTION_TYPES.RUN_SYNC)),
     clearNotifs: () => dispatch(createAction(ACTION_TYPES.CLEAR_NOTIF_HISTORY))
 })
 
